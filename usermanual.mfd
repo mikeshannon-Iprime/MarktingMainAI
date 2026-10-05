@@ -1,0 +1,172 @@
+{
+  "format": "MarketingMind Documentation Manifest",
+  "formatVersion": "1.2",
+  "project": "MarketingMind AI",
+  "generated": "2026-07-25",
+  "primaryManual": {
+    "path": "usermanual.md",
+    "version": "3.1",
+    "title": "MarketingMind AI — End-to-End User Manual",
+    "audience": ["recruiters", "team leads", "admins", "developers", "super admins"]
+  },
+  "services": {
+    "frontend": {
+      "url": "http://localhost:5173",
+      "envFile": "frontend/.env",
+      "envExample": "frontend/.env.example",
+      "stack": "React 19 + Vite 8"
+    },
+    "backend": {
+      "defaultPort": 8000,
+      "alternatePort": 8002,
+      "url": "http://127.0.0.1:8000",
+      "envFile": "backend/.env",
+      "envExample": "backend/.env.example",
+      "stack": "FastAPI + Uvicorn + PostgreSQL"
+    }
+  },
+  "configuration": {
+    "backendEnv": "backend/.env.example",
+    "frontendEnv": "frontend/.env.example",
+    "databaseSchema": "backend/database/schema.sql",
+    "databaseDoc": "backend/database/SCHEMA.md",
+    "pytestConfig": "backend/pytest.ini",
+    "viteConfig": "frontend/vite.config.js"
+  },
+  "documents": [
+    {
+      "id": "DOC-001",
+      "path": "usermanual.md",
+      "type": "user-manual",
+      "version": "3.0",
+      "description": "End-to-end setup, navigation, RBAC, modules, supervised Quick Apply, API, notifications, troubleshooting"
+    },
+    {
+      "id": "DOC-002",
+      "path": "usermanual.mfd",
+      "type": "manifest",
+      "version": "1.5",
+      "description": "Machine-readable documentation index (this file)"
+    },
+    {
+      "id": "DOC-003",
+      "path": "docs/DOCUMENTATION_INDEX.md",
+      "type": "index",
+      "version": "1.2",
+      "description": "Human-readable map of all project documentation"
+    },
+    {
+      "id": "DOC-004",
+      "path": "docs/TESTING_GUIDE.md",
+      "type": "testing",
+      "version": "1.4",
+      "description": "Automated test suites, run commands, CI integration notes"
+    },
+    {
+      "id": "DOC-005",
+      "path": "backupfolder/FUNCTIONAL_TEST_CASES.md",
+      "type": "functional-tests",
+      "version": "1.5",
+      "description": "Manual functional test cases + automation mapping (incl. multi-portal Quick Apply → Applied)"
+    },
+    {
+      "id": "DOC-006",
+      "path": "README.md",
+      "type": "readme",
+      "version": "1.4",
+      "description": "Project overview, configuration, quick start, supervised Quick Apply"
+    },
+    {
+      "id": "DOC-007",
+      "path": "backend/database/SCHEMA.md",
+      "type": "database-schema",
+      "description": "PostgreSQL table and column reference (32 tables)"
+    },
+    {
+      "id": "DOC-008",
+      "path": "backend/database/schema.sql",
+      "type": "database-ddl",
+      "description": "Complete PostgreSQL DDL generated from SQLAlchemy models"
+    },
+    {
+      "id": "DOC-009",
+      "path": "uml-artifacts/README.md",
+      "type": "architecture",
+      "description": "PlantUML component and sequence diagrams"
+    },
+    {
+      "id": "DOC-010",
+      "path": "docs/QUICK_APPLY_DESIGN.md",
+      "type": "design",
+      "version": "3.0",
+      "description": "Multi-portal supervised Quick Apply architecture and Results Applied UI"
+    }
+  ],
+  "testSuites": {
+    "backend": {
+      "framework": "pytest",
+      "config": "backend/pytest.ini",
+      "dependencies": "backend/requirements-dev.txt",
+      "testCount": 113,
+      "modules": [
+        "backend/tests/test_functional_auth.py",
+        "backend/tests/test_functional_job_automation.py",
+        "backend/tests/test_functional_campaigns.py",
+        "backend/tests/test_functional_day_report.py",
+        "backend/tests/test_functional_submissions.py",
+        "backend/tests/test_functional_linkedin.py",
+        "backend/tests/test_functional_notifications.py",
+        "backend/tests/test_portal_apply.py",
+        "backend/tests/test_portal_scraper.py",
+        "backend/tests/test_reporting_helpers.py"
+      ],
+      "runCommand": "cd backend && .venv\\Scripts\\python.exe -m pytest -q"
+    },
+    "frontend": {
+      "framework": "vitest",
+      "testCount": 25,
+      "modules": [
+        "frontend/src/utils/validators.functional.test.js",
+        "frontend/src/utils/reportingHelpers.functional.test.js",
+        "frontend/src/utils/linkedinRecruiterHelpers.functional.test.js"
+      ],
+      "runCommand": "cd frontend && npm test"
+    },
+    "totalTestCount": 138
+  },
+  "notificationChannels": {
+    "email": {
+      "provider": "smtp",
+      "configKeys": ["SMTP_HOST", "SMTP_PORT", "SMTP_USERNAME", "SMTP_PASSWORD", "SMTP_FROM_EMAIL", "NOTIFICATION_FROM_NAME", "NOTIFICATION_FROM_EMAIL"],
+      "testEndpoint": "POST /api/notifications/test-email",
+      "campaignTestEndpoint": "POST /api/campaigns/test-smtp"
+    },
+    "sms": {
+      "provider": "twilio",
+      "configKeys": ["SMS_PROVIDER", "TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_FROM_NUMBER"],
+      "demoModeKey": "NOTIFICATION_FORCE_DEMO_MODE",
+      "testEndpoint": "POST /api/notifications/test-sms"
+    }
+  },
+  "database": {
+    "tableCount": 32,
+    "schemaFile": "backend/database/schema.sql",
+    "initScript": "backend/scripts/init_postgres_schema.py",
+    "generatorScript": "backend/scripts/generate_schema_sql.py"
+  },
+  "demoAccounts": [
+    { "role": "user", "email": "user@marketingmind.ai", "password": "User@123" },
+    { "role": "admin", "email": "admin@marketingmind.ai", "password": "Admin@123" },
+    { "role": "super_admin", "email": "superadmin@marketingmind.ai", "password": "Super@123" }
+  ],
+  "featureModules": [
+    { "route": "/", "name": "Command Center" },
+    { "route": "/campaigns", "name": "Campaign Studio" },
+    { "route": "/job-automation", "name": "Job Automation" },
+    { "route": "/linkedin", "name": "LinkedIn Recruiter" },
+    { "route": "/day-report", "name": "Day Report" },
+    { "route": "/submissions", "name": "Submissions" },
+    { "route": "/api-explorer", "name": "API Explorer" },
+    { "route": "/profile", "name": "My Profile" }
+  ]
+}

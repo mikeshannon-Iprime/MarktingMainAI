@@ -1,0 +1,29 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+
+node "FastAPI Runtime" {
+  [app/main.py\nFastAPI app + CORS] as Main
+  [api/routes.py\nRoute handlers] as Routes
+  [schemas/api_models.py\nPydantic models] as Schemas
+  [services/seed_data.py\nBusiness logic + orchestration] as Seed
+  [services/test_data_store.py\nJSON test-data persistence] as Store
+  [db/database.py\nDB health + engine] as DB
+  [core/config.py\nSettings] as Config
+}
+
+database "test_data.json" as TestData
+database "test_data.default.json" as Baseline
+database "PostgreSQL (optional)" as Postgres
+
+Main --> Config
+Main --> Routes
+Routes --> Schemas
+Routes --> Seed
+Routes --> DB : /health
+Seed --> Store
+Store --> TestData
+Store --> Baseline
+DB --> Postgres : if DATABASE_URL configured
+@enduml

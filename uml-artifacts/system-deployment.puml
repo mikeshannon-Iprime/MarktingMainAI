@@ -1,0 +1,25 @@
+@startuml
+skinparam shadowing false
+skinparam linetype ortho
+
+node "Developer Machine (macOS)" {
+  node "Frontend Dev Server" {
+    artifact "Vite + React\nhttp://localhost:5173" as Front
+  }
+
+  node "Backend Dev Server" {
+    artifact "FastAPI + Uvicorn\nhttp://127.0.0.1:8000" as Back
+    artifact "Swagger UI\n/docs" as Swagger
+  }
+
+  database "JSON Test Data\nbackend/app/data/test_data.json" as JsonRuntime
+  database "JSON Baseline\nbackend/app/data/test_data.default.json" as JsonBase
+  database "PostgreSQL (optional)" as Pg
+}
+
+Front --> Back : REST/JSON over HTTP
+Swagger --> Back : OpenAPI execution
+Back --> JsonRuntime : read/write test data
+Back --> JsonBase : reset baseline load
+Back --> Pg : DB health + optional runtime DB usage
+@enduml

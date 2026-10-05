@@ -1,0 +1,43 @@
+@startuml
+skinparam shadowing false
+actor User
+participant "Browser" as Browser
+participant "App.jsx" as App
+participant "api/client.js" as Client
+participant "FastAPI" as API
+
+== Initial load ==
+User -> Browser : Open application
+Browser -> App : mount()
+App -> Client : loadWorkspaceData()
+
+par fetch health
+  Client -> API : GET /health
+  API --> Client : health payload
+else fetch overview
+  Client -> API : GET /api/overview
+  API --> Client : overview payload
+else fetch campaigns workspace
+  Client -> API : GET /api/campaigns/workspace
+  API --> Client : campaigns payload
+else fetch job automation workspace
+  Client -> API : GET /api/job-automation/workspace
+  API --> Client : job automation payload
+else fetch day report
+  Client -> API : GET /api/day-report/dashboard
+  API --> Client : day report payload
+else fetch submissions
+  Client -> API : GET /api/submissions/dashboard
+  API --> Client : submissions payload
+end
+
+Client --> App : aggregated workspace data
+App --> Browser : render routes and pages
+
+== API Explorer flow ==
+User -> Browser : Open /api-explorer
+Browser -> Client : fetchApiEndpointCatalog()
+Client -> API : GET /api/meta/endpoints
+API --> Client : endpoint catalog
+Client --> Browser : render endpoint request/response examples
+@enduml

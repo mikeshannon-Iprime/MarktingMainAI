@@ -1,0 +1,37 @@
+@startuml
+skinparam shadowing false
+actor Frontend
+participant "FastAPI Router" as Router
+participant "seed_data service" as Seed
+participant "test_data_store" as Store
+database "test_data.json" as Json
+
+== Workspace request ==
+Frontend -> Router : GET /api/job-automation/workspace
+Router -> Seed : get_job_automation_workspace()
+Seed -> Store : get_test_data()
+Store -> Json : read/cache JSON
+Json --> Store : dataset
+Store --> Seed : dataset
+Seed --> Router : workspace payload
+Router --> Frontend : 200 JSON
+
+== Append test data ==
+Frontend -> Router : POST /api/meta/test-data/append
+Router -> Seed : append_test_data_payload(dataset, entries)
+Seed -> Store : append_test_data(dataset, entries)
+Store -> Json : atomic write
+Json --> Store : updated dataset
+Store --> Seed : totalRecords
+Seed --> Router : success payload
+Router --> Frontend : 200 JSON
+
+== Reset test data ==
+Frontend -> Router : POST /api/meta/test-data/reset
+Router -> Seed : reset_test_data_payload()
+Seed -> Store : reset_test_data()
+Store -> Json : overwrite from default baseline
+Store --> Seed : reset completed
+Seed --> Router : success payload
+Router --> Frontend : 200 JSON
+@enduml

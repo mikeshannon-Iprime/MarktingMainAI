@@ -1,0 +1,50 @@
+# Environment & secrets
+.env
+.env.local
+*.env
+!*.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+backend/.venv/
+
+# Playwright supervised apply session profile + browsers
+.playwright/
+backend/.playwright/
+backend/.playwright-browsers/
+.playwright-browsers/
+
+# Node
+node_modules/
+frontend/dist/
+frontend/dist-ssr/
+
+# Databases & local data
+*.db
+*.sqlite
+*.sqlite3
+marketingmind.db
+backend/marketingmind.db
+
+# Local AI / editor config (do not commit)
+.claude/
+settings.json
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# Build / cache
+.cache/
+.pytest_cache/
+coverage/
+htmlcov/
+backend/test-results/
+test-results/

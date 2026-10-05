@@ -1,0 +1,42 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam linetype ortho
+
+package "Frontend (Vite + React)" {
+  [BrowserRouter] as Router
+  [App.jsx\nRoutes + loading state] as App
+  [AppShell.jsx\nNavigation + refresh] as Shell
+
+  [OverviewPage] as Overview
+  [CampaignStudioPage] as Campaigns
+  [JobAutomationPage] as JobAuto
+  [DayReportPage] as DayReport
+  [SubmissionProgressPage] as Subs
+  [ApiExplorerPage] as ApiExplorer
+
+  [api/client.js\nAxios API Adapter] as Client
+}
+
+cloud "Backend API" as Backend
+
+Router --> App
+App --> Shell
+App --> Overview
+App --> Campaigns
+App --> JobAuto
+App --> DayReport
+App --> Subs
+App --> ApiExplorer
+
+Overview --> Client
+Campaigns --> Client
+JobAuto --> Client
+DayReport --> Client
+Subs --> Client
+ApiExplorer --> Client
+App --> Client : loadWorkspaceData()
+Shell --> App : onRefresh()
+
+Client --> Backend : HTTP JSON (REST)
+@enduml

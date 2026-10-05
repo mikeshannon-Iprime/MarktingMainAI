@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dice Mock — Big Data Engineer</title>
+</head>
+<body>
+  <h1>Big Data Engineer at Greecy Infotech</h1>
+  <p>Mock Dice Easy Apply page for automated tests.</p>
+  <button type="button" id="easy-apply">Easy Apply</button>
+
+  <form id="app-form" style="display:none; margin-top: 16px;">
+    <div>
+      <label>Full Name
+        <input name="fullName" aria-label="Full Name" placeholder="Full Name" />
+      </label>
+    </div>
+    <div>
+      <label>Email
+        <input name="email" aria-label="Email" placeholder="Email" />
+      </label>
+    </div>
+    <div>
+      <label>Phone
+        <input name="phone" aria-label="Phone" placeholder="Phone" />
+      </label>
+    </div>
+    <div>
+      <label>Location
+        <input name="location" aria-label="Location" placeholder="Location" />
+      </label>
+    </div>
+    <button type="button" id="submit">Submit Application</button>
+  </form>
+
+  <div id="success" style="display:none; margin-top: 16px;">
+    Application submitted successfully. Thank you for applying.
+  </div>
+
+  <script>
+    document.getElementById("easy-apply").addEventListener("click", function () {
+      document.getElementById("app-form").style.display = "block";
+    });
+    document.getElementById("submit").addEventListener("click", function () {
+      document.getElementById("app-form").style.display = "none";
+      document.getElementById("success").style.display = "block";
+      history.replaceState({}, "", window.location.pathname + "?confirmation=1");
+    });
+  </script>
+</body>
+</html>

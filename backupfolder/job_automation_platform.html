@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--color-background-tertiary,#f5f5f0);color:var(--color-text-primary);font-size:14px;line-height:1.5}
+.app{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:linear-gradient(135deg,#0f2044 0%,#1a3a6b 100%);padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;color:#fff}
+.logo-icon{width:32px;height:32px;background:#2563eb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff}
+.logo-text{font-size:16px;font-weight:600;letter-spacing:0.3px}
+.logo-sub{font-size:11px;color:#93b4e0;font-weight:400}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.badge-live{background:#10b981;color:#fff;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;letter-spacing:0.5px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.7}}
+.user-chip{background:rgba(255,255,255,0.1);color:#fff;font-size:12px;padding:4px 12px;border-radius:20px;cursor:pointer}
+
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 16px;gap:0;overflow-x:auto}
+.nav-tab{padding:12px 16px;font-size:13px;font-weight:500;color:#6b7280;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;display:flex;align-items:center;gap:6px}
+.nav-tab:hover{color:#1d4ed8;background:#f0f5ff}
+.nav-tab.active{color:#1d4ed8;border-bottom-color:#1d4ed8;background:#f0f5ff}
+.nav-tab .ti{font-size:15px}
+.count-badge{background:#dbeafe;color:#1d4ed8;font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600}
+.count-badge.green{background:#d1fae5;color:#065f46}
+.count-badge.red{background:#fee2e2;color:#991b1b}
+
+.content{flex:1;padding:16px;overflow-y:auto}
+.panel{display:none}
+.panel.active{display:block}
+
+/* Cards & Sections */
+.card{background:#fff;border:0.5px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:14px}
+.card-title{font-size:13px;font-weight:600;color:#374151;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.card-title .ti{font-size:16px;color:#2563eb}
+.section-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.section-grid{grid-template-columns:1fr}}
+.section-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+@media(max-width:600px){.section-grid-3{grid-template-columns:1fr}}
+
+/* Forms */
+label{font-size:12px;font-weight:500;color:#6b7280;display:block;margin-bottom:4px}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;color:#111827;background:#fff;outline:none;transition:border 0.15s;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,0.1)}
+textarea{resize:vertical;min-height:80px}
+.form-group{margin-bottom:12px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:7px;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s}
+.btn-primary{background:#1d4ed8;color:#fff}
+.btn-primary:hover{background:#1e40af}
+.btn-secondary{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
+.btn-secondary:hover{background:#e5e7eb}
+.btn-success{background:#059669;color:#fff}
+.btn-success:hover{background:#047857}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{background:#dc2626;color:#fff}
+.btn-warning{background:#d97706;color:#fff}
+.btn-ghost{background:transparent;color:#1d4ed8;border:1px solid #bfdbfe}
+.btn-ghost:hover{background:#eff6ff}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+
+/* Tags/pills */
+.tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:500;background:#e0e7ff;color:#3730a3;margin:2px}
+.tag .remove{cursor:pointer;color:#818cf8;font-size:12px}
+.tag.or{background:#fef3c7;color:#92400e}
+.tag.and{background:#d1fae5;color:#065f46}
+.tags-input{display:flex;flex-wrap:wrap;gap:4px;align-items:center;border:1px solid #d1d5db;border-radius:6px;padding:6px;min-height:36px}
+.tags-input input{border:none;outline:none;padding:2px 4px;font-size:13px;min-width:100px;flex:1}
+
+/* Upload zone */
+.upload-zone{border:2px dashed #93c5fd;border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all 0.2s;background:#f0f7ff}
+.upload-zone:hover{border-color:#2563eb;background:#dbeafe}
+.upload-zone .ti{font-size:28px;color:#3b82f6;display:block;margin-bottom:6px}
+.upload-zone p{font-size:12px;color:#6b7280}
+.upload-zone strong{color:#1d4ed8;font-size:13px}
+.file-list{margin-top:8px}
+.file-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f9fafb;border:0.5px solid #e5e7eb;border-radius:6px;margin-bottom:4px;font-size:12px;color:#374151}
+.file-item .ti{font-size:14px;color:#10b981}
+
+/* Job cards */
+.job-card{background:#fff;border:0.5px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:10px;transition:all 0.15s;cursor:pointer}
+.job-card:hover{border-color:#3b82f6;box-shadow:0 2px 8px rgba(37,99,235,0.08)}
+.job-card.selected{border-color:#1d4ed8;background:#eff6ff}
+.job-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.job-title{font-size:14px;font-weight:600;color:#111827}
+.job-company{font-size:12px;color:#6b7280;margin-bottom:4px}
+.job-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.job-pill{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:500}
+.pill-type{background:#dbeafe;color:#1e40af}
+.pill-loc{background:#f3f4f6;color:#374151}
+.pill-date{background:#d1fae5;color:#065f46}
+.pill-match{background:#fef3c7;color:#92400e}
+.pill-hot{background:#fee2e2;color:#991b1b}
+.match-bar{height:4px;background:#e5e7eb;border-radius:2px;margin-top:6px}
+.match-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#3b82f6,#06b6d4)}
+.apply-row{display:flex;gap:6px;align-items:center;margin-top:10px}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}}
+.stat-card{background:#fff;border:0.5px solid #e5e7eb;border-radius:10px;padding:12px;text-align:center}
+.stat-num{font-size:22px;font-weight:700;color:#1d4ed8}
+.stat-label{font-size:11px;color:#9ca3af;margin-top:2px}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.filter-select{padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;background:#fff;outline:none;cursor:pointer}
+.search-input{flex:1;min-width:160px;padding:7px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;outline:none}
+
+/* CV Analyzer */
+.match-score-circle{width:80px;height:80px;border-radius:50%;background:conic-gradient(#2563eb var(--pct),#e5e7eb var(--pct));display:flex;align-items:center;justify-content:center;position:relative;margin:0 auto}
+.match-score-inner{width:62px;height:62px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#1d4ed8}
+.analysis-section{border-left:3px solid #bfdbfe;padding-left:12px;margin-bottom:12px}
+.analysis-section h4{font-size:12px;font-weight:600;color:#1d4ed8;margin-bottom:4px}
+.analysis-section p{font-size:12px;color:#4b5563;line-height:1.6}
+.keyword-hit{background:#d1fae5;color:#065f46;padding:1px 5px;border-radius:4px;font-size:11px;font-weight:500;margin:1px;display:inline-block}
+.keyword-miss{background:#fee2e2;color:#991b1b;padding:1px 5px;border-radius:4px;font-size:11px;font-weight:500;margin:1px;display:inline-block}
+.suggestion-item{display:flex;gap:8px;padding:8px;background:#f9fafb;border:0.5px solid #e5e7eb;border-radius:6px;margin-bottom:6px;font-size:12px;color:#374151}
+.suggestion-item .icon{font-size:16px;color:#f59e0b;flex-shrink:0}
+
+/* LinkedIn panel */
+.li-card{background:#fff;border:0.5px solid #e5e7eb;border-radius:10px;padding:14px;margin-bottom:10px}
+.li-header{display:flex;gap:10px;align-items:flex-start}
+.li-logo{width:40px;height:40px;border-radius:6px;background:#0077b5;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0}
+.li-info{flex:1}
+.li-title{font-size:14px;font-weight:600;color:#111827}
+.li-company{font-size:12px;color:#0077b5;font-weight:500}
+.li-details{font-size:11px;color:#6b7280;margin-top:2px}
+.li-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:0.5px solid #f3f4f6}
+.li-insight{font-size:11px;color:#6b7280;display:flex;align-items:center;gap:4px}
+.applicant-bar{display:flex;align-items:center;gap:6px;margin-top:6px}
+.applicant-count{font-size:11px;color:#dc2626;font-weight:500}
+
+/* Tabs within panels */
+.sub-tabs{display:flex;gap:2px;background:#f3f4f6;border-radius:8px;padding:3px;margin-bottom:14px}
+.sub-tab{flex:1;padding:6px;text-align:center;font-size:12px;font-weight:500;color:#6b7280;cursor:pointer;border-radius:6px;transition:all 0.15s}
+.sub-tab.active{background:#fff;color:#1d4ed8;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+
+/* Toggle */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:0.5px solid #f3f4f6}
+.toggle{width:36px;height:20px;background:#d1d5db;border-radius:10px;cursor:pointer;position:relative;transition:background 0.2s}
+.toggle.on{background:#2563eb}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.toggle.on::after{left:18px}
+
+/* Spinner */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Progress steps */
+.step-indicator{display:flex;align-items:center;gap:0;margin-bottom:16px}
+.step{display:flex;align-items:center;gap:0;flex:1}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.step-dot.done{background:#059669;color:#fff}
+.step-dot.active{background:#1d4ed8;color:#fff}
+.step-dot.pending{background:#e5e7eb;color:#9ca3af}
+.step-line{flex:1;height:2px;background:#e5e7eb}
+.step-line.done{background:#059669}
+.step-label{font-size:10px;color:#6b7280;text-align:center;margin-top:2px;white-space:nowrap}
+
+/* Notification toast */
+.toast{position:fixed;bottom:20px;right:20px;background:#111827;color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;z-index:999;display:flex;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,0.2);transform:translateY(100px);opacity:0;transition:all 0.3s}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#065f46}
+.toast.warning{background:#92400e}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-icon">JS</div>
+      <div>
+        <div class="logo-text">JobSync Pro</div>
+        <div class="logo-sub">IT Staffing Automation Platform</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge-live">● LIVE</span>
+      <span class="user-chip"><i class="ti ti-user"></i> Candidate Profile</span>
+    </div>
+  </div>
+
+  <div class="nav" id="mainNav">
+    <div class="nav-tab active" data-panel="profile" onclick="switchPanel('profile')"><i class="ti ti-user-circle"></i> My Profile</div>
+    <div class="nav-tab" data-panel="search" onclick="switchPanel('search')"><i class="ti ti-search"></i> Job Search <span class="count-badge" id="searchCount">0</span></div>
+    <div class="nav-tab" data-panel="portals" onclick="switchPanel('portals')"><i class="ti ti-world"></i> Portals</div>
+    <div class="nav-tab" data-panel="results" onclick="switchPanel('results')"><i class="ti ti-list-check"></i> Results <span class="count-badge green" id="resultsCount">18</span></div>
+    <div class="nav-tab" data-panel="analyzer" onclick="switchPanel('analyzer')"><i class="ti ti-chart-line"></i> CV Analyzer</div>
+    <div class="nav-tab" data-panel="linkedin" onclick="switchPanel('linkedin')"><i class="ti ti-brand-linkedin"></i> LinkedIn <span class="count-badge" id="liCount">9</span></div>
+    <div class="nav-tab" data-panel="tracker" onclick="switchPanel('tracker')"><i class="ti ti-clipboard-check"></i> Tracker <span class="count-badge red" id="trackerCount">4</span></div>
+  </div>
+
+  <div class="content">
+    <!-- PROFILE PANEL -->
+    <div class="panel active" id="panel-profile">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num" id="stat-applied">0</div><div class="stat-label">Applied Today</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-matches">18</div><div class="stat-label">New Matches</div></div>
+        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Interviews</div></div>
+        <div class="stat-card"><div class="stat-num">87%</div><div class="stat-label">Avg Match Score</div></div>
+      </div>
+
+      <div class="section-grid">
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-user"></i> Personal Information</div>
+            <div class="form-group"><label>Full Name</label><input type="text" placeholder="John Smith" id="pName"></div>
+            <div class="form-group"><label>Email Address</label><input type="email" placeholder="john@email.com" id="pEmail"></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+1 (555) 000-0000" id="pPhone"></div>
+            <div class="form-group"><label>Current Location</label><input type="text" placeholder="Dallas, TX" id="pLocation"></div>
+            <div class="form-group"><label>LinkedIn URL</label><input type="url" placeholder="linkedin.com/in/yourname" id="pLinkedin"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="ti ti-briefcase"></i> Work Preferences</div>
+            <div class="form-group"><label>Total Experience</label>
+              <select id="pExp"><option>1-2 Years</option><option>3-5 Years</option><option selected>5-8 Years</option><option>8-12 Years</option><option>12+ Years</option></select>
+            </div>
+            <div class="form-group"><label>Employment Type</label>
+              <select id="pType"><option>Contract (C2C)</option><option>Contract (W2)</option><option>Full Time</option><option>Contract to Hire</option><option>Both Contract & Full Time</option></select>
+            </div>
+            <div class="form-group"><label>Expected Rate ($/hr or $/yr)</label><input type="text" placeholder="$85/hr or $120,000/yr" id="pRate"></div>
+            <div class="form-group"><label>Work Authorization</label>
+              <select id="pVisa"><option>US Citizen</option><option>Green Card</option><option selected>H1B</option><option>OPT/CPT</option><option>TN Visa</option></select>
+            </div>
+            <div class="form-group"><label>Work Mode Preference</label>
+              <select id="pMode"><option>Remote Only</option><option selected>Hybrid</option><option>On-site</option><option>Any</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-upload"></i> Resume Upload</div>
+            <div class="upload-zone" onclick="document.getElementById('resumeFile').click()">
+              <i class="ti ti-file-cv"></i>
+              <strong>Upload Resume</strong>
+              <p>PDF, DOC, DOCX up to 10MB</p>
+            </div>
+            <input type="file" id="resumeFile" style="display:none" accept=".pdf,.doc,.docx" onchange="handleResumeUpload(this)">
+            <div class="file-list" id="resumeList"></div>
+            <div class="btn-row">
+              <button class="btn btn-secondary btn-sm" onclick="showToast('AI parsing resume...','')"><i class="ti ti-cpu"></i> Parse with AI</button>
+              <button class="btn btn-ghost btn-sm"><i class="ti ti-eye"></i> Preview</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="ti ti-settings-automation"></i> Auto-Apply Settings</div>
+            <div class="toggle-row">
+              <div><div style="font-size:13px;font-weight:500">Auto-Apply to Matching Jobs</div><div style="font-size:11px;color:#9ca3af">Apply when match score ≥ threshold</div></div>
+              <div class="toggle on" id="toggleAuto" onclick="toggleIt('toggleAuto')"></div>
+            </div>
+            <div class="form-group" style="margin-top:10px"><label>Minimum Match Score</label>
+              <input type="range" min="50" max="95" value="75" id="matchThreshold" oninput="document.getElementById('matchVal').textContent=this.value+'%'">
+              <div style="text-align:right;font-size:12px;color:#1d4ed8;font-weight:600" id="matchVal">75%</div>
+            </div>
+            <div class="form-group"><label>Max Applications per Day</label>
+              <input type="number" value="20" min="1" max="100" id="maxApps">
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:13px;font-weight:500">Send Application Alerts</div><div style="font-size:11px;color:#9ca3af">Email & SMS notifications</div></div>
+              <div class="toggle on" id="toggleAlerts" onclick="toggleIt('toggleAlerts')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:13px;font-weight:500">Tailor CV Automatically</div><div style="font-size:11px;color:#9ca3af">AI rewrites resume for each job</div></div>
+              <div class="toggle" id="toggleTailor" onclick="toggleIt('toggleTailor')"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="saveProfile()"><i class="ti ti-device-floppy"></i> Save Profile</button>
+        <button class="btn btn-success" onclick="switchPanel('search')"><i class="ti ti-arrow-right"></i> Configure Search →</button>
+      </div>
+    </div>
+
+    <!-- SEARCH CONFIG PANEL -->
+    <div class="panel" id="panel-search">
+      <div class="section-grid">
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-target"></i> Job Title Keywords</div>
+            <p style="font-size:11px;color:#9ca3af;margin-bottom:8px">Add job titles to search for. All titles are searched with OR logic.</p>
+            <div class="tags-input" id="titleTags">
+              <span class="tag">Java Developer <span class="remove" onclick="removeTag(this)">×</span></span>
+              <span class="tag">Spring Boot Engineer <span class="remove" onclick="removeTag(this)">×</span></span>
+              <span class="tag">Backend Developer <span class="remove" onclick="removeTag(this)">×</span></span>
+              <input type="text" placeholder="Type & press Enter" id="titleInput" onkeydown="addTag(event,'titleTags','titleInput','')">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-secondary btn-sm" onclick="addPresetTitles()"><i class="ti ti-sparkles"></i> AI Suggest Titles</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="ti ti-code"></i> Required Skills (AND)</div>
+            <p style="font-size:11px;color:#9ca3af;margin-bottom:8px">Jobs MUST have ALL these skills</p>
+            <div class="tags-input" id="andTags">
+              <span class="tag and">Java <span class="remove" onclick="removeTag(this)">×</span></span>
+              <span class="tag and">Spring Boot <span class="remove" onclick="removeTag(this)">×</span></span>
+              <span class="tag and">Microservices <span class="remove" onclick="removeTag(this)">×</span></span>
+              <input type="text" placeholder="Skill (press Enter)" id="andInput" onkeydown="addTag(event,'andTags','andInput','and')">
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="ti ti-code-plus"></i> Optional Skills (OR)</div>
+            <p style="font-size:11px;color:#9ca3af;margin-bottom:8px">Jobs with ANY of these score higher</p>
+            <div class="tags-input" id="orTags">
+              <span class="tag or">AWS <span class="remove" onclick="removeTag(this)">×</span></span>
+              <span class="tag or">Kubernetes <span class="remove" onclick="removeTag(this)">×</span></span>
+              <span class="tag or">Docker <span class="remove" onclick="removeTag(this)">×</span></span>
+              <span class="tag or">React <span class="remove" onclick="removeTag(this)">×</span></span>
+              <input type="text" placeholder="Skill (press Enter)" id="orInput" onkeydown="addTag(event,'orTags','orInput','or')">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-map-pin"></i> Location & Scope</div>
+            <div class="form-group"><label>Preferred Locations</label><input type="text" placeholder="Dallas TX, Remote, New York NY" id="sLocations"></div>
+            <div class="form-group"><label>Search Radius</label>
+              <select><option>25 miles</option><option selected>50 miles</option><option>100 miles</option><option>Nationwide</option></select>
+            </div>
+            <div class="form-group"><label>Job Posted Within</label>
+              <select id="sPosted"><option value="1">Last 24 Hours</option><option value="3" selected>Last 3 Days</option><option value="7">Last 7 Days</option><option value="14">Last 14 Days</option><option value="30">Last 30 Days</option></select>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="ti ti-filter"></i> Advanced Filters</div>
+            <div class="form-group"><label>Job Type</label>
+              <select><option>Any</option><option selected>Contract (C2C)</option><option>Full Time</option><option>Contract to Hire</option></select>
+            </div>
+            <div class="form-group"><label>Experience Level</label>
+              <select><option>Any</option><option>Mid-Level (3-5 yrs)</option><option selected>Senior (5-8 yrs)</option><option>Lead/Principal (8+ yrs)</option></select>
+            </div>
+            <div class="form-group"><label>Rate Range ($/hr)</label>
+              <div style="display:flex;gap:8px">
+                <input type="number" placeholder="Min $" value="70">
+                <input type="number" placeholder="Max $" value="120">
+              </div>
+            </div>
+            <div class="form-group"><label>Exclude Keywords</label>
+              <input type="text" placeholder="Clearance, Security, etc." id="sExclude">
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="ti ti-refresh"></i> Search Schedule</div>
+            <div class="toggle-row">
+              <div><div style="font-size:13px;font-weight:500">Auto-Search Daily</div></div>
+              <div class="toggle on" id="toggleSchedule" onclick="toggleIt('toggleSchedule')"></div>
+            </div>
+            <div class="form-group" style="margin-top:10px"><label>Search Time</label><input type="time" value="08:00"></div>
+            <div class="form-group"><label>Repeat Every</label>
+              <select><option>Once daily</option><option selected>Every 6 hours</option><option>Every 3 hours</option><option>Every hour</option></select>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="runSearch()"><i class="ti ti-search"></i> Run Search Now</button>
+              <button class="btn btn-secondary" onclick="switchPanel('results')"><i class="ti ti-list"></i> View Results</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PORTALS PANEL -->
+    <div class="panel" id="panel-portals">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-upload"></i> Upload Portal URLs (Excel)</div>
+        <p style="font-size:12px;color:#6b7280;margin-bottom:10px">Upload an Excel file with portal URLs in column A. We'll scrape job postings from each URL automatically.</p>
+        <div class="upload-zone" onclick="document.getElementById('portalFile').click()">
+          <i class="ti ti-table"></i>
+          <strong>Upload Excel File with URLs</strong>
+          <p>XLS, XLSX format — Column A: Portal URL, Column B: Portal Name (optional)</p>
+        </div>
+        <input type="file" id="portalFile" style="display:none" accept=".xls,.xlsx" onchange="handlePortalUpload(this)">
+        <div class="file-list" id="portalFileList"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="ti ti-world"></i> Configured Portals</div>
+        <div id="portalList">
+          <div class="portal-row" style="display:flex;align-items:center;gap:10px;padding:8px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:6px">
+            <div style="width:32px;height:32px;background:#e0f2fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0369a1">DI</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500;color:#111827">Dice.com</div><div style="font-size:11px;color:#9ca3af">https://dice.com/jobs?q=java&posted=1d</div></div>
+            <span style="font-size:11px;background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:4px;font-weight:500">Active</span>
+            <button class="btn btn-secondary btn-sm"><i class="ti ti-trash"></i></button>
+          </div>
+          <div class="portal-row" style="display:flex;align-items:center;gap:10px;padding:8px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:6px">
+            <div style="width:32px;height:32px;background:#fef3c7;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#92400e">IND</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500;color:#111827">Indeed</div><div style="font-size:11px;color:#9ca3af">https://indeed.com/jobs?q=java+developer</div></div>
+            <span style="font-size:11px;background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:4px;font-weight:500">Active</span>
+            <button class="btn btn-secondary btn-sm"><i class="ti ti-trash"></i></button>
+          </div>
+          <div class="portal-row" style="display:flex;align-items:center;gap:10px;padding:8px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:6px">
+            <div style="width:32px;height:32px;background:#ede9fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#5b21b6">CB</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500;color:#111827">CareerBuilder</div><div style="font-size:11px;color:#9ca3af">https://careerbuilder.com/jobs?keywords=java</div></div>
+            <span style="font-size:11px;background:#fee2e2;color:#991b1b;padding:2px 6px;border-radius:4px;font-weight:500">Paused</span>
+            <button class="btn btn-secondary btn-sm"><i class="ti ti-trash"></i></button>
+          </div>
+          <div class="portal-row" style="display:flex;align-items:center;gap:10px;padding:8px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:6px">
+            <div style="width:32px;height:32px;background:#e0f2fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0369a1">MO</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500;color:#111827">Monster</div><div style="font-size:11px;color:#9ca3af">https://monster.com/jobs/search?q=spring+boot</div></div>
+            <span style="font-size:11px;background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:4px;font-weight:500">Active</span>
+            <button class="btn btn-secondary btn-sm"><i class="ti ti-trash"></i></button>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:0.5px solid #f3f4f6">
+          <input type="text" placeholder="Portal Name" style="width:140px" id="newPortalName">
+          <input type="text" placeholder="https://..." style="flex:1" id="newPortalUrl">
+          <button class="btn btn-primary btn-sm" onclick="addPortal()"><i class="ti ti-plus"></i> Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="ti ti-building"></i> Client Carrier Pages</div>
+        <p style="font-size:12px;color:#6b7280;margin-bottom:10px">Add direct career pages of target companies</p>
+        <div id="carrierList">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:6px">
+            <i class="ti ti-building" style="font-size:18px;color:#6b7280"></i>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500">TCS Careers</div><div style="font-size:11px;color:#9ca3af">https://www.tcs.com/careers</div></div>
+            <span style="font-size:11px;background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:4px">Monitoring</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:6px">
+            <i class="ti ti-building" style="font-size:18px;color:#6b7280"></i>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500">Wipro Jobs</div><div style="font-size:11px;color:#9ca3af">https://careers.wipro.com</div></div>
+            <span style="font-size:11px;background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:4px">Monitoring</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <input type="text" placeholder="Company Name" style="width:140px" id="newCarrierName">
+          <input type="text" placeholder="Careers URL" style="flex:1" id="newCarrierUrl">
+          <button class="btn btn-primary btn-sm" onclick="addCarrier()"><i class="ti ti-plus"></i> Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS PANEL -->
+    <div class="panel" id="panel-results">
+      <div class="filter-bar">
+        <input class="search-input" placeholder="Search within results..." oninput="filterJobs(this.value)">
+        <select class="filter-select" onchange="filterByDate(this.value)">
+          <option value="1">Last 24 hrs</option>
+          <option value="3" selected>Last 3 days</option>
+          <option value="7">Last 7 days</option>
+        </select>
+        <select class="filter-select" onchange="filterByType(this.value)">
+          <option value="">All Types</option>
+          <option value="C2C">C2C</option>
+          <option value="W2">W2</option>
+          <option value="Full Time">Full Time</option>
+        </select>
+        <select class="filter-select" onchange="sortJobs(this.value)">
+          <option value="match">Sort: Best Match</option>
+          <option value="date">Sort: Newest</option>
+          <option value="rate">Sort: Highest Rate</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="applySelected()"><i class="ti ti-send"></i> Apply Selected (<span id="selCount">0</span>)</button>
+      </div>
+
+      <div id="jobList">
+        <!-- Jobs rendered by JS -->
+      </div>
+    </div>
+
+    <!-- CV ANALYZER PANEL -->
+    <div class="panel" id="panel-analyzer">
+      <div class="section-grid">
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-file-analytics"></i> Select Job to Analyze</div>
+            <div class="form-group"><label>Paste Job Description</label><textarea id="jdText" placeholder="Paste the full job description here..." style="min-height:150px"></textarea></div>
+            <div style="text-align:center;margin:6px 0;font-size:11px;color:#9ca3af">— or select from results —</div>
+            <select style="width:100%;margin-bottom:10px" id="jdSelect" onchange="selectJobForAnalysis(this.value)">
+              <option value="">-- Select from job results --</option>
+              <option value="0">Senior Java Developer - TechCorp Solutions</option>
+              <option value="1">Spring Boot Engineer - CloudBase Inc</option>
+              <option value="2">Backend Developer - DataSys Corp</option>
+              <option value="3">Java Microservices - Innovate Tech</option>
+              <option value="4">Full Stack Java - Digital Labs</option>
+            </select>
+            <button class="btn btn-primary" style="width:100%" onclick="runAnalysis()"><i class="ti ti-cpu"></i> Analyze CV Match</button>
+          </div>
+
+          <div class="card" id="tailorCard" style="display:none">
+            <div class="card-title"><i class="ti ti-edit"></i> AI CV Tailoring</div>
+            <div id="suggestions"></div>
+            <div class="btn-row">
+              <button class="btn btn-success btn-sm" onclick="applyTailoring()"><i class="ti ti-check"></i> Apply All Suggestions</button>
+              <button class="btn btn-secondary btn-sm"><i class="ti ti-eye"></i> Preview Tailored CV</button>
+              <button class="btn btn-primary btn-sm" onclick="downloadTailored()"><i class="ti ti-download"></i> Download</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" id="analysisResult" style="display:none">
+            <div class="card-title"><i class="ti ti-chart-pie"></i> Analysis Result</div>
+            <div style="text-align:center;margin-bottom:16px">
+              <div class="match-score-circle" id="scoreCircle" style="--pct:0deg">
+                <div class="match-score-inner" id="scoreText">--</div>
+              </div>
+              <div style="font-size:12px;color:#6b7280;margin-top:6px">Overall Match Score</div>
+            </div>
+            <div class="section-grid" style="margin-bottom:12px">
+              <div style="text-align:center;padding:8px;background:#f0f9ff;border-radius:8px">
+                <div style="font-size:18px;font-weight:700;color:#0369a1" id="matchedCount">0</div>
+                <div style="font-size:11px;color:#6b7280">Keywords Matched</div>
+              </div>
+              <div style="text-align:center;padding:8px;background:#fff7ed;border-radius:8px">
+                <div style="font-size:18px;font-weight:700;color:#c2410c" id="missedCount">0</div>
+                <div style="font-size:11px;color:#6b7280">Keywords Missing</div>
+              </div>
+            </div>
+            <div class="analysis-section">
+              <h4><i class="ti ti-check" style="font-size:13px"></i> Matched Keywords</h4>
+              <div id="matchedKeywords"></div>
+            </div>
+            <div class="analysis-section">
+              <h4><i class="ti ti-x" style="font-size:13px;color:#dc2626"></i> Missing Keywords</h4>
+              <div id="missedKeywords"></div>
+            </div>
+            <div class="analysis-section">
+              <h4>Experience Match</h4>
+              <p id="expMatch">Analyzing...</p>
+            </div>
+            <div class="analysis-section">
+              <h4>Job Title Alignment</h4>
+              <p id="titleMatch">Analyzing...</p>
+            </div>
+          </div>
+
+          <div class="card" id="analyzerPlaceholder">
+            <div style="text-align:center;padding:30px;color:#9ca3af">
+              <i class="ti ti-chart-line" style="font-size:40px;display:block;margin-bottom:10px"></i>
+              <p style="font-size:13px">Select a job and click "Analyze CV Match" to see your compatibility score and tailoring suggestions.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINKEDIN PANEL -->
+    <div class="panel" id="panel-linkedin">
+      <div style="background:#0077b5;border-radius:10px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
+        <div style="color:#fff">
+          <div style="font-size:14px;font-weight:600">LinkedIn Jobs</div>
+          <div style="font-size:11px;opacity:0.8">Real-time contract & full-time opportunities</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <span style="background:rgba(255,255,255,0.15);color:#fff;font-size:11px;padding:4px 10px;border-radius:20px">● Connected</span>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <input class="search-input" placeholder="Search LinkedIn jobs..." style="border-color:#0077b5">
+        <select class="filter-select"><option>All Types</option><option selected>Contract</option><option>Full Time</option></select>
+        <select class="filter-select"><option>Last 24 hrs</option><option selected>Last Week</option><option>Last Month</option></select>
+        <select class="filter-select"><option>Relevance</option><option>Most Recent</option><option>Most Applicants</option></select>
+        <button class="btn btn-sm" style="background:#0077b5;color:#fff"><i class="ti ti-search"></i> Search</button>
+      </div>
+
+      <div id="liJobList"></div>
+    </div>
+
+    <!-- TRACKER PANEL -->
+    <div class="panel" id="panel-tracker">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num" style="color:#1d4ed8">47</div><div class="stat-label">Total Applied</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:#f59e0b">12</div><div class="stat-label">Under Review</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:#059669">3</div><div class="stat-label">Interviews</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:#dc2626">4</div><div class="stat-label">Action Needed</div></div>
+      </div>
+
+      <div class="sub-tabs">
+        <div class="sub-tab active" onclick="switchSubTab(this,'tracker-all')">All Applications</div>
+        <div class="sub-tab" onclick="switchSubTab(this,'tracker-interviews')">Interviews</div>
+        <div class="sub-tab" onclick="switchSubTab(this,'tracker-action')">Action Needed</div>
+        <div class="sub-tab" onclick="switchSubTab(this,'tracker-stats')">Statistics</div>
+      </div>
+
+      <div id="tracker-all" class="sub-panel">
+        <div id="trackerList"></div>
+      </div>
+      <div id="tracker-interviews" class="sub-panel" style="display:none">
+        <div class="card"><p style="font-size:13px;color:#065f46;padding:8px 0"><i class="ti ti-calendar"></i> 3 upcoming interviews scheduled. Check your email for confirmation links.</p></div>
+      </div>
+      <div id="tracker-action" class="sub-panel" style="display:none">
+        <div class="card"><p style="font-size:13px;color:#92400e;padding:8px 0"><i class="ti ti-alert-triangle"></i> 4 applications need follow-up. Last activity > 5 days ago.</p></div>
+      </div>
+      <div id="tracker-stats" class="sub-panel" style="display:none">
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar"></i> Application Statistics</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div style="padding:10px;background:#f0f9ff;border-radius:8px;text-align:center"><div style="font-size:20px;font-weight:700;color:#0369a1">6.4%</div><div style="font-size:11px;color:#6b7280">Response Rate</div></div>
+            <div style="padding:10px;background:#f0fdf4;border-radius:8px;text-align:center"><div style="font-size:20px;font-weight:700;color:#065f46">87%</div><div style="font-size:11px;color:#6b7280">Avg Match Score</div></div>
+            <div style="padding:10px;background:#fff7ed;border-radius:8px;text-align:center"><div style="font-size:20px;font-weight:700;color:#c2410c">2.3 days</div><div style="font-size:11px;color:#6b7280">Avg Response Time</div></div>
+            <div style="padding:10px;background:#fdf4ff;border-radius:8px;text-align:center"><div style="font-size:20px;font-weight:700;color:#7e22ce">Dice</div><div style="font-size:11px;color:#6b7280">Best Platform</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+<script>
+const JOBS = [
+  {id:0,title:"Senior Java Developer",company:"TechCorp Solutions",location:"Dallas, TX (Remote)",type:"C2C",rate:"$85-95/hr",posted:"2h ago",match:92,skills:["Java","Spring Boot","Microservices","AWS"],hot:true,desc:"We are looking for a Senior Java Developer with 5+ years of experience in Spring Boot, Microservices, and cloud technologies. Must have hands-on experience with AWS services, Docker, and Kubernetes."},
+  {id:1,title:"Spring Boot Engineer",company:"CloudBase Inc",location:"Austin, TX (Hybrid)",type:"C2C",rate:"$80-90/hr",posted:"5h ago",match:88,skills:["Spring Boot","Java","REST APIs","PostgreSQL"],hot:false,desc:"CloudBase Inc seeks a Spring Boot Engineer proficient in Java, REST API design, and relational databases. Experience with cloud-native development and CI/CD pipelines required."},
+  {id:2,title:"Backend Java Developer",company:"DataSys Corp",location:"Remote",type:"W2",rate:"$75-85/hr",posted:"1d ago",match:82,skills:["Java","Hibernate","MySQL","Maven"],hot:false,desc:"Senior Backend Developer with Java, Hibernate ORM, Spring MVC. Must have experience building enterprise-grade backend systems with high availability requirements."},
+  {id:3,title:"Java Microservices Architect",company:"Innovate Tech",location:"New York, NY",type:"C2C",rate:"$100-115/hr",posted:"3h ago",match:79,skills:["Java","Microservices","Kafka","Docker"],hot:true,desc:"Seeking a Java Microservices Architect with 8+ years experience. Must have Kafka, Docker, Kubernetes, CI/CD and cloud platform experience."},
+  {id:4,title:"Full Stack Java Developer",company:"Digital Labs",location:"Chicago, IL (Remote)",type:"Full Time",rate:"$120,000/yr",posted:"6h ago",match:74,skills:["Java","React","Spring","MongoDB"],hot:false,desc:"Full Stack Developer with Java Spring framework and React.js experience. Build scalable web applications and RESTful services."},
+  {id:5,title:"Java Backend Engineer",company:"NexGen Solutions",location:"Remote",type:"C2C",rate:"$78-88/hr",posted:"12h ago",match:91,skills:["Java","Spring Boot","Redis","Kubernetes"],hot:true,desc:"Join NexGen as a Java Backend Engineer. Experience with Spring Boot, Redis caching, and Kubernetes orchestration required."},
+  {id:6,title:"Software Engineer - Java",company:"CoreTech Systems",location:"Houston, TX",type:"C2C",rate:"$82-92/hr",posted:"4h ago",match:85,skills:["Java","Spring","Hibernate","REST"],hot:false,desc:"CoreTech Systems is hiring a Software Engineer with strong Java and Spring Framework skills. RESTful API development and Hibernate ORM experience required."},
+];
+
+const LI_JOBS = [
+  {id:0,company:"Infosys",companyInitials:"IN",role:"Senior Java Developer",location:"Dallas, TX · Remote",type:"Contract",time:"3 hours ago",applicants:47,insight:"Your profile is a strong match",easy:true,match:91},
+  {id:1,company:"Cognizant",companyInitials:"CG",role:"Java Spring Boot Engineer",location:"Austin, TX · Hybrid",type:"Contract",time:"1 day ago",applicants:123,insight:"3 connections work here",easy:false,match:86},
+  {id:2,company:"Capgemini",companyInitials:"CA",role:"Backend Java Architect",location:"New York, NY · On-site",type:"Contract",time:"5 hours ago",applicants:28,insight:"New job — be an early applicant!",easy:true,match:78},
+  {id:3,company:"HCL Tech",companyInitials:"HC",role:"Java Microservices Lead",location:"Remote",type:"Contract",time:"2 days ago",applicants:201,insight:"Skills match 8 of 10 required",easy:false,match:83},
+  {id:4,company:"Accenture",companyInitials:"AC",role:"Full Stack Java Developer",location:"Chicago, IL · Hybrid",type:"Full Time",time:"6 hours ago",applicants:89,insight:"2 connections work here",easy:true,match:76},
+  {id:5,company:"IBM",companyInitials:"IB",role:"Java Cloud Engineer",location:"Remote",type:"Contract",time:"8 hours ago",applicants:56,insight:"Your skills match this role",easy:false,match:89},
+  {id:6,company:"Wipro",companyInitials:"WI",role:"Spring Boot Developer",location:"Dallas, TX · Hybrid",type:"Contract",time:"12 hours ago",applicants:34,insight:"Profile strength: Strong",easy:true,match:94},
+  {id:7,company:"TCS",companyInitials:"TC",role:"Java API Developer",location:"Remote",type:"Contract",time:"1 hour ago",applicants:12,insight:"Early applicant advantage!",easy:true,match:80},
+  {id:8,company:"Deloitte",companyInitials:"DE",role:"Senior Software Engineer - Java",location:"Houston, TX",type:"Full Time",time:"3 days ago",applicants:312,insight:"Top company match",easy:false,match:73},
+];
+
+const TRACKER_APPS = [
+  {company:"TechCorp Solutions",role:"Senior Java Developer",portal:"Dice",date:"May 5",status:"Under Review",match:92},
+  {company:"CloudBase Inc",role:"Spring Boot Engineer",portal:"Indeed",date:"May 4",status:"Applied",match:88},
+  {company:"DataSys Corp",role:"Backend Java Developer",portal:"Monster",date:"May 3",status:"Interview",match:82},
+  {company:"Innovate Tech",role:"Java Microservices Arch.",portal:"Dice",date:"May 2",status:"Applied",match:79},
+  {company:"NexGen Solutions",role:"Java Backend Engineer",portal:"LinkedIn",date:"May 1",status:"Interview",match:91},
+  {company:"Digital Labs",role:"Full Stack Java Dev",portal:"CareerBuilder",date:"Apr 30",status:"Rejected",match:74},
+];
+
+let selectedJobs = new Set();
+
+function switchPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelector(`[data-panel="${id}"]`).classList.add('active');
+  if(id==='results') renderJobs();
+  if(id==='linkedin') renderLiJobs();
+  if(id==='tracker') renderTracker();
+}
+
+function switchSubTab(el, id) {
+  document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sub-panel').forEach(p=>p.style.display='none');
+  el.classList.add('active');
+  document.getElementById(id).style.display='block';
+}
+
+function toggleIt(id) {
+  document.getElementById(id).classList.toggle('on');
+}
+
+function handleResumeUpload(input) {
+  const f = input.files[0];
+  if(!f) return;
+  const list = document.getElementById('resumeList');
+  list.innerHTML = `<div class="file-item"><i class="ti ti-file-check"></i><span>${f.name}</span><span style="margin-left:auto;color:#9ca3af;font-size:11px">${(f.size/1024).toFixed(0)} KB</span></div>`;
+  showToast('Resume uploaded successfully!', 'success');
+}
+
+function handlePortalUpload(input) {
+  const f = input.files[0];
+  if(!f) return;
+  document.getElementById('portalFileList').innerHTML = `<div class="file-item"><i class="ti ti-table"></i><span>${f.name}</span><span style="margin-left:auto;color:#9ca3af;font-size:11px">${(f.size/1024).toFixed(0)} KB</span></div>`;
+  showToast('Excel uploaded — parsing URLs...', '');
+}
+
+function addTag(e, containerId, inputId, type) {
+  if(e.key !== 'Enter') return;
+  const input = document.getElementById(inputId);
+  const val = input.value.trim();
+  if(!val) return;
+  const container = document.getElementById(containerId);
+  const tag = document.createElement('span');
+  tag.className = `tag ${type}`;
+  tag.innerHTML = `${val} <span class="remove" onclick="removeTag(this)">×</span>`;
+  container.insertBefore(tag, input);
+  input.value = '';
+  updateSearchCount();
+}
+
+function removeTag(el) {
+  el.parentElement.remove();
+  updateSearchCount();
+}
+
+function updateSearchCount() {
+  const count = document.querySelectorAll('#titleTags .tag, #andTags .tag, #orTags .tag').length;
+  document.getElementById('searchCount').textContent = count;
+}
+
+function addPresetTitles() {
+  ['Java Architect','Senior Java Engineer','J2EE Developer'].forEach(title => {
+    const container = document.getElementById('titleTags');
+    const input = document.getElementById('titleInput');
+    const tag = document.createElement('span');
+    tag.className = 'tag';
+    tag.innerHTML = `${title} <span class="remove" onclick="removeTag(this)">×</span>`;
+    container.insertBefore(tag, input);
+  });
+  showToast('AI suggested 3 additional job titles!', 'success');
+  updateSearchCount();
+}
+
+function runSearch() {
+  showToast('🔍 Searching 4 portals...', '');
+  let count = 0;
+  const interval = setInterval(() => {
+    count++;
+    document.getElementById('resultsCount').textContent = 7+count*2;
+    if(count >= 5) {
+      clearInterval(interval);
+      document.getElementById('resultsCount').textContent = 18;
+      showToast('Found 18 matching jobs!', 'success');
+    }
+  }, 400);
+  setTimeout(() => switchPanel('results'), 2500);
+}
+
+function renderJobs(filter='', typeFilter='') {
+  const list = document.getElementById('jobList');
+  const filtered = JOBS.filter(j =>
+    (filter==='' || j.title.toLowerCase().includes(filter.toLowerCase()) || j.company.toLowerCase().includes(filter.toLowerCase())) &&
+    (typeFilter==='' || j.type===typeFilter)
+  ).sort((a,b) => b.match - a.match);
+
+  list.innerHTML = filtered.map(j => `
+    <div class="job-card ${selectedJobs.has(j.id)?'selected':''}" id="jcard-${j.id}">
+      <div class="job-header">
+        <div>
+          <div class="job-title">${j.title} ${j.hot?'<span style="font-size:10px;background:#fee2e2;color:#991b1b;padding:1px 6px;border-radius:4px;font-weight:600">🔥 HOT</span>':''}</div>
+          <div class="job-company"><i class="ti ti-building" style="font-size:12px"></i> ${j.company}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:14px;font-weight:700;color:#059669">${j.rate}</div>
+          <div style="font-size:11px;color:#9ca3af">${j.posted}</div>
+        </div>
+      </div>
+      <div class="job-meta">
+        <span class="job-pill pill-type"><i class="ti ti-file-contract" style="font-size:11px"></i> ${j.type}</span>
+        <span class="job-pill pill-loc"><i class="ti ti-map-pin" style="font-size:11px"></i> ${j.location}</span>
+        <span class="job-pill pill-match"><i class="ti ti-star" style="font-size:11px"></i> ${j.match}% match</span>
+        ${j.skills.slice(0,3).map(s=>`<span class="job-pill" style="background:#f5f3ff;color:#5b21b6">${s}</span>`).join('')}
+      </div>
+      <div class="match-bar"><div class="match-fill" style="width:${j.match}%"></div></div>
+      <div class="apply-row">
+        <input type="checkbox" ${selectedJobs.has(j.id)?'checked':''} onchange="toggleSelect(${j.id},this)" style="width:auto;cursor:pointer">
+        <button class="btn btn-primary btn-sm" onclick="applyJob(${j.id})"><i class="ti ti-send"></i> Quick Apply</button>
+        <button class="btn btn-ghost btn-sm" onclick="analyzeJob(${j.id})"><i class="ti ti-chart-line"></i> Analyze</button>
+        <button class="btn btn-secondary btn-sm" onclick="saveJob(${j.id})"><i class="ti ti-bookmark"></i> Save</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleSelect(id, cb) {
+  if(cb.checked) selectedJobs.add(id); else selectedJobs.delete(id);
+  document.getElementById('selCount').textContent = selectedJobs.size;
+  const card = document.getElementById('jcard-'+id);
+  if(card) card.classList.toggle('selected', cb.checked);
+}
+
+function filterJobs(val) { renderJobs(val); }
+function filterByType(val) { renderJobs('', val); }
+function sortJobs(val) { renderJobs(); }
+
+function applyJob(id) {
+  const job = JOBS[id];
+  let n = parseInt(document.getElementById('stat-applied').textContent);
+  document.getElementById('stat-applied').textContent = n+1;
+  showToast(`Applied to ${job.title} at ${job.company}!`, 'success');
+}
+
+function applySelected() {
+  if(selectedJobs.size === 0) { showToast('Select jobs first!', ''); return; }
+  let n = parseInt(document.getElementById('stat-applied').textContent);
+  document.getElementById('stat-applied').textContent = n + selectedJobs.size;
+  showToast(`Applied to ${selectedJobs.size} jobs!`, 'success');
+  selectedJobs.clear();
+  document.getElementById('selCount').textContent = 0;
+  renderJobs();
+}
+
+function saveJob(id) { showToast('Job saved to favorites!', 'success'); }
+
+function analyzeJob(id) {
+  document.getElementById('jdSelect').value = id;
+  selectJobForAnalysis(id);
+  switchPanel('analyzer');
+  setTimeout(runAnalysis, 200);
+}
+
+function renderLiJobs() {
+  document.getElementById('liJobList').innerHTML = LI_JOBS.map(j => `
+    <div class="li-card">
+      <div class="li-header">
+        <div class="li-logo">${j.companyInitials}</div>
+        <div class="li-info">
+          <div class="li-title">${j.role}</div>
+          <div class="li-company">${j.company}</div>
+          <div class="li-details"><i class="ti ti-map-pin" style="font-size:11px"></i> ${j.location} · ${j.type} · ${j.time}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:16px;font-weight:700;color:#0077b5">${j.match}%</div>
+          <div style="font-size:10px;color:#9ca3af">match</div>
+        </div>
+      </div>
+      <div class="applicant-bar">
+        <i class="ti ti-users" style="font-size:13px;color:#6b7280"></i>
+        <span class="applicant-count">${j.applicants} applicants</span>
+        <span style="font-size:11px;color:#6b7280">· ${j.insight}</span>
+        ${j.easy?'<span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:4px;margin-left:auto;font-weight:600">Easy Apply</span>':''}
+      </div>
+      <div class="li-footer">
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="match-bar" style="width:80px;display:inline-block"><div class="match-fill" style="width:${j.match}%"></div></div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-sm" style="background:#0077b5;color:#fff" onclick="applyLiJob('${j.role}','${j.company}')"><i class="ti ti-send"></i> ${j.easy?'Easy Apply':'Apply'}</button>
+          <button class="btn btn-secondary btn-sm"><i class="ti ti-bookmark"></i></button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function applyLiJob(role, company) {
+  let n = parseInt(document.getElementById('stat-applied').textContent);
+  document.getElementById('stat-applied').textContent = n+1;
+  showToast(`Applied via LinkedIn: ${role} at ${company}!`, 'success');
+}
+
+function renderTracker() {
+  const STATUS_COLORS = {Applied:'#dbeafe:#1e40af',['Under Review']:'#fef3c7:#92400e',Interview:'#d1fae5:#065f46',Rejected:'#fee2e2:#991b1b'};
+  document.getElementById('trackerList').innerHTML = TRACKER_APPS.map(a => {
+    const [bg,txt] = (STATUS_COLORS[a.status]||'#f3f4f6:#374151').split(':');
+    return `<div class="job-card" style="cursor:default">
+      <div class="job-header">
+        <div>
+          <div class="job-title">${a.role}</div>
+          <div class="job-company">${a.company}</div>
+        </div>
+        <div style="text-align:right">
+          <span style="background:${bg};color:${txt};font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600">${a.status}</span>
+          <div style="font-size:11px;color:#9ca3af;margin-top:4px">${a.date}</div>
+        </div>
+      </div>
+      <div class="job-meta">
+        <span class="job-pill pill-loc"><i class="ti ti-world" style="font-size:11px"></i> ${a.portal}</span>
+        <span class="job-pill pill-match"><i class="ti ti-star" style="font-size:11px"></i> ${a.match}% match</span>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button class="btn btn-secondary btn-sm"><i class="ti ti-message"></i> Follow Up</button>
+        <button class="btn btn-ghost btn-sm"><i class="ti ti-external-link"></i> View Posting</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+const JOB_JDS = [
+  "We are looking for a Senior Java Developer with 5+ years of experience in Spring Boot, Microservices, AWS, Docker, Kubernetes, REST APIs, and CI/CD pipelines. Strong experience with Java 11+, Maven, Git, and Agile methodology required.",
+  "CloudBase Inc seeks Spring Boot Engineer proficient in Java, REST API design, PostgreSQL, Redis, and Kafka. Experience with cloud-native development, Docker, CI/CD, Agile, and Git required.",
+  "Senior Backend Developer with Java, Hibernate ORM, Spring MVC, MySQL, Maven. Must have enterprise Java experience, strong problem solving, REST APIs, and Linux skills.",
+  "Java Microservices Architect with 8+ years. Must have Kafka, Docker, Kubernetes, Spring Cloud, AWS, CI/CD and cloud platform experience. Architecture design skills required.",
+  "Full Stack Developer with Java Spring framework and React.js, MongoDB, REST APIs, Git, Node.js, CI/CD. Build scalable web applications.",
+];
+
+function selectJobForAnalysis(val) {
+  if(val==='') return;
+  document.getElementById('jdText').value = JOB_JDS[parseInt(val)];
+}
+
+const CV_SKILLS = ["Java","Spring Boot","Microservices","REST APIs","AWS","Docker","Maven","Git","Agile","PostgreSQL","MySQL","Hibernate","CI/CD"];
+
+function runAnalysis() {
+  const jd = document.getElementById('jdText').value;
+  if(!jd) { showToast('Paste a job description first!', ''); return; }
+
+  const jdWords = jd.toLowerCase();
+  const matched = CV_SKILLS.filter(s => jdWords.includes(s.toLowerCase()));
+  const missed = ["Kubernetes","Kafka","Redis","Spring Cloud","Terraform"].filter(s => jdWords.includes(s.toLowerCase()) || Math.random()>0.5);
+  const missedFinal = missed.slice(0,3);
+  const score = Math.round((matched.length / (matched.length + missedFinal.length)) * 100);
+  const pct = (score / 100 * 360) + 'deg';
+
+  document.getElementById('analysisResult').style.display = 'block';
+  document.getElementById('analyzerPlaceholder').style.display = 'none';
+  document.getElementById('scoreCircle').style.setProperty('--pct', pct);
+  document.getElementById('scoreText').textContent = score + '%';
+  document.getElementById('matchedCount').textContent = matched.length;
+  document.getElementById('missedCount').textContent = missedFinal.length;
+  document.getElementById('matchedKeywords').innerHTML = matched.map(k=>`<span class="keyword-hit">${k}</span>`).join('');
+  document.getElementById('missedKeywords').innerHTML = missedFinal.map(k=>`<span class="keyword-miss">${k}</span>`).join('');
+  document.getElementById('expMatch').textContent = 'Your 5-8 years of experience aligns well with this role\'s 5+ year requirement.';
+  document.getElementById('titleMatch').textContent = '"Senior Java Developer" directly matches your profile headline and resume title.';
+
+  document.getElementById('tailorCard').style.display = 'block';
+  document.getElementById('suggestions').innerHTML = missedFinal.map(k => `
+    <div class="suggestion-item">
+      <i class="ti ti-bulb icon"></i>
+      <div>
+        <div style="font-weight:600;margin-bottom:2px">Add "${k}" to your resume</div>
+        <div style="color:#6b7280;font-size:11px">Mention experience with ${k} in your work history or skills section to boost match score.</div>
+      </div>
+    </div>
+  `).join('') + `
+    <div class="suggestion-item">
+      <i class="ti ti-edit icon"></i>
+      <div>
+        <div style="font-weight:600;margin-bottom:2px">Optimize Summary Section</div>
+        <div style="color:#6b7280;font-size:11px">Include job-specific keywords in your professional summary for ATS optimization.</div>
+      </div>
+    </div>
+  `;
+
+  showToast(`Analysis complete — ${score}% match!`, score>80?'success':'');
+}
+
+function applyTailoring() { showToast('All suggestions applied to CV!', 'success'); }
+function downloadTailored() { showToast('Tailored CV downloaded!', 'success'); }
+
+function addPortal() {
+  const name = document.getElementById('newPortalName').value.trim();
+  const url = document.getElementById('newPortalUrl').value.trim();
+  if(!name||!url) { showToast('Enter portal name and URL', ''); return; }
+  const list = document.getElementById('portalList');
+  const initials = name.slice(0,2).toUpperCase();
+  const div = document.createElement('div');
+  div.className = 'portal-row';
+  div.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:6px';
+  div.innerHTML = `<div style="width:32px;height:32px;background:#e0f2fe;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#0369a1">${initials}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:#111827">${name}</div><div style="font-size:11px;color:#9ca3af">${url}</div></div><span style="font-size:11px;background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:4px;font-weight:500">Active</span><button class="btn btn-secondary btn-sm" onclick="this.closest('.portal-row').remove()"><i class="ti ti-trash"></i></button>`;
+  list.appendChild(div);
+  document.getElementById('newPortalName').value='';
+  document.getElementById('newPortalUrl').value='';
+  showToast(`${name} added to portals!`, 'success');
+}
+
+function addCarrier() {
+  const name = document.getElementById('newCarrierName').value.trim();
+  const url = document.getElementById('newCarrierUrl').value.trim();
+  if(!name||!url) { showToast('Enter company name and URL', ''); return; }
+  const list = document.getElementById('carrierList');
+  const div = document.createElement('div');
+  div.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:6px';
+  div.innerHTML = `<i class="ti ti-building" style="font-size:18px;color:#6b7280"></i><div style="flex:1"><div style="font-size:13px;font-weight:500">${name}</div><div style="font-size:11px;color:#9ca3af">${url}</div></div><span style="font-size:11px;background:#d1fae5;color:#065f46;padding:2px 6px;border-radius:4px">Monitoring</span>`;
+  list.appendChild(div);
+  document.getElementById('newCarrierName').value='';
+  document.getElementById('newCarrierUrl').value='';
+  showToast(`${name} career page added!`, 'success');
+}
+
+function saveProfile() {
+  const name = document.getElementById('pName').value;
+  if(name) showToast(`Profile saved for ${name}!`, 'success');
+  else showToast('Profile saved!', 'success');
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+updateSearchCount();
+</script>
+</body>
+</html>

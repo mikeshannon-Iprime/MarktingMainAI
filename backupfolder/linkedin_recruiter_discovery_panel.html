@@ -1,0 +1,1016 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#111827;font-size:14px;line-height:1.5}
+
+.topbar{background:#0f2044;padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.logo-box{width:28px;height:28px;background:#2563eb;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+.badge-live{background:#10b981;color:#fff;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600}
+
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 12px;overflow-x:auto}
+.nav-tab{padding:10px 12px;font-size:12px;font-weight:500;color:#6b7280;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:4px}
+.nav-tab:hover{color:#1d4ed8;background:#f0f5ff}
+.nav-tab.active{color:#1d4ed8;border-bottom-color:#1d4ed8;background:#f0f5ff}
+.nbadge{background:#dbeafe;color:#1e40af;font-size:10px;padding:1px 5px;border-radius:8px;font-weight:600}
+.nbadge.g{background:#d1fae5;color:#065f46}
+.nbadge.li{background:#0077b5;color:#fff}
+
+.content{padding:13px}
+.panel{display:none}.panel.active{display:block}
+
+.card{background:#fff;border:0.5px solid #e5e7eb;border-radius:11px;padding:13px;margin-bottom:11px}
+.card-title{font-size:12px;font-weight:600;color:#374151;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.card-title .ti{font-size:15px;color:#0077b5}
+
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px}
+.g3{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:9px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+
+label{font-size:11px;font-weight:500;color:#6b7280;display:block;margin-bottom:3px}
+input,select,textarea{width:100%;padding:7px 9px;border:1px solid #d1d5db;border-radius:6px;font-size:12px;color:#111827;background:#fff;outline:none;transition:border 0.15s;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#0077b5;box-shadow:0 0 0 2px rgba(0,119,181,0.12)}
+textarea{resize:vertical}
+.fg{margin-bottom:9px}
+
+.btn{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s;white-space:nowrap}
+.btn-li{background:#0077b5;color:#fff}.btn-li:hover{background:#005f94}
+.btn-primary{background:#1d4ed8;color:#fff}.btn-primary:hover{background:#1e40af}
+.btn-secondary{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}.btn-secondary:hover{background:#e5e7eb}
+.btn-success{background:#059669;color:#fff}.btn-success:hover{background:#047857}
+.btn-purple{background:#7c3aed;color:#fff}.btn-purple:hover{background:#6d28d9}
+.btn-ghost{background:transparent;color:#0077b5;border:1px solid #bfdbfe}.btn-ghost:hover{background:#eff6ff}
+.btn-sm{padding:4px 9px;font-size:11px}
+.btn-xs{padding:3px 7px;font-size:11px}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+
+.stat-card{background:#f9fafb;border:0.5px solid #e5e7eb;border-radius:9px;padding:10px;text-align:center}
+.stat-num{font-size:20px;font-weight:700;color:#0077b5}
+.stat-label{font-size:10px;color:#9ca3af;margin-top:1px}
+
+.sub-tabs{display:flex;gap:2px;background:#f3f4f6;border-radius:7px;padding:3px;margin-bottom:12px}
+.sub-tab{flex:1;padding:6px 4px;text-align:center;font-size:11px;font-weight:500;color:#6b7280;cursor:pointer;border-radius:5px;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:3px}
+.sub-tab.active{background:#fff;color:#0077b5;box-shadow:0 1px 2px rgba(0,0,0,0.07)}
+
+.recruiter-card{background:#fff;border:0.5px solid #e5e7eb;border-radius:9px;padding:11px;margin-bottom:8px;transition:all 0.15s}
+.recruiter-card:hover{border-color:#0077b5;background:#f0f9ff}
+.recruiter-card.selected{border-color:#0077b5;border-width:1.5px;background:#e8f4fd}
+.r-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0}
+.r-name{font-size:13px;font-weight:600;color:#111827}
+.r-title{font-size:11px;color:#0077b5;font-weight:500}
+.r-company{font-size:11px;color:#6b7280}
+.r-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.pill{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:500}
+.pill-tech{background:#dbeafe;color:#1e40af}
+.pill-loc{background:#f3f4f6;color:#4b5563}
+.pill-conn{background:#d1fae5;color:#065f46}
+.pill-new{background:#fef3c7;color:#92400e}
+.pill-source{background:#ede9fe;color:#5b21b6}
+.match-bar{height:3px;background:#e5e7eb;border-radius:2px;margin:5px 0 0}
+.match-fill{height:100%;border-radius:2px;background:#0077b5}
+
+.company-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#e8f4fd;color:#005f94;border:1px solid #bfdbfe;margin:2px;cursor:pointer;transition:all 0.15s}
+.company-chip:hover{background:#cce5f6;border-color:#0077b5}
+.company-chip.active{background:#0077b5;color:#fff;border-color:#0077b5}
+.company-chip .ti{font-size:12px}
+
+.tech-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;background:#f0f0f0;color:#374151;border:1px solid #e5e7eb;margin:2px;transition:all 0.15s}
+.tech-chip:hover{background:#dbeafe;color:#1e40af;border-color:#93c5fd}
+.tech-chip.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+
+.api-card{border:1px solid #e5e7eb;border-radius:9px;padding:11px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.api-logo{width:36px;height:36px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.api-connected{font-size:10px;background:#d1fae5;color:#065f46;padding:2px 7px;border-radius:10px;font-weight:600}
+.api-disconnected{font-size:10px;background:#fee2e2;color:#991b1b;padding:2px 7px;border-radius:10px;font-weight:600}
+
+.outreach-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:5px;font-size:12px;transition:background 0.1s}
+.outreach-row:hover{background:#f9fafb}
+.seq-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.seq-sent{background:#059669}
+.seq-pending{background:#d97706}
+.seq-scheduled{background:#2563eb}
+.seq-replied{background:#7c3aed}
+
+.ai-box{background:#f5f0ff;border:1px solid #c4b5fd;border-radius:9px;padding:11px;margin-bottom:10px}
+.ai-title{font-size:12px;font-weight:600;color:#5b21b6;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(124,58,237,0.3);border-top-color:#7c3aed;border-radius:50%;animation:spin 0.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-gen{display:none;align-items:center;gap:7px;font-size:11px;color:#5b21b6;margin-top:7px;padding:6px 8px;background:#fff;border-radius:6px}
+.ai-gen.show{display:flex}
+
+.url-row{display:flex;gap:6px;align-items:center;padding:6px 9px;background:#f9fafb;border:0.5px solid #e5e7eb;border-radius:6px;margin-bottom:4px;font-size:11px;color:#374151}
+.url-row .ti{font-size:13px;color:#0077b5}
+
+.toolbar{display:flex;gap:3px;flex-wrap:wrap;padding:6px;border:1px solid #e5e7eb;border-radius:6px 6px 0 0;border-bottom:none;background:#f9fafb}
+.tb-btn{padding:3px 6px;border-radius:4px;border:1px solid transparent;cursor:pointer;font-size:11px;color:#374151;background:transparent}
+.tb-btn:hover{background:#e5e7eb}
+.rich-area{border:1px solid #d1d5db;border-radius:0 0 6px 6px;min-height:110px;padding:8px;font-size:12px;line-height:1.6;outline:none;background:#fff;color:#111827}
+.rich-area:focus{border-color:#0077b5}
+
+.merge-tag{display:inline-flex;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;cursor:pointer;background:#fef3c7;color:#92400e;border:1px solid #fde68a;margin:2px}
+.merge-tag:hover{background:#fde68a}
+
+.toggle{width:32px;height:18px;background:#d1d5db;border-radius:9px;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0}
+.toggle.on{background:#0077b5}
+.toggle::after{content:'';position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left 0.2s}
+.toggle.on::after{left:16px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:0.5px solid #f3f4f6}
+.toggle-row:last-child{border-bottom:none}
+
+.toast{position:fixed;bottom:14px;right:14px;padding:8px 13px;border-radius:8px;font-size:12px;z-index:999;display:flex;align-items:center;gap:6px;transform:translateY(60px);opacity:0;transition:all 0.3s;background:#111827;color:#fff}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#065f46}
+.toast.purple{background:#5b21b6}
+.toast.li{background:#0077b5}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
+</style>
+
+<div style="background:#0f2044;padding:10px 18px;display:flex;align-items:center;justify-content:space-between">
+  <div style="display:flex;align-items:center;gap:9px;color:#fff">
+    <div class="logo-box">JS</div>
+    <div><div style="font-size:14px;font-weight:600">JobSync Pro</div><div style="font-size:10px;color:#93b4e0">IT Staffing Automation Platform</div></div>
+  </div>
+  <span class="badge-live">● LIVE</span>
+</div>
+
+<div class="nav">
+  <div class="nav-tab" onclick="showToast('Switch to full platform view','')"><i class="ti ti-user-circle"></i> Profile</div>
+  <div class="nav-tab" onclick="showToast('Job Search panel','')"><i class="ti ti-search"></i> Job Search</div>
+  <div class="nav-tab" onclick="showToast('Portals panel','')"><i class="ti ti-world"></i> Portals</div>
+  <div class="nav-tab" onclick="showToast('Results panel','')"><i class="ti ti-list-check"></i> Results <span class="nbadge g">18</span></div>
+  <div class="nav-tab" onclick="showToast('CV Analyzer panel','')"><i class="ti ti-chart-line"></i> CV Analyzer</div>
+  <div class="nav-tab active"><i class="ti ti-brand-linkedin" style="color:#0077b5"></i> LinkedIn <span class="nbadge li">NEW</span></div>
+  <div class="nav-tab" onclick="showToast('Tracker panel','')"><i class="ti ti-clipboard-check"></i> Tracker</div>
+  <div class="nav-tab" onclick="showToast('Campaigns panel','')"><i class="ti ti-mail-forward"></i> Campaigns</div>
+</div>
+
+<div class="content">
+
+  <!-- Header bar -->
+  <div style="background:#0077b5;border-radius:10px;padding:12px 16px;margin-bottom:13px;display:flex;align-items:center;justify-content:space-between">
+    <div style="color:#fff">
+      <div style="font-size:14px;font-weight:600;display:flex;align-items:center;gap:7px"><i class="ti ti-user-search" style="font-size:16px"></i> LinkedIn Recruiter Discovery</div>
+      <div style="font-size:11px;opacity:0.85;margin-top:1px">Find recruiters via Apollo/Hunter APIs · Paste profiles · Track outreach sequences</div>
+    </div>
+    <div style="display:flex;gap:7px;align-items:center">
+      <span style="background:rgba(255,255,255,0.18);color:#fff;font-size:11px;padding:3px 9px;border-radius:12px"><i class="ti ti-plug" style="font-size:11px"></i> APIs Ready</span>
+      <span style="background:rgba(255,255,255,0.18);color:#fff;font-size:11px;padding:3px 9px;border-radius:12px" id="selectedBadge">0 selected</span>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="g4" style="margin-bottom:13px">
+    <div class="stat-card"><div class="stat-num" id="st-disc">247</div><div class="stat-label">Recruiters Found</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#059669" id="st-cont">89</div><div class="stat-label">Contacted</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#7c3aed" id="st-rep">23</div><div class="stat-label">Replied</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:#d97706" id="st-pend">14</div><div class="stat-label">Follow-ups Due</div></div>
+  </div>
+
+  <!-- Sub-tabs -->
+  <div class="sub-tabs">
+    <div class="sub-tab active" onclick="switchSub(this,'sub-discover')"><i class="ti ti-search" style="font-size:12px"></i> Discover</div>
+    <div class="sub-tab" onclick="switchSub(this,'sub-paste')"><i class="ti ti-link" style="font-size:12px"></i> Paste Profiles</div>
+    <div class="sub-tab" onclick="switchSub(this,'sub-apis')"><i class="ti ti-api" style="font-size:12px"></i> API Sources</div>
+    <div class="sub-tab" onclick="switchSub(this,'sub-compose')"><i class="ti ti-message" style="font-size:12px"></i> AI Outreach</div>
+    <div class="sub-tab" onclick="switchSub(this,'sub-tracker')"><i class="ti ti-timeline" style="font-size:12px"></i> Sequence Tracker</div>
+    <div class="sub-tab" onclick="switchSub(this,'sub-settings')"><i class="ti ti-settings" style="font-size:12px"></i> Settings</div>
+  </div>
+
+  <!-- ═══════════════ DISCOVER TAB ═══════════════ -->
+  <div id="sub-discover">
+    <div class="g2">
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-building"></i> Target Companies (LinkedIn People Tab)</div>
+          <p style="font-size:11px;color:#9ca3af;margin-bottom:8px">Select firms whose LinkedIn <code>/people/</code> page will be queued for recruiter lookup via API.</p>
+          <div id="companyChips" style="margin-bottom:9px">
+            <span class="company-chip active" onclick="toggleChip(this,'TEKsystems')"><i class="ti ti-check"></i> TEKsystems</span>
+            <span class="company-chip active" onclick="toggleChip(this,'Infosys BPM')"><i class="ti ti-check"></i> Infosys BPM</span>
+            <span class="company-chip" onclick="toggleChip(this,'Robert Half')"><i class="ti ti-plus"></i> Robert Half</span>
+            <span class="company-chip" onclick="toggleChip(this,'Apex Group')"><i class="ti ti-plus"></i> Apex Group</span>
+            <span class="company-chip" onclick="toggleChip(this,'Cognizant')"><i class="ti ti-plus"></i> Cognizant</span>
+            <span class="company-chip" onclick="toggleChip(this,'TCS')"><i class="ti ti-plus"></i> TCS</span>
+            <span class="company-chip" onclick="toggleChip(this,'Wipro')"><i class="ti ti-plus"></i> Wipro</span>
+            <span class="company-chip" onclick="toggleChip(this,'HCL Tech')"><i class="ti ti-plus"></i> HCL Tech</span>
+            <span class="company-chip" onclick="toggleChip(this,'Capgemini')"><i class="ti ti-plus"></i> Capgemini</span>
+            <span class="company-chip" onclick="toggleChip(this,'Accenture')"><i class="ti ti-plus"></i> Accenture</span>
+            <span class="company-chip" onclick="toggleChip(this,'Randstad')"><i class="ti ti-plus"></i> Randstad</span>
+            <span class="company-chip" onclick="toggleChip(this,'Insight Global')"><i class="ti ti-plus"></i> Insight Global</span>
+          </div>
+          <div style="display:flex;gap:6px">
+            <input type="text" id="newCompany" placeholder="Add company name..." style="flex:1;font-size:11px">
+            <button class="btn btn-li btn-sm" onclick="addCompany()"><i class="ti ti-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-code"></i> Technology Keywords (AND / OR)</div>
+          <p style="font-size:11px;color:#9ca3af;margin-bottom:8px">Search string: <strong>"Recruiter" AND [selected tech]</strong></p>
+          <div id="techChips" style="margin-bottom:9px">
+            <span class="tech-chip active" onclick="toggleTech(this)">Java</span>
+            <span class="tech-chip active" onclick="toggleTech(this)">Spring Boot</span>
+            <span class="tech-chip" onclick="toggleTech(this)">Python</span>
+            <span class="tech-chip" onclick="toggleTech(this)">.NET</span>
+            <span class="tech-chip" onclick="toggleTech(this)">React</span>
+            <span class="tech-chip" onclick="toggleTech(this)">AWS</span>
+            <span class="tech-chip" onclick="toggleTech(this)">DevOps</span>
+            <span class="tech-chip" onclick="toggleTech(this)">Salesforce</span>
+            <span class="tech-chip" onclick="toggleTech(this)">SAP</span>
+            <span class="tech-chip" onclick="toggleTech(this)">Data Engineer</span>
+            <span class="tech-chip" onclick="toggleTech(this)">Full Stack</span>
+            <span class="tech-chip" onclick="toggleTech(this)">Cybersecurity</span>
+          </div>
+          <div style="display:flex;gap:6px">
+            <input type="text" id="newTech" placeholder="Add technology..." style="flex:1;font-size:11px">
+            <button class="btn btn-primary btn-sm" onclick="addTech()"><i class="ti ti-plus"></i> Add</button>
+          </div>
+          <div style="margin-top:9px;padding:8px;background:#f0f9ff;border-radius:6px;font-size:11px;color:#1e40af">
+            <i class="ti ti-search" style="font-size:12px"></i> Search string preview: <strong id="searchPreview">"Recruiter" AND ("Java" OR "Spring Boot")</strong>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-adjustments"></i> Discovery Filters</div>
+          <div class="g2" style="gap:8px">
+            <div class="fg"><label>Seniority Level</label>
+              <select><option>Any</option><option selected>Recruiter / Sr. Recruiter</option><option>Technical Recruiter</option><option>Talent Acquisition</option></select>
+            </div>
+            <div class="fg"><label>Location</label>
+              <input type="text" value="United States" placeholder="USA, Texas, Remote...">
+            </div>
+          </div>
+          <div class="g2" style="gap:8px">
+            <div class="fg"><label>Connections</label>
+              <select><option>Any</option><option selected>1st & 2nd degree</option><option>2nd degree only</option><option>3rd degree</option></select>
+            </div>
+            <div class="fg"><label>Results per company</label>
+              <input type="number" value="20" min="5" max="100">
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-li" onclick="runDiscovery()"><i class="ti ti-search"></i> Run Discovery</button>
+            <button class="btn btn-secondary btn-sm" onclick="clearResults()"><i class="ti ti-refresh"></i> Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="display:flex;gap:6px;margin-bottom:9px;align-items:center;flex-wrap:wrap">
+          <input type="text" placeholder="Filter recruiter results..." id="recSearch" oninput="filterRecruiters(this.value)" style="flex:1;min-width:120px;font-size:11px">
+          <select style="width:auto;font-size:11px;padding:6px 8px" onchange="sortRecruiters(this.value)">
+            <option value="match">Best match</option>
+            <option value="conn">By connection</option>
+            <option value="company">By company</option>
+          </select>
+          <button class="btn btn-sm btn-secondary" onclick="selectAllRec()"><i class="ti ti-check"></i> All</button>
+          <button class="btn btn-success btn-sm" onclick="bulkOutreach()"><i class="ti ti-send"></i> Outreach (<span id="selRecCount">0</span>)</button>
+        </div>
+
+        <div id="recruiterResults" style="max-height:620px;overflow-y:auto"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PASTE PROFILES TAB ═══════════════ -->
+  <div id="sub-paste" style="display:none">
+    <div class="g2">
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-link"></i> Paste LinkedIn Profile URLs</div>
+          <p style="font-size:11px;color:#9ca3af;margin-bottom:9px">Find recruiters manually on LinkedIn, copy their profile URLs, paste them here. AI will look up their details via Apollo/Hunter and draft personalized messages.</p>
+          <div class="fg">
+            <label>Profile URLs (one per line)</label>
+            <textarea id="urlPaste" rows="6" placeholder="https://www.linkedin.com/in/john-smith-recruiter/&#10;https://www.linkedin.com/in/jane-doe-ta/&#10;https://www.linkedin.com/company/teksystems/people/"></textarea>
+          </div>
+          <div class="fg">
+            <label>Technology context for these recruiters</label>
+            <input type="text" id="urlTech" placeholder="e.g. Java, Spring Boot, AWS" value="Java, Spring Boot">
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-li" onclick="processPastedURLs()"><i class="ti ti-sparkles"></i> Lookup & Enrich</button>
+            <button class="btn btn-secondary btn-sm"><i class="ti ti-upload"></i> Import from CSV</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-building"></i> Company People Page Queue</div>
+          <p style="font-size:11px;color:#9ca3af;margin-bottom:8px">Add company LinkedIn people-page URLs to queue for recruiter lookup.</p>
+          <div id="urlQueue">
+            <div class="url-row"><i class="ti ti-brand-linkedin"></i><span style="flex:1">linkedin.com/company/teksystems/people/</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:4px">Queued</span><button class="btn btn-xs btn-secondary" onclick="this.closest('.url-row').remove()"><i class="ti ti-x"></i></button></div>
+            <div class="url-row"><i class="ti ti-brand-linkedin"></i><span style="flex:1">linkedin.com/company/infosys/people/</span><span style="font-size:10px;background:#d1fae5;color:#065f46;padding:1px 6px;border-radius:4px">Queued</span><button class="btn btn-xs btn-secondary" onclick="this.closest('.url-row').remove()"><i class="ti ti-x"></i></button></div>
+            <div class="url-row"><i class="ti ti-brand-linkedin"></i><span style="flex:1">linkedin.com/company/wipro/people/</span><span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px">Pending</span><button class="btn btn-xs btn-secondary" onclick="this.closest('.url-row').remove()"><i class="ti ti-x"></i></button></div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:8px">
+            <input type="text" id="newUrl" placeholder="https://linkedin.com/company/.../people/" style="flex:1;font-size:11px">
+            <button class="btn btn-li btn-sm" onclick="addUrl()"><i class="ti ti-plus"></i> Add</button>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary btn-sm" onclick="runQueue()"><i class="ti ti-player-play"></i> Run Queue via API</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-users"></i> Enriched Profiles</div>
+          <div id="enrichedList">
+            <div style="text-align:center;padding:30px;color:#9ca3af;font-size:12px">
+              <i class="ti ti-link" style="font-size:32px;display:block;margin-bottom:8px;color:#bfdbfe"></i>
+              Paste LinkedIn URLs above and click "Lookup & Enrich" to see recruiter profiles here
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ API SOURCES TAB ═══════════════ -->
+  <div id="sub-apis" style="display:none">
+    <div class="g2">
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-api"></i> Connected Data Sources</div>
+          <p style="font-size:11px;color:#9ca3af;margin-bottom:10px">These APIs legally find recruiter emails, job titles, and company info. Connect at least one to enable auto-enrichment.</p>
+
+          <div class="api-card">
+            <div class="api-logo" style="background:#e8f4fd;color:#005f94">AP</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:#111827">Apollo.io</div>
+              <div style="font-size:11px;color:#6b7280">300M+ contacts · title + email lookup · company search</div>
+            </div>
+            <span class="api-connected">Connected</span>
+            <button class="btn btn-secondary btn-sm" onclick="testApi('Apollo.io')"><i class="ti ti-plug"></i> Test</button>
+          </div>
+
+          <div class="api-card">
+            <div class="api-logo" style="background:#fff0e8;color:#92400e">HN</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:#111827">Hunter.io</div>
+              <div style="font-size:11px;color:#6b7280">Email finder by name + domain · domain search</div>
+            </div>
+            <span class="api-connected">Connected</span>
+            <button class="btn btn-secondary btn-sm" onclick="testApi('Hunter.io')"><i class="ti ti-plug"></i> Test</button>
+          </div>
+
+          <div class="api-card">
+            <div class="api-logo" style="background:#f5f0ff;color:#5b21b6">RR</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:#111827">RocketReach</div>
+              <div style="font-size:11px;color:#6b7280">Direct dials · LinkedIn URL enrichment</div>
+            </div>
+            <span class="api-disconnected">Not connected</span>
+            <button class="btn btn-li btn-sm" onclick="connectApi('RocketReach')"><i class="ti ti-plug"></i> Connect</button>
+          </div>
+
+          <div class="api-card">
+            <div class="api-logo" style="background:#e8f5e9;color:#2e7d32">LU</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:#111827">Lusha</div>
+              <div style="font-size:11px;color:#6b7280">B2B contact data · phone numbers · company info</div>
+            </div>
+            <span class="api-disconnected">Not connected</span>
+            <button class="btn btn-li btn-sm" onclick="connectApi('Lusha')"><i class="ti ti-plug"></i> Connect</button>
+          </div>
+
+          <div class="api-card">
+            <div class="api-logo" style="background:#e8f4fd;color:#0077b5">LI</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:#111827">LinkedIn Official API</div>
+              <div style="font-size:11px;color:#6b7280">Requires LinkedIn partnership approval · most accurate</div>
+            </div>
+            <span class="api-disconnected">Pending approval</span>
+            <button class="btn btn-secondary btn-sm" onclick="showToast('LinkedIn API requires partner approval — apply at developer.linkedin.com','')"><i class="ti ti-external-link"></i> Apply</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-key"></i> API Key Configuration</div>
+          <div class="fg"><label>Apollo.io API Key</label>
+            <div style="display:flex;gap:5px"><input type="password" value="apo_••••••••••••••••••••••" style="flex:1"><button class="btn btn-secondary btn-xs" onclick="showToast('Key revealed','')"><i class="ti ti-eye"></i></button></div>
+          </div>
+          <div class="fg"><label>Hunter.io API Key</label>
+            <div style="display:flex;gap:5px"><input type="password" value="hnt_••••••••••••••••••••••" style="flex:1"><button class="btn btn-secondary btn-xs"><i class="ti ti-eye"></i></button></div>
+          </div>
+          <div class="fg"><label>RocketReach API Key</label>
+            <div style="display:flex;gap:5px"><input type="text" placeholder="Enter RocketReach API key..." style="flex:1"><button class="btn btn-success btn-xs" onclick="connectApi('RocketReach')"><i class="ti ti-check"></i> Save</button></div>
+          </div>
+          <div class="fg"><label>Lusha API Key</label>
+            <div style="display:flex;gap:5px"><input type="text" placeholder="Enter Lusha API key..." style="flex:1"><button class="btn btn-success btn-xs" onclick="connectApi('Lusha')"><i class="ti ti-check"></i> Save</button></div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary btn-sm" onclick="showToast('All API keys saved!','success')"><i class="ti ti-device-floppy"></i> Save All Keys</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar"></i> API Usage This Month</div>
+          <div style="font-size:12px">
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid #f3f4f6"><span style="color:#6b7280">Apollo.io lookups</span><span style="font-weight:600;color:#111827">1,240 / 5,000</span></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid #f3f4f6"><span style="color:#6b7280">Hunter.io searches</span><span style="font-weight:600;color:#111827">340 / 1,000</span></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid #f3f4f6"><span style="color:#6b7280">Emails found</span><span style="font-weight:600;color:#059669">247</span></div>
+            <div style="display:flex;justify-content:space-between;padding:5px 0"><span style="color:#6b7280">Credits remaining</span><span style="font-weight:600;color:#d97706">3,760</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ AI OUTREACH TAB ═══════════════ -->
+  <div id="sub-compose" style="display:none">
+    <div class="g2">
+      <div>
+        <div class="ai-box">
+          <div class="ai-title"><i class="ti ti-sparkles" style="font-size:14px"></i> AI Message Generator — Claude</div>
+          <div class="fg">
+            <label style="color:#5b21b6">Recruiter context & what to say</label>
+            <textarea id="aiPrompt" rows="3" placeholder="e.g. Write a LinkedIn connection message to a Java Technical Recruiter at TEKsystems. I am a Senior Java Developer with 8 years experience, Spring Boot and AWS skills, available immediately for C2C in Dallas TX. Be concise, personal, and mention their company." style="border-color:#c4b5fd;background:#faf5ff;font-size:12px"></textarea>
+          </div>
+          <div style="margin-bottom:8px">
+            <div style="font-size:11px;font-weight:600;color:#5b21b6;margin-bottom:5px">Quick message types</div>
+            <span class="tech-chip" style="background:#ede9fe;color:#5b21b6;border-color:#c4b5fd" onclick="setMsgType('connect')">Connection request</span>
+            <span class="tech-chip" style="background:#ede9fe;color:#5b21b6;border-color:#c4b5fd" onclick="setMsgType('inmail')">LinkedIn InMail</span>
+            <span class="tech-chip" style="background:#ede9fe;color:#5b21b6;border-color:#c4b5fd" onclick="setMsgType('followup')">Follow-up message</span>
+            <span class="tech-chip" style="background:#ede9fe;color:#5b21b6;border-color:#c4b5fd" onclick="setMsgType('hotlist')">Hotlist pitch</span>
+            <span class="tech-chip" style="background:#ede9fe;color:#5b21b6;border-color:#c4b5fd" onclick="setMsgType('thankyou')">Thank you note</span>
+            <span class="tech-chip" style="background:#ede9fe;color:#5b21b6;border-color:#c4b5fd" onclick="setMsgType('resume')">Resume submission</span>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:8px">
+            <select style="flex:1;font-size:11px;padding:5px 8px"><option>Tone: Professional</option><option>Tone: Friendly</option><option>Tone: Concise (under 100 words)</option><option>Tone: Enthusiastic</option></select>
+            <select style="flex:1;font-size:11px;padding:5px 8px"><option>Channel: LinkedIn Message</option><option>Channel: InMail</option><option>Channel: Email</option><option>Channel: Connection note</option></select>
+          </div>
+          <div class="ai-gen" id="aiGen"><span class="spin"></span><span id="aiStatus">Generating message...</span></div>
+          <div class="btn-row" style="margin-top:6px">
+            <button class="btn btn-purple" onclick="generateMsg()"><i class="ti ti-sparkles"></i> Generate Message</button>
+            <button class="btn btn-ghost btn-sm" onclick="improveMsg()"><i class="ti ti-wand"></i> Improve</button>
+            <button class="btn btn-secondary btn-sm" onclick="generateVariants()"><i class="ti ti-copy"></i> 3 Variants</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-message"></i> Message Editor</div>
+          <div class="fg"><label>Subject / Connection Note Title</label>
+            <input type="text" id="msgSubject" value="Java Developer available for C2C — let's connect!" placeholder="Subject line or connection request title">
+          </div>
+          <div class="fg">
+            <label>Merge tags — click to insert</label>
+            <div style="margin-bottom:6px">
+              <span class="merge-tag" onclick="insertMerge('{{recruiter_name}}')">{{recruiter_name}}</span>
+              <span class="merge-tag" onclick="insertMerge('{{company}}')">{{company}}</span>
+              <span class="merge-tag" onclick="insertMerge('{{tech_stack}}')">{{tech_stack}}</span>
+              <span class="merge-tag" onclick="insertMerge('{{candidate_name}}')">{{candidate_name}}</span>
+              <span class="merge-tag" onclick="insertMerge('{{availability}}')">{{availability}}</span>
+              <span class="merge-tag" onclick="insertMerge('{{location}}')">{{location}}</span>
+              <span class="merge-tag" onclick="insertMerge('{{rate}}')">{{rate}}</span>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="tb-btn" onclick="fmt('bold')"><i class="ti ti-bold" style="font-size:12px"></i></button>
+            <button class="tb-btn" onclick="fmt('italic')"><i class="ti ti-italic" style="font-size:12px"></i></button>
+            <button class="tb-btn" onclick="fmt('insertUnorderedList')"><i class="ti ti-list" style="font-size:12px"></i></button>
+            <button class="tb-btn" onclick="fmt('insertOrderedList')"><i class="ti ti-list-numbers" style="font-size:12px"></i></button>
+            <button class="tb-btn" onclick="insertLink()"><i class="ti ti-link" style="font-size:12px"></i></button>
+            <span style="font-size:10px;color:#9ca3af;margin-left:4px;align-self:center" id="charCount">0 chars</span>
+          </div>
+          <div class="rich-area" id="msgBody" contenteditable="true" oninput="updateCharCount()"></div>
+          <div class="btn-row">
+            <button class="btn btn-li" onclick="sendToSelected()"><i class="ti ti-send"></i> Send to Selected (<span id="selForMsg">0</span>)</button>
+            <button class="btn btn-secondary btn-sm" onclick="scheduleOutreach()"><i class="ti ti-calendar"></i> Schedule</button>
+            <button class="btn btn-secondary btn-sm" onclick="saveTemplate()"><i class="ti ti-device-floppy"></i> Save Template</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-users"></i> Send to Recruiters</div>
+          <input type="text" placeholder="Filter selected recruiters..." style="margin-bottom:8px;font-size:11px" oninput="filterOutReach(this.value)">
+          <div id="outreachRecList" style="max-height:260px;overflow-y:auto"></div>
+          <div style="padding-top:8px;margin-top:4px;border-top:0.5px solid #f3f4f6;font-size:11px;color:#9ca3af">
+            Select recruiters from the Discover tab, then compose and send here.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><i class="ti ti-template"></i> Saved Message Templates</div>
+          <div id="msgTemplates"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SEQUENCE TRACKER TAB ═══════════════ -->
+  <div id="sub-tracker" style="display:none">
+    <div class="g2">
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-timeline"></i> Outreach Sequences</div>
+          <div id="seqList"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-chart-bar"></i> Outreach Analytics</div>
+          <div class="g2" style="gap:8px;margin-bottom:10px">
+            <div style="background:#f0f9ff;border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:#0369a1">36%</div><div style="font-size:10px;color:#6b7280">Open Rate</div></div>
+            <div style="background:#f0fdf4;border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:#065f46">26%</div><div style="font-size:10px;color:#6b7280">Reply Rate</div></div>
+            <div style="background:#fdf4ff;border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:#7e22ce">4.2</div><div style="font-size:10px;color:#6b7280">Avg touches</div></div>
+            <div style="background:#fff7ed;border-radius:7px;padding:9px;text-align:center"><div style="font-size:18px;font-weight:700;color:#c2410c">2.1d</div><div style="font-size:10px;color:#6b7280">Avg reply time</div></div>
+          </div>
+          <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:7px">Best performing companies</div>
+          <div style="font-size:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid #f3f4f6"><span style="color:#6b7280">TEKsystems</span><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;height:4px;background:#e5e7eb;border-radius:2px"><div style="width:78%;height:100%;background:#0077b5;border-radius:2px"></div></div><span style="font-weight:600;color:#0077b5">78%</span></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid #f3f4f6"><span style="color:#6b7280">Infosys</span><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;height:4px;background:#e5e7eb;border-radius:2px"><div style="width:62%;height:100%;background:#0077b5;border-radius:2px"></div></div><span style="font-weight:600;color:#0077b5">62%</span></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:0.5px solid #f3f4f6"><span style="color:#6b7280">Cognizant</span><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;height:4px;background:#e5e7eb;border-radius:2px"><div style="width:54%;height:100%;background:#0077b5;border-radius:2px"></div></div><span style="font-weight:600;color:#0077b5">54%</span></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0"><span style="color:#6b7280">Wipro</span><div style="display:flex;align-items:center;gap:8px"><div style="width:60px;height:4px;background:#e5e7eb;border-radius:2px"><div style="width:41%;height:100%;background:#0077b5;border-radius:2px"></div></div><span style="font-weight:600;color:#0077b5">41%</span></div></div>
+          </div>
+          <div style="margin-top:10px;padding-top:8px;border-top:0.5px solid #f3f4f6">
+            <div style="font-size:12px;font-weight:600;color:#374151;margin-bottom:6px">Follow-ups due today</div>
+            <div id="followupList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SETTINGS TAB ═══════════════ -->
+  <div id="sub-settings" style="display:none">
+    <div class="g2">
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-settings-automation"></i> Discovery Automation</div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">Auto-run discovery daily</div><div style="font-size:10px;color:#9ca3af">Runs at 8am every weekday</div></div><div class="toggle on" id="t1" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">Auto-enrich new profiles</div><div style="font-size:10px;color:#9ca3af">Use Apollo/Hunter on every result</div></div><div class="toggle on" id="t2" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">Skip already-contacted recruiters</div></div><div class="toggle on" id="t3" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">Auto follow-up after 3 days</div></div><div class="toggle on" id="t4" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">AI personalize each message</div><div style="font-size:10px;color:#9ca3af">Uses recruiter name, company, tech</div></div><div class="toggle on" id="t5" onclick="this.classList.toggle('on')"></div></div>
+          <div class="fg" style="margin-top:10px"><label>Max outreach messages per day</label><input type="number" value="25" min="1" max="200"></div>
+          <div class="fg"><label>Delay between messages (seconds)</label><input type="number" value="45" min="5"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-brand-linkedin"></i> LinkedIn Account</div>
+          <div class="fg"><label>LinkedIn Account Email</label><input type="email" value="sarah@techstaff.com"></div>
+          <div class="fg"><label>Daily connection request limit</label><input type="number" value="20" min="1" max="50"></div>
+          <div class="fg"><label>Daily InMail limit</label><input type="number" value="10" min="1" max="25"></div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">LinkedIn Premium / Recruiter account</div></div><div class="toggle" id="t6" onclick="this.classList.toggle('on')"></div></div>
+          <div class="btn-row" style="margin-top:10px"><button class="btn btn-li btn-sm" onclick="showToast('LinkedIn settings saved!','li')"><i class="ti ti-device-floppy"></i> Save</button></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><i class="ti ti-shield-check"></i> Compliance</div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">Respect "do not contact" list</div></div><div class="toggle on" id="t7" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">Honor unsubscribes & opt-outs</div></div><div class="toggle on" id="t8" onclick="this.classList.toggle('on')"></div></div>
+          <div class="toggle-row"><div><div style="font-size:12px;font-weight:600">Use only permitted API sources</div></div><div class="toggle on" id="t9" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end content -->
+<div class="toast" id="toast"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+<script>
+const COMPANIES = {
+  TEKsystems:['#dbeafe','#1e40af'],Infosys:['#d1fae5','#065f46'],Cognizant:['#fef3c7','#92400e'],
+  Wipro:['#ede9fe','#5b21b6'],TCS:['#fee2e2','#991b1b'],Capgemini:['#e0f2fe','#0369a1'],
+  Accenture:['#f0fdf4','#166534'],'Robert Half':['#fff7ed','#c2410c'],'HCL Tech':['#fdf4ff','#7e22ce']
+};
+
+const RECRUITER_DATA = [
+  {id:1,name:'Jessica Turner',title:'Senior Technical Recruiter',company:'TEKsystems',location:'Dallas, TX',techs:['Java','Spring Boot','AWS'],conn:'2nd',avatar:'JT',match:96,source:'Apollo',email:'j.turner@teksystems.com',note:'Actively hiring Java developers for Fortune 500 clients'},
+  {id:2,name:'Michael Patel',title:'IT Recruiter — Java & Cloud',company:'TEKsystems',location:'Austin, TX',techs:['Java','Microservices','Kubernetes'],conn:'1st',avatar:'MP',match:93,source:'Apollo',email:'m.patel@teksystems.com',note:'Specializes in contract C2C placements'},
+  {id:3,name:'Anita Sharma',title:'Technical Talent Acquisition',company:'Infosys BPM',location:'Remote',techs:['Java','Spring Boot','DevOps'],conn:'2nd',avatar:'AS',match:91,source:'Hunter',email:'anita.s@infosys.com',note:'Focuses on backend Java and cloud roles'},
+  {id:4,name:'David Rodriguez',title:'Sr. Recruiter — Software Engineering',company:'Cognizant',location:'New York, NY',techs:['Java','React','AWS'],conn:'3rd',avatar:'DR',match:88,source:'Apollo',email:'d.rodriguez@cognizant.com',note:'Handles full-stack and Java bench hiring'},
+  {id:5,name:'Lisa Chen',title:'Technology Recruiter',company:'Capgemini',location:'Chicago, IL',techs:['Java','Spring','Hibernate'],conn:'2nd',avatar:'LC',match:86,source:'Hunter',email:'l.chen@capgemini.com',note:'Mid-to-senior Java developer placements'},
+  {id:6,name:'Kevin Brooks',title:'Contract Recruiter — Java/Cloud',company:'HCL Tech',location:'Remote',techs:['Java','AWS','Docker'],conn:'2nd',avatar:'KB',match:84,source:'Apollo',email:'k.brooks@hcltech.com',note:'C2C and W2 contract specialist'},
+  {id:7,name:'Priya Nair',title:'Technical Recruiter',company:'Wipro',location:'Dallas, TX',techs:['Java','Spring Boot','SQL'],conn:'1st',avatar:'PN',match:82,source:'Apollo',email:'p.nair@wipro.com',note:'Active in Texas tech market'},
+  {id:8,name:'Robert Kim',title:'Recruiting Lead — Engineering',company:'Accenture',location:'Houston, TX',techs:['Java','Microservices','Kafka'],conn:'3rd',avatar:'RK',match:80,source:'Hunter',email:'r.kim@accenture.com',note:'Enterprise Java and integration roles'},
+];
+
+const MSG_TEMPLATES = [
+  {name:'Connection — Java Specialist',body:'Hi {{recruiter_name}},\n\nI noticed your work at {{company}} and would love to connect. I am a Senior Java/Spring Boot Developer available immediately for C2C roles in {{location}}.\n\nLooking forward to connecting!\n{{candidate_name}}'},
+  {name:'InMail — C2C Hotlist',body:'Hi {{recruiter_name}},\n\nHope you are doing well! I am reaching out because I have a Senior Java Developer with {{tech_stack}} expertise available immediately for C2C contract roles.\n\nWould love to share a full profile if you have any matching requirements.\n\nBest,\n{{candidate_name}}'},
+  {name:'Follow-up — 3 day',body:'Hi {{recruiter_name}},\n\nFollowing up on my previous message about our Java Developer. This consultant is still available and has had a few interviews this week — wanted to check in before the window closes.\n\n{{candidate_name}}'},
+];
+
+const SEQ_DATA = [
+  {name:'Jessica Turner — TEKsystems',steps:[{label:'Connection sent',status:'sent',date:'May 5'},{label:'Follow-up InMail',status:'sent',date:'May 8'},{label:'2nd follow-up',status:'pending',date:'May 11'},{label:'Final touch',status:'scheduled',date:'May 14'}]},
+  {name:'Michael Patel — TEKsystems',steps:[{label:'Connection sent',status:'sent',date:'May 6'},{label:'InMail — Java hotlist',status:'replied',date:'May 7'}]},
+  {name:'Anita Sharma — Infosys',steps:[{label:'InMail sent',status:'sent',date:'May 4'},{label:'Follow-up',status:'pending',date:'May 11'}]},
+  {name:'David Rodriguez — Cognizant',steps:[{label:'Connection request',status:'sent',date:'May 3'},{label:'Follow-up message',status:'sent',date:'May 6'},{label:'2nd follow-up',status:'pending',date:'May 11'}]},
+];
+
+const FOLLOWUPS = [
+  {name:'Anita Sharma',company:'Infosys',due:'Today',type:'2nd follow-up'},
+  {name:'David Rodriguez',company:'Cognizant',due:'Today',type:'3rd touch'},
+  {name:'Lisa Chen',company:'Capgemini',due:'Tomorrow',type:'InMail follow-up'},
+];
+
+let selectedRecs = new Set();
+let filteredRecs = [...RECRUITER_DATA];
+let activeCompanies = new Set(['TEKsystems','Infosys BPM']);
+let activeTechs = new Set(['Java','Spring Boot']);
+
+function switchSub(el, id) {
+  document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('[id^="sub-"]').forEach(p=>p.style.display='none');
+  el.classList.add('active');
+  document.getElementById(id).style.display='block';
+  if(id==='sub-discover') renderRecruiters(filteredRecs);
+  if(id==='sub-tracker') renderTracker();
+  if(id==='sub-compose') renderOutreachList(); renderMsgTemplates();
+}
+
+function toggleChip(el, company) {
+  if(activeCompanies.has(company)) {
+    activeCompanies.delete(company);
+    el.classList.remove('active');
+    el.innerHTML = `<i class="ti ti-plus"></i> ${company}`;
+  } else {
+    activeCompanies.add(company);
+    el.classList.add('active');
+    el.innerHTML = `<i class="ti ti-check"></i> ${company}`;
+  }
+  updateSearchPreview();
+}
+
+function toggleTech(el) {
+  const t = el.textContent.trim();
+  if(activeTechs.has(t)) { activeTechs.delete(t); el.classList.remove('active'); }
+  else { activeTechs.add(t); el.classList.add('active'); }
+  updateSearchPreview();
+}
+
+function updateSearchPreview() {
+  const techs = [...activeTechs];
+  const preview = techs.length ? `"Recruiter" AND (${techs.map(t=>`"${t}"`).join(' OR ')})` : '"Recruiter"';
+  document.getElementById('searchPreview').textContent = preview;
+}
+
+function addCompany() {
+  const v = document.getElementById('newCompany').value.trim();
+  if(!v) return;
+  const chips = document.getElementById('companyChips');
+  const sp = document.createElement('span');
+  sp.className = 'company-chip';
+  sp.innerHTML = `<i class="ti ti-plus"></i> ${v}`;
+  sp.onclick = () => toggleChip(sp, v);
+  chips.insertBefore(sp, chips.lastElementChild);
+  document.getElementById('newCompany').value = '';
+  showToast(`${v} added to target companies`,'li');
+}
+
+function addTech() {
+  const v = document.getElementById('newTech').value.trim();
+  if(!v) return;
+  const chips = document.getElementById('techChips');
+  const sp = document.createElement('span');
+  sp.className = 'tech-chip active';
+  sp.textContent = v;
+  sp.onclick = () => toggleTech(sp);
+  activeTechs.add(v);
+  chips.insertBefore(sp, chips.lastElementChild);
+  document.getElementById('newTech').value = '';
+  updateSearchPreview();
+}
+
+function runDiscovery() {
+  if(activeCompanies.size===0) { showToast('Select at least one target company',''); return; }
+  if(activeTechs.size===0) { showToast('Select at least one technology keyword',''); return; }
+  showToast(`Searching ${activeCompanies.size} companies via Apollo/Hunter...`,'li');
+  const el = document.getElementById('recruiterResults');
+  el.innerHTML = `<div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px"><span class="spin" style="border-top-color:#0077b5;border-color:rgba(0,119,181,0.2)"></span><div style="margin-top:8px">Querying APIs for recruiters matching "Recruiter" AND (${[...activeTechs].join(' OR ')})...</div></div>`;
+  let step = 0;
+  const msgs = ['Hitting Apollo.io API...','Enriching profiles with Hunter.io...','Matching tech keywords to job titles...','Ranking by connection degree...','Done!'];
+  const iv = setInterval(()=>{
+    step++;
+    if(step<msgs.length) {
+      el.innerHTML = `<div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px"><span class="spin" style="border-top-color:#0077b5;border-color:rgba(0,119,181,0.2)"></span><div style="margin-top:8px">${msgs[step]}</div></div>`;
+    } else {
+      clearInterval(iv);
+      document.getElementById('st-disc').textContent = RECRUITER_DATA.length;
+      renderRecruiters(RECRUITER_DATA);
+      showToast(`Found ${RECRUITER_DATA.length} matching recruiters!`,'success');
+    }
+  }, 800);
+}
+
+function renderRecruiters(list) {
+  const el = document.getElementById('recruiterResults');
+  if(!list.length) { el.innerHTML='<div style="text-align:center;padding:20px;color:#9ca3af;font-size:12px">No recruiters found. Run discovery first.</div>'; return; }
+  el.innerHTML = list.map(r => {
+    const [bg,txt] = COMPANIES[r.company] || ['#f3f4f6','#374151'];
+    const selected = selectedRecs.has(r.id);
+    return `<div class="recruiter-card ${selected?'selected':''}" id="rc-${r.id}">
+      <div style="display:flex;align-items:flex-start;gap:9px">
+        <input type="checkbox" ${selected?'checked':''} style="width:auto;margin-top:3px;cursor:pointer" onchange="toggleRec(${r.id},this)">
+        <div class="r-avatar" style="background:${bg};color:${txt}">${r.avatar}</div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px">
+            <div>
+              <div class="r-name">${r.name}</div>
+              <div class="r-title">${r.title}</div>
+              <div class="r-company">${r.company} · ${r.location}</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div style="font-size:15px;font-weight:700;color:#0077b5">${r.match}%</div>
+              <div style="font-size:10px;color:#9ca3af">match</div>
+            </div>
+          </div>
+          <div class="r-meta">
+            ${r.techs.map(t=>`<span class="pill pill-tech">${t}</span>`).join('')}
+            <span class="pill pill-conn"><i class="ti ti-users" style="font-size:10px"></i> ${r.conn}</span>
+            <span class="pill pill-source"><i class="ti ti-api" style="font-size:10px"></i> ${r.source}</span>
+            ${r.conn==='1st'?'<span class="pill pill-conn">Connected</span>':''}
+          </div>
+          <div class="match-bar"><div class="match-fill" style="width:${r.match}%"></div></div>
+          <div style="font-size:10px;color:#9ca3af;margin-top:4px">${r.note}</div>
+          <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap">
+            <button class="btn btn-li btn-xs" onclick="quickConnect(${r.id})"><i class="ti ti-user-plus"></i> Connect</button>
+            <button class="btn btn-ghost btn-xs" onclick="quickMsg(${r.id})"><i class="ti ti-message"></i> Message</button>
+            <button class="btn btn-secondary btn-xs" onclick="showToast('Email: ${r.email}','li')"><i class="ti ti-mail"></i> Email</button>
+            <button class="btn btn-secondary btn-xs" onclick="showToast('Recruiter saved to list!','success')"><i class="ti ti-bookmark"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  updateSelBadge();
+}
+
+function toggleRec(id, cb) {
+  if(cb.checked) selectedRecs.add(id); else selectedRecs.delete(id);
+  const card = document.getElementById('rc-'+id);
+  if(card) card.classList.toggle('selected', cb.checked);
+  updateSelBadge();
+}
+
+function updateSelBadge() {
+  document.getElementById('selectedBadge').textContent = `${selectedRecs.size} selected`;
+  document.getElementById('selRecCount').textContent = selectedRecs.size;
+  document.getElementById('selForMsg').textContent = selectedRecs.size;
+}
+
+function selectAllRec() {
+  RECRUITER_DATA.forEach(r=>selectedRecs.add(r.id));
+  renderRecruiters(filteredRecs);
+  showToast('All recruiters selected','success');
+}
+
+function bulkOutreach() {
+  if(selectedRecs.size===0){showToast('Select recruiters first','');return;}
+  showToast(`Opening AI Outreach for ${selectedRecs.size} recruiters...`,'li');
+  switchSub(document.querySelectorAll('.sub-tab')[3],'sub-compose');
+  setTimeout(renderOutreachList, 200);
+}
+
+function filterRecruiters(q) {
+  filteredRecs = RECRUITER_DATA.filter(r=>r.name.toLowerCase().includes(q.toLowerCase())||r.company.toLowerCase().includes(q.toLowerCase())||r.techs.join(' ').toLowerCase().includes(q.toLowerCase()));
+  renderRecruiters(filteredRecs);
+}
+
+function sortRecruiters(by) {
+  if(by==='match') filteredRecs.sort((a,b)=>b.match-a.match);
+  else if(by==='conn') filteredRecs.sort((a,b)=>a.conn.localeCompare(b.conn));
+  else if(by==='company') filteredRecs.sort((a,b)=>a.company.localeCompare(b.company));
+  renderRecruiters(filteredRecs);
+}
+
+function clearResults() { selectedRecs.clear(); filteredRecs=[]; renderRecruiters([]); updateSelBadge(); }
+
+function quickConnect(id) {
+  const r = RECRUITER_DATA.find(x=>x.id===id);
+  showToast(`Connection request sent to ${r.name}!`,'li');
+}
+
+function quickMsg(id) {
+  const r = RECRUITER_DATA.find(x=>x.id===id);
+  selectedRecs.add(id);
+  switchSub(document.querySelectorAll('.sub-tab')[3],'sub-compose');
+  setTimeout(()=>{
+    renderOutreachList();
+    document.getElementById('msgBody').innerHTML = `<p>Hi ${r.name},</p><p>Hope you are doing well! I noticed your work in IT staffing at ${r.company} and wanted to reach out. I have a Senior Java Developer with ${r.techs.join(', ')} expertise available immediately for C2C contract roles.</p><p>Would love to connect and share more details!</p><p>Best regards,<br>{{candidate_name}}</p>`;
+    updateCharCount();
+  }, 150);
+}
+
+function processPastedURLs() {
+  const raw = document.getElementById('urlPaste').value.trim();
+  if(!raw) { showToast('Paste some LinkedIn URLs first',''); return; }
+  const urls = raw.split('\n').filter(u=>u.trim());
+  showToast(`Enriching ${urls.length} profiles via Apollo/Hunter...`,'li');
+  setTimeout(()=>{
+    const enriched = urls.slice(0,3).map((url,i)=>{
+      const names = ['Sarah Johnson','Tom Mitchell','Priya Kapoor'];
+      const companies = ['TEKsystems','Infosys','Capgemini'];
+      const techs = ['Java, Spring Boot','Java, AWS, Docker','Java, Microservices'];
+      return `<div class="recruiter-card" style="margin-bottom:8px">
+        <div style="display:flex;align-items:center;gap:9px">
+          <div class="r-avatar" style="background:#dbeafe;color:#1e40af">${names[i].split(' ').map(n=>n[0]).join('')}</div>
+          <div style="flex:1">
+            <div class="r-name">${names[i]}</div>
+            <div class="r-title">Technical Recruiter</div>
+            <div class="r-company">${companies[i]}</div>
+            <div class="r-meta" style="margin-top:4px">${techs[i].split(',').map(t=>`<span class="pill pill-tech">${t.trim()}</span>`).join('')}<span class="pill pill-source">Enriched via Apollo</span></div>
+            <div style="font-size:10px;color:#6b7280;margin-top:3px">From: ${url.substring(0,50)}...</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <button class="btn btn-li btn-xs" onclick="showToast('Connection request sent!','li')"><i class="ti ti-user-plus"></i> Connect</button>
+            <button class="btn btn-ghost btn-xs" onclick="showToast('Message composer opened','')"><i class="ti ti-message"></i> Message</button>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('enrichedList').innerHTML = enriched;
+    showToast(`${urls.length} profiles enriched successfully!`,'success');
+  }, 2000);
+}
+
+function addUrl() {
+  const v = document.getElementById('newUrl').value.trim();
+  if(!v) return;
+  const q = document.getElementById('urlQueue');
+  const d = document.createElement('div');
+  d.className = 'url-row';
+  const short = v.replace('https://','').replace('http://','').substring(0,50);
+  d.innerHTML = `<i class="ti ti-brand-linkedin"></i><span style="flex:1">${short}</span><span style="font-size:10px;background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:4px">Pending</span><button class="btn btn-xs btn-secondary" onclick="this.closest('.url-row').remove()"><i class="ti ti-x"></i></button>`;
+  q.appendChild(d);
+  document.getElementById('newUrl').value = '';
+  showToast('URL added to queue','success');
+}
+
+function runQueue() {
+  showToast('Running API lookup on all queued URLs...','li');
+  setTimeout(()=>showToast('Queue complete — 12 recruiters found!','success'),2500);
+}
+
+const MSG_BODIES = {
+  connect:`<p>Hi {{recruiter_name}},</p><p>I came across your profile and noticed your expertise in IT staffing at {{company}}. I am a Senior Java/Spring Boot Developer with 8 years of experience, actively available for C2C contract roles.</p><p>Would love to connect and explore any potential opportunities!</p><p>Best,<br>{{candidate_name}}</p>`,
+  inmail:`<p>Hi {{recruiter_name}},</p><p>Hope you are having a great week! I wanted to reach out because I believe my background aligns well with the types of roles you typically fill at {{company}}.</p><p>I am a Senior Java Developer with expertise in {{tech_stack}}, immediately available for contract opportunities in {{location}}.</p><p>Would you be open to a quick 10-minute call? Happy to share my resume.</p><p>Best regards,<br>{{candidate_name}}</p>`,
+  followup:`<p>Hi {{recruiter_name}},</p><p>Just following up on my earlier message. Our Java Developer remains available and is actively interviewing — wanted to touch base before this window closes.</p><p>Would love to hear if you have any matching C2C requirements.</p><p>{{candidate_name}}</p>`,
+  hotlist:`<p>Hi {{recruiter_name}},</p><p>I am reaching out with a strong Java Developer currently on our bench:</p><ul><li>Skills: {{tech_stack}}</li><li>Experience: 8+ years</li><li>Location: {{location}}</li><li>Availability: Immediate</li><li>Rate: $85-90/hr C2C</li></ul><p>Would this profile be a fit for any of your open requirements? Happy to send the full resume.</p><p>{{candidate_name}} | {{company}}</p>`,
+  thankyou:`<p>Hi {{recruiter_name}},</p><p>Thank you so much for connecting and taking the time to review our candidate's profile. We appreciate your responsiveness and look forward to working together!</p><p>Please do not hesitate to reach out anytime you have Java/{{tech_stack}} requirements.</p><p>Best,<br>{{candidate_name}}</p>`,
+  resume:`<p>Hi {{recruiter_name}},</p><p>As discussed, please find attached the resume of our Senior Java Developer. Key highlights:</p><ul><li>8+ years in enterprise Java, Spring Boot, Microservices</li><li>Cloud experience: AWS, Docker, Kubernetes</li><li>Available immediately · C2C · {{location}}</li></ul><p>Please let me know if you need any additional information or would like to schedule a call with the candidate.</p><p>Best,<br>{{candidate_name}}</p>`,
+};
+
+function setMsgType(type) {
+  const subjects = {connect:'Let us connect — Java Developer available C2C',inmail:'Senior Java Developer available — C2C — Immediate start',followup:'Following up — Java Developer still available',hotlist:'Java Developer Hotlist — Available Now | C2C',thankyou:'Thank you for connecting!',resume:'Resume — Senior Java Developer | C2C | Immediate'};
+  document.getElementById('msgSubject').value = subjects[type] || '';
+  document.getElementById('msgBody').innerHTML = MSG_BODIES[type] || '';
+  updateCharCount();
+}
+
+const AI_GEN_BODIES = {
+  default:`<p>Hi {{recruiter_name}},</p><p>I hope this message finds you well! I am reaching out because I have a highly skilled <strong>Senior Java Developer</strong> currently available for C2C contract positions.</p><p>Given your expertise in IT staffing at <strong>{{company}}</strong> and your focus on technology placements, I believe this profile could be a great fit for your open requirements.</p><p><strong>Quick snapshot:</strong></p><ul><li>Experience: 8+ years in Java, Spring Boot, Microservices</li><li>Cloud: AWS, Docker, Kubernetes</li><li>Location: Dallas, TX (open to remote/hybrid)</li><li>Rate: $85-90/hr on C2C — H1B, no cap-gap</li><li>Availability: <strong>Immediate</strong></li></ul><p>I would love to share the full resume if you have any matching requirements. Would you be open to a quick conversation?</p><p>Best regards,<br>{{candidate_name}} | {{company}}</p>`,
+};
+
+function generateMsg() {
+  const prompt = document.getElementById('aiPrompt').value.trim();
+  if(!prompt) { showToast('Enter a prompt or select a message type first',''); return; }
+  const gen = document.getElementById('aiGen');
+  gen.classList.add('show');
+  const steps = ['Analyzing recruiter profile...','Personalizing for {{company}}...','Applying tech keyword matching...','Finalizing message...'];
+  let i=0;
+  const iv = setInterval(()=>{
+    document.getElementById('aiStatus').textContent = steps[i]||'Done!';
+    i++;
+    if(i>=steps.length) {
+      clearInterval(iv);
+      gen.classList.remove('show');
+      document.getElementById('msgBody').innerHTML = AI_GEN_BODIES.default;
+      updateCharCount();
+      showToast('AI message generated!','purple');
+    }
+  }, 650);
+}
+
+function improveMsg() {
+  const body = document.getElementById('msgBody').innerHTML;
+  if(!body.trim()){showToast('No message to improve','');return;}
+  showToast('AI improving your message...','purple');
+  setTimeout(()=>showToast('Message improved!','success'),1800);
+}
+
+function generateVariants() {
+  showToast('Generating 3 message variants...','purple');
+  setTimeout(()=>showToast('3 variants ready — check templates','success'),2000);
+}
+
+function insertMerge(tag) {
+  document.getElementById('msgBody').focus();
+  document.execCommand('insertText',false,tag);
+  updateCharCount();
+}
+
+function insertLink() {
+  const url = prompt('URL:','https://');
+  if(url){document.getElementById('msgBody').focus();document.execCommand('createLink',false,url);}
+}
+
+function fmt(cmd) {
+  document.getElementById('msgBody').focus();
+  document.execCommand(cmd,false,null);
+}
+
+function updateCharCount() {
+  const len = document.getElementById('msgBody').innerText.length;
+  document.getElementById('charCount').textContent = `${len} chars`;
+}
+
+function renderOutreachList() {
+  const sel = RECRUITER_DATA.filter(r=>selectedRecs.has(r.id));
+  const el = document.getElementById('outreachRecList');
+  if(!sel.length){el.innerHTML='<div style="text-align:center;color:#9ca3af;font-size:11px;padding:14px">Select recruiters from Discover tab</div>';return;}
+  el.innerHTML = sel.map(r=>{
+    const [bg,txt]=COMPANIES[r.company]||['#f3f4f6','#374151'];
+    return `<div class="outreach-row">
+      <div class="r-avatar" style="width:28px;height:28px;font-size:10px;background:${bg};color:${txt}">${r.avatar}</div>
+      <div style="flex:1"><div style="font-size:12px;font-weight:600">${r.name}</div><div style="font-size:10px;color:#6b7280">${r.company}</div></div>
+      <span class="pill pill-conn" style="font-size:10px">${r.conn}</span>
+      <button class="btn btn-xs btn-secondary" onclick="selectedRecs.delete(${r.id});renderOutreachList();updateSelBadge()"><i class="ti ti-x"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function renderMsgTemplates() {
+  document.getElementById('msgTemplates').innerHTML = MSG_TEMPLATES.map((t,i)=>`
+    <div style="padding:7px 9px;border:0.5px solid #e5e7eb;border-radius:6px;margin-bottom:5px;cursor:pointer" onclick="useMsgTemplate(${i})">
+      <div style="font-size:12px;font-weight:600;color:#111827">${t.name}</div>
+      <div style="font-size:10px;color:#9ca3af;margin-top:2px">${t.body.substring(0,60)}...</div>
+    </div>
+  `).join('');
+}
+
+function useMsgTemplate(i) {
+  const t = MSG_TEMPLATES[i];
+  document.getElementById('msgBody').innerText = t.body;
+  updateCharCount();
+  showToast(`Template "${t.name}" loaded!`,'success');
+}
+
+function sendToSelected() {
+  if(selectedRecs.size===0){showToast('No recruiters selected','');return;}
+  const body=document.getElementById('msgBody').innerHTML;
+  if(!body.trim()){showToast('Write a message first','');return;}
+  showToast(`Sending messages to ${selectedRecs.size} recruiters...`,'li');
+  let c=parseInt(document.getElementById('st-cont').textContent);
+  setTimeout(()=>{document.getElementById('st-cont').textContent=c+selectedRecs.size;showToast(`Sent to ${selectedRecs.size} recruiters!`,'success');},1500);
+}
+
+function scheduleOutreach() { showToast('Outreach sequence scheduled!','success'); }
+function saveTemplate() { showToast('Template saved!','success'); }
+function filterOutReach(q) { renderOutreachList(); }
+
+function renderTracker() {
+  document.getElementById('seqList').innerHTML = SEQ_DATA.map(s=>`
+    <div style="border:0.5px solid #e5e7eb;border-radius:8px;padding:10px;margin-bottom:8px">
+      <div style="font-size:12px;font-weight:600;color:#111827;margin-bottom:8px">${s.name}</div>
+      <div style="display:flex;gap:0;position:relative">
+        ${s.steps.map((step,i)=>{
+          const colors={sent:'#059669',pending:'#d97706',scheduled:'#2563eb',replied:'#7c3aed'};
+          const c=colors[step.status]||'#9ca3af';
+          return `<div style="flex:1;text-align:center;position:relative">
+            ${i<s.steps.length-1?`<div style="position:absolute;top:7px;left:50%;right:-50%;height:2px;background:${step.status==='sent'||step.status==='replied'?c:'#e5e7eb'};z-index:0"></div>`:''}
+            <div style="width:16px;height:16px;border-radius:50%;background:${c};margin:0 auto;position:relative;z-index:1;display:flex;align-items:center;justify-content:center">
+              <i class="ti ${step.status==='sent'||step.status==='replied'?'ti-check':'ti-clock'}" style="font-size:9px;color:#fff"></i>
+            </div>
+            <div style="font-size:9px;color:#6b7280;margin-top:3px;line-height:1.3">${step.label}</div>
+            <div style="font-size:9px;color:#9ca3af">${step.date}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="display:flex;gap:5px;margin-top:8px">
+        <button class="btn btn-xs btn-ghost" onclick="showToast('Follow-up scheduled!','li')"><i class="ti ti-send"></i> Follow up</button>
+        <button class="btn btn-xs btn-secondary" onclick="showToast('Marked as replied!','success')"><i class="ti ti-check"></i> Mark replied</button>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('followupList').innerHTML = FOLLOWUPS.map(f=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid #f3f4f6;font-size:11px">
+      <div class="seq-dot" style="background:${f.due==='Today'?'#dc2626':'#d97706'}"></div>
+      <div style="flex:1"><div style="font-weight:600;color:#111827">${f.name}</div><div style="color:#6b7280">${f.company} · ${f.type}</div></div>
+      <span style="font-size:10px;font-weight:600;color:${f.due==='Today'?'#dc2626':'#d97706'}">${f.due}</span>
+      <button class="btn btn-xs btn-li" onclick="showToast('Follow-up sent to ${f.name}!','li')"><i class="ti ti-send"></i></button>
+    </div>
+  `).join('');
+}
+
+function testApi(name) { showToast(`${name} connection verified!`,'success'); }
+function connectApi(name) { showToast(`Connecting to ${name}...`,'li'); setTimeout(()=>showToast(`${name} connected!`,'success'),1500); }
+
+function showToast(msg, type) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className=`toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+setTimeout(()=>{
+  renderRecruiters([]);
+  updateSearchPreview();
+}, 80);
+</script>

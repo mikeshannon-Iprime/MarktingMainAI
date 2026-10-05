@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'/>
+<meta name='viewport' content='width=device-width, initial-scale=1'/>
+<title>DAY TO DAY REPORT Dashboard</title>
+<script src='https://cdn.plot.ly/plotly-2.30.0.min.js'></script>
+<style>
+:root{--bg:#0b1020;--card:#111a33;--ink:#e8ecff;--muted:#a9b2d6;--accent:#ff7a18;--accent2:#2dd4bf;--line:#2a3563;--font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);background:radial-gradient(1200px 600px at 15% 10%, rgba(255,122,24,.18), transparent 55%), radial-gradient(900px 500px at 80% 20%, rgba(45,212,191,.14), transparent 55%), var(--bg); color:var(--ink)}
+.header{padding:18px 18px 10px 18px;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.title{font-size:20px;font-weight:800;letter-spacing:.2px}
+.subtitle{font-size:12px;color:var(--muted)}
+.container{padding:0 18px 18px 18px;display:flex;flex-direction:column;gap:12px}
+.controls{background:rgba(17,26,51,.75);border:1px solid rgba(42,53,99,.85);border-radius:14px;padding:12px;display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;backdrop-filter: blur(6px)}
+.control{display:flex;flex-direction:column;gap:6px;min-width:180px}
+label{font-size:12px;color:var(--muted)}
+input, select{background:#0e1631;border:1px solid rgba(42,53,99,.95);color:var(--ink);border-radius:10px;padding:9px 10px;font-size:13px;outline:none}
+button{background:linear-gradient(135deg, rgba(255,122,24,1), rgba(255,122,24,.82));border:none;color:#07101f;padding:10px 12px;border-radius:12px;font-weight:800;cursor:pointer}
+button.secondary{background:transparent;border:1px solid rgba(42,53,99,.95);color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(12, 1fr);gap:12px}
+.card{background:rgba(17,26,51,.72);border:1px solid rgba(42,53,99,.85);border-radius:16px;padding:12px;min-height:90px;backdrop-filter: blur(6px)}
+.kpi{display:flex;flex-direction:column;gap:6px}
+.kpi .k{font-size:12px;color:var(--muted)}
+.kpi .v{font-size:22px;font-weight:900}
+.kpi .s{font-size:12px;color:var(--muted)}
+.card h3{margin:0 0 8px 0;font-size:13px;color:var(--muted);font-weight:800}
+.small{font-size:12px;color:var(--muted)}
+.footer{padding:10px 18px 18px 18px;color:var(--muted);font-size:12px}
+@media (max-width: 1000px){
+  .grid{grid-template-columns:repeat(6, 1fr)}
+}
+</style>
+</head>
+<body>
+  <div class='header'>
+    <div>
+      <div class='title'>DAY TO DAY REPORT Dashboard</div>
+      <div class='subtitle'>Filters drive all charts. Data range: <span id='rangeTxt'></span></div>
+    </div>
+    <div class='small'>Built from the DAY TO DAY REPORT tab</div>
+  </div>
+
+  <div class='container'>
+    <div class='controls'>
+      <div class='control'>
+        <label>Start date</label>
+        <input id='startDate' type='date'/>
+      </div>
+      <div class='control'>
+        <label>End date</label>
+        <input id='endDate' type='date'/>
+      </div>
+      <div class='control'>
+        <label>Recruiter</label>
+        <select id='recruiterSel'>
+          <option value='__all__'>All</option>
+        </select>
+      </div>
+      <button id='applyBtn'>Apply</button>
+      <button class='secondary' id='resetBtn'>Reset</button>
+    </div>
+
+    <div class='grid'>
+      <div class='card' style='grid-column: span 3'>
+        <div class='kpi'><div class='k' id='kpi1k'>Total Linkedin Connections</div><div class='v' id='kpi1v'>-</div><div class='s' id='kpi1s'>Filtered period</div></div>
+      </div>
+      <div class='card' style='grid-column: span 3'>
+        <div class='kpi'><div class='k'>Total Daily Calls</div><div class='v' id='kpi2v'>-</div><div class='s'>Filtered period</div></div>
+      </div>
+      <div class='card' style='grid-column: span 3'>
+        <div class='kpi'><div class='k'>Total Sourced Data</div><div class='v' id='kpi3v'>-</div><div class='s'>Filtered period</div></div>
+      </div>
+      <div class='card' style='grid-column: span 3'>
+        <div class='kpi'><div class='k'>Total Marketing/Submissions</div><div class='v' id='kpi4v'>-</div><div class='s'>Filtered period</div></div>
+      </div>
+
+      <div class='card' style='grid-column: span 8'>
+        <h3>Daily trend (totals)</h3>
+        <div id='trendChart' style='height:360px'></div>
+      </div>
+      <div class='card' style='grid-column: span 4'>
+        <h3>Recruiter totals (Sourced Data)</h3>
+        <div id='recruiterChart' style='height:360px'></div>
+      </div>
+
+      <div class='card' style='grid-column: span 6'>
+        <h3>Metric mix (stacked by day)</h3>
+        <div id='mixChart' style='height:340px'></div>
+      </div>
+      <div class='card' style='grid-column: span 6'>
+        <h3>Top technologies (by #entries)</h3>
+        <div id='techChart' style='height:340px'></div>
+      </div>
+
+      <div class='card' style='grid-column: span 12'>
+        <h3>Recent activity (latest 25 rows)</h3>
+        <div id='tableDiv'></div>
+      </div>
+    </div>
+  </div>
+
+  <div class='footer'>Tip: If numbers look low, this sheet has lots of free-text values (like ranges or "20calls"); the dashboard extracts the first number it finds.</div>
+
+<script>
+const payload = {"data_rows": [{"Date_dt": "2026-01-13", "Recruiter Name": "Komal", "Focused Technology": "Infrastructure AI/Data Scientist", "Profiles Onboarding\\Reason For Not Onboarding": "fowarded the  resumes to the respective requirements ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 9.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-13", "Recruiter Name": "Sam", "Focused Technology": "INfrastructure AI/Aem Developer", "Profiles Onboarding\\Reason For Not Onboarding": "I do have some prospects for marketing after getting desk num will onboard them", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 20.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-16", "Recruiter Name": "Sam", "Focused Technology": "Java Fullstack developer", "Profiles Onboarding\\Reason For Not Onboarding": "Gave two profiles for marketing and one profile for submission", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-19", "Recruiter Name": "Sam", "Focused Technology": "Java python developer and sourced for h1 profiles", "Profiles Onboarding\\Reason For Not Onboarding": "One opt resume submitted to iprime", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 40.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-20", "Recruiter Name": "Sam", "Focused Technology": "Sourced on requirements product owner,sap ewm and aem developer", "Profiles Onboarding\\Reason For Not Onboarding": "Gave one profile for marketing", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 40.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-20", "Recruiter Name": "Parasuram", "Focused Technology": "Sourced on requirements ,sap ewm and aem developer", "Profiles Onboarding\\Reason For Not Onboarding": "got one profile for submission", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 4.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-22", "Recruiter Name": "Sam", "Focused Technology": "Software Engineer,Devops", "Profiles Onboarding\\Reason For Not Onboarding": "Submitted resumes to particular requirement", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 20.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-22", "Recruiter Name": "Komal", "Focused Technology": "Adobe Target, SAP, Product owner and lead software engineer", "Profiles Onboarding\\Reason For Not Onboarding": "fowarded the  resumes to the respective requirements ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-22", "Recruiter Name": "Chandrika", "Focused Technology": "Adobe Target, SAP EWM", "Profiles Onboarding\\Reason For Not Onboarding": "submitted the  profiles to the respective requirements ", "Linkedin Connections_num": 12.0, "Daily calls Count_num": 20.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-23", "Recruiter Name": "Chandrika", "Focused Technology": "SAP EWM", "Profiles Onboarding\\Reason For Not Onboarding": "submitted the  profiles to the respective requirements ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-23", "Recruiter Name": "Komal", "Focused Technology": "SAP EWM, product owner", "Profiles Onboarding\\Reason For Not Onboarding": "submitted the  profile to the respective requirement ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 27.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-23", "Recruiter Name": "Sam", "Focused Technology": "Sap ewm,Product owner,Devops,Java", "Profiles Onboarding\\Reason For Not Onboarding": "Gave one profile for marketing", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-26", "Recruiter Name": "Sam", "Focused Technology": "AEM Developer,Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got profiles for w2 requirements only", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 25.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-26", "Recruiter Name": "Chandrika", "Focused Technology": "SAP EWM, product owner", "Profiles Onboarding\\Reason For Not Onboarding": "got profile for  SAP ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 17.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-26", "Recruiter Name": "Komal", "Focused Technology": "w2 sourcing", "Profiles Onboarding\\Reason For Not Onboarding": "sourced profiles for w2", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 16.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-27", "Recruiter Name": "Chandrika", "Focused Technology": "SNOWFLAKE DATAENGINEER", "Profiles Onboarding\\Reason For Not Onboarding": "GOT 1 C2C PROFILE AND WAITING FOR FEW MORW CANDIDATES DOCUMENTS", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 12.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-27", "Recruiter Name": "Komal", "Focused Technology": "Senior Snowflake Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Submitted 2 profiles to the respective requirements.", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 34.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-27", "Recruiter Name": "Sam", "Focused Technology": "Senior Snowflake Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Submitted 3 profiles to Iprime Team", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-27", "Recruiter Name": "Parasuram", "Focused Technology": "Senior Snowflake Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Submitted 2 profiles to Snowflake & 1 profile to SAP WM ", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 12.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-28", "Recruiter Name": "Chandrika", "Focused Technology": "sharepoint developer", "Profiles Onboarding\\Reason For Not Onboarding": "submitted 2 profiles to on sharepoint developer", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-28", "Recruiter Name": "Komal", "Focused Technology": "Senior Front end developer", "Profiles Onboarding\\Reason For Not Onboarding": "Submitted 3 profiles to the respective requirements .", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-28", "Recruiter Name": "Parasuram", "Focused Technology": "Senior Snowflake Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Submitted 3 profiles to Snowflake ", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 15.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-29", "Recruiter Name": "Chandrika", "Focused Technology": "sharepoint developer", "Profiles Onboarding\\Reason For Not Onboarding": "submitted 3 profiles for sharepoint developer ", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 18.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-29", "Recruiter Name": "Komal", "Focused Technology": "Sharepoint developer/ Senior front end / sourcing", "Profiles Onboarding\\Reason For Not Onboarding": "Submitted 1 profile , Got 2 profiles for C2C ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 20.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-29", "Recruiter Name": "Sam", "Focused Technology": "Sharepoint developer/ Senior front end / sourcing for marketing profiles", "Profiles Onboarding\\Reason For Not Onboarding": "Gave 1 profile for marketing and collected resume for share point developer", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 20.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-30", "Recruiter Name": "Komal", "Focused Technology": "SAP TM/Mainframe Developer/AEM developer", "Profiles Onboarding\\Reason For Not Onboarding": "Gave 1 profile for marketing, 2 profiles for the respective requirements .", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 20.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-01-30", "Recruiter Name": "Sam", "Focused Technology": "SAP TM/Mainframe Developer/Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Gave one profile for requirement,and 1 profile for w2 requirement", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 20.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-13", "Recruiter Name": "Komal", "Focused Technology": "devops/AI/ML with python", "Profiles Onboarding\\Reason For Not Onboarding": "Got 6 profiles for w2", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 6.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-02-13", "Recruiter Name": "Sam", "Focused Technology": "Devops Engineer,Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got few resumes and collected documents", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 4.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-02-13", "Recruiter Name": "Parasuram", "Focused Technology": "AI engineer  profiles sourced", "Profiles Onboarding\\Reason For Not Onboarding": "sourced 2 profiles and saved for database", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": null}, {"Date_dt": "2027-02-16", "Recruiter Name": "Parasuram", "Focused Technology": "Gen AI engineer  profiles sourced", "Profiles Onboarding\\Reason For Not Onboarding": "sourced 3 profiles and saved for database", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-02-16", "Recruiter Name": "Sam", "Focused Technology": "Data Engineer,Devops Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got One Resume For Fulltime Marketing,Got few resumes and collected documents", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 12.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-02-16", "Recruiter Name": "Komal", "Focused Technology": "AI Engineer/devops engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for w2 requirement ", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-02-16", "Recruiter Name": "Parasuram", "Focused Technology": "SNOWFLAKE DATAENGINEER", "Profiles Onboarding\\Reason For Not Onboarding": "got 2 profiles for c2c and 1 profile submission", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-02-17", "Recruiter Name": "Sam", "Focused Technology": "DATA Engineer and Frontend Developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 1 profile for marketing and other 2 for w2", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-02-17", "Recruiter Name": "Komal", "Focused Technology": "AI Engineer with python, snowflake data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 1 profile for C2C , got 2 profiles for w2 ", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-18", "Recruiter Name": "Sam", "Focused Technology": "python developer and etl developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 5 resumes for w2 requirements", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 5.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2027-02-18", "Recruiter Name": "Parasuram", "Focused Technology": "SNOWFLAKE DATA ENGINEER& Java full stack", "Profiles Onboarding\\Reason For Not Onboarding": "Got 2 resumes 1 for Snow flake and 1 for Java Fullstack", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-02-18", "Recruiter Name": "Komal", "Focused Technology": "Full-time marketing , data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 resumes ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-02-19", "Recruiter Name": "Sam", "Focused Technology": "Etl Developer,Data Engineer,Python", "Profiles Onboarding\\Reason For Not Onboarding": "Got 1 resume for fulltime marketing and 2 for w2 requirements", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2027-02-19", "Recruiter Name": "Parasuram", "Focused Technology": "senior Data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "got one resume for Data engineer.", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-19", "Recruiter Name": "Komal", "Focused Technology": "Oracle Pl.Sql, Python developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 resumes , 2 for w2 and 1 for full-time marketing", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-02-20", "Recruiter Name": "Komal", "Focused Technology": "Dot Net, data engineer, AEM", "Profiles Onboarding\\Reason For Not Onboarding": "Got 5 profiles for W2 requirements", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 6.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-02-20", "Recruiter Name": "Sam", "Focused Technology": "Mainframe developer,IOS Developer,Data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 6 profiles for w2 requirements", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 6.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2027-02-20", "Recruiter Name": "Parasuram", "Focused Technology": "on Leave", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-23", "Recruiter Name": "Komal", "Focused Technology": "Oracle Pl.Sql, Full stack developer ,Ai/ML", "Profiles Onboarding\\Reason For Not Onboarding": "Got 5 profiles for w2 requirements", "Linkedin Connections_num": 15.0, "Daily calls Count_num": 28.0, "Sourced Data Count_num": 5.0, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-23", "Recruiter Name": "Sam", "Focused Technology": "QA Analyst,Fullstack Engineer,Data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 1 Profile for Fulltime Marketing,2 For W2 Requirements", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 29.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-24", "Recruiter Name": "Komal", "Focused Technology": "Oracle ,AI Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for marketing ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 26.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-24", "Recruiter Name": "Sam", "Focused Technology": "Scrum master,SDET Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got one Profile for marketing and one profile for w2 requirement", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 20.0, "Sourced Data Count_num": 1.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-02-25", "Recruiter Name": "Sam", "Focused Technology": "Network engineer,Data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 2 profiles for w2 requirements one for marketing", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 12.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-02-25", "Recruiter Name": "Komal", "Focused Technology": "Oracle, IAM Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 2 profiles for w2 requirements ", "Linkedin Connections_num": 10.0, "Daily calls Count_num": 9.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-26", "Recruiter Name": "Sam", "Focused Technology": "Frontend Developer,Salesforce Developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for w2 requirements", "Linkedin Connections_num": 25.0, "Daily calls Count_num": 10.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-02-27", "Recruiter Name": "Komal", "Focused Technology": "Oracle", "Profiles Onboarding\\Reason For Not Onboarding": "Got 4 profiles for w2 ", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 31.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-02-27", "Recruiter Name": "Sam", "Focused Technology": "Java Developer,Salesforce Developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 6 profiles for W2 Requirements", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 29.0, "Sourced Data Count_num": 6.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-13", "Recruiter Name": "Sam", "Focused Technology": "Salesforce,Java Developer,Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 4 resumes for w2 requirements", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 35.0, "Sourced Data Count_num": 4.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-13", "Recruiter Name": "Komal", "Focused Technology": "AI/ML Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 4 resumes for w2 requirements", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 33.0, "Sourced Data Count_num": 4.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-14", "Recruiter Name": "Nan", "Focused Technology": "Weekend", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-03-15", "Recruiter Name": "Nan", "Focused Technology": "Weekend", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-03-16", "Recruiter Name": "Sam", "Focused Technology": "Data engineer,Data Scientist", "Profiles Onboarding\\Reason For Not Onboarding": "Got 2 Resumes for w2 requirements", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 35.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-16", "Recruiter Name": "Komal", "Focused Technology": "data scientist", "Profiles Onboarding\\Reason For Not Onboarding": "Got 4 resumes for w2 requirement", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-17", "Recruiter Name": "Komal", "Focused Technology": "Leave", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-03-18", "Recruiter Name": "Sam", "Focused Technology": "Data scientist", "Profiles Onboarding\\Reason For Not Onboarding": "Got 5 resumes for w2 requirements", "Linkedin Connections_num": 25.0, "Daily calls Count_num": 35.0, "Sourced Data Count_num": 5.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-18", "Recruiter Name": "Komal", "Focused Technology": "data scientist,data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 5 resumes for w2 requirements", "Linkedin Connections_num": 25.0, "Daily calls Count_num": 33.0, "Sourced Data Count_num": 5.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-19", "Recruiter Name": "Nan", "Focused Technology": "HOLIDAY", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-03-20", "Recruiter Name": "Sam", "Focused Technology": "Data Scientist,Cyber Security", "Profiles Onboarding\\Reason For Not Onboarding": " Got 5 resumes for w2 requirements", "Linkedin Connections_num": 40.0, "Daily calls Count_num": 38.0, "Sourced Data Count_num": 5.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-20", "Recruiter Name": "Komal", "Focused Technology": "Data Scientist,UI/UX", "Profiles Onboarding\\Reason For Not Onboarding": "Got 4 resumes for w2 requirements and 1 resume for marketing", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 33.0, "Sourced Data Count_num": 4.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-03-21", "Recruiter Name": "Nan", "Focused Technology": "Weekend", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-03-22", "Recruiter Name": "Nan", "Focused Technology": "Weekend", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-03-23", "Recruiter Name": "Sam", "Focused Technology": "Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got one profile for marketing", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 29.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-03-23", "Recruiter Name": "Komal", "Focused Technology": "Data Engineer , Data scientist", "Profiles Onboarding\\Reason For Not Onboarding": "Got 5 resumes for w2 requirements", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 32.0, "Sourced Data Count_num": 5.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-24", "Recruiter Name": "Komal", "Focused Technology": "Data scientist", "Profiles Onboarding\\Reason For Not Onboarding": " Got 5 resumes for w2 requirements", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 31.0, "Sourced Data Count_num": 5.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-24", "Recruiter Name": "Sam", "Focused Technology": "Data engineer", "Profiles Onboarding\\Reason For Not Onboarding": " Got 5 resumes for w2 requirements", "Linkedin Connections_num": 34.0, "Daily calls Count_num": 34.0, "Sourced Data Count_num": 5.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-25", "Recruiter Name": "Sam", "Focused Technology": "Ai engineer,Network Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got one resume for marketing and one for w2 requirement", "Linkedin Connections_num": 35.0, "Daily calls Count_num": 31.0, "Sourced Data Count_num": 1.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-03-25", "Recruiter Name": "Komal", "Focused Technology": "QA with java , selenium and java", "Profiles Onboarding\\Reason For Not Onboarding": "Got 2 resumes for navasal requirement", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 2.0}, {"Date_dt": "2026-03-26", "Recruiter Name": "Sam", "Focused Technology": "QA with java , selenium and java", "Profiles Onboarding\\Reason For Not Onboarding": "Submitted 2 resumes for qa position,3 resumes for w2 requirement", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 35.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 2.0}, {"Date_dt": "2026-03-26", "Recruiter Name": "Komal", "Focused Technology": "QA with java , selenium and java", "Profiles Onboarding\\Reason For Not Onboarding": "Got one profile for marketing", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 32.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-03-27", "Recruiter Name": "Komal", "Focused Technology": "Ios developer , QA automation architect", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for navasal requirement  , one for w2 requirement ", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 31.0, "Sourced Data Count_num": 1.0, "Marketing/Submissions Count_num": 3.0}, {"Date_dt": "2026-03-27", "Recruiter Name": "Sam", "Focused Technology": "java developer,sap", "Profiles Onboarding\\Reason For Not Onboarding": "got 2 resumes for w2 requirement", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 25.0, "Sourced Data Count_num": 1.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-28", "Recruiter Name": "Nan", "Focused Technology": "weekend", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-03-29", "Recruiter Name": "Nan", "Focused Technology": "weekend", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-03-30", "Recruiter Name": "Komal", "Focused Technology": "QA automation", "Profiles Onboarding\\Reason For Not Onboarding": "Got one profile for marketing", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 31.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-03-30", "Recruiter Name": "Sam", "Focused Technology": "Ios developer , QA automation architect", "Profiles Onboarding\\Reason For Not Onboarding": "Gave one profile for marketing and one for w2 requirement", "Linkedin Connections_num": 25.0, "Daily calls Count_num": 25.0, "Sourced Data Count_num": 1.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-03-31", "Recruiter Name": "Komal", "Focused Technology": "QA automation Architect/IOS developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for w2 requirement ", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 32.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-03-31", "Recruiter Name": "Sam", "Focused Technology": "Ios  Developer,Java Developer,Data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Gave one profile for marketing and one for w2 requirement", "Linkedin Connections_num": 35.0, "Daily calls Count_num": 33.0, "Sourced Data Count_num": 1.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-04-13", "Recruiter Name": "Komal", "Focused Technology": "Senior front end developer", "Profiles Onboarding\\Reason For Not Onboarding": "Gave one profile for marketing", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 31.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-04-14", "Recruiter Name": "Komal", "Focused Technology": "Java, AEM", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for w2 ", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-04-15", "Recruiter Name": "Komal", "Focused Technology": "Data engineer, java developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for w2 ", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-04-16", "Recruiter Name": "Komal", "Focused Technology": "Oracle", "Profiles Onboarding\\Reason For Not Onboarding": "Gave one profile for marketing", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 31.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-04-15", "Recruiter Name": "Sam", "Focused Technology": "Data engineer, java developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got few resumes for w2 requirements", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 34.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-04-16", "Recruiter Name": "Sam", "Focused Technology": "Salesforce developer,Java developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got few resumes for w2 requirements", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 4.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-04-17", "Recruiter Name": "Komal", "Focused Technology": "Mern stack software architect", "Profiles Onboarding\\Reason For Not Onboarding": "Got one profile for Iprime requirement", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-04-18", "Recruiter Name": "Nan", "Focused Technology": "WEEKEND", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-04-19", "Recruiter Name": "Nan", "Focused Technology": "WEEKEND", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-04-20", "Recruiter Name": "Komal", "Focused Technology": "Data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Gave one profile for marketing and needs his opinion to submit the profile ", "Linkedin Connections_num": 25.0, "Daily calls Count_num": 31.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-04-21", "Recruiter Name": "Komal", "Focused Technology": "Devops / AI/ML", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for w2 ", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 33.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-04-22", "Recruiter Name": "Komal", "Focused Technology": "Project Manager", "Profiles Onboarding\\Reason For Not Onboarding": "Got one profile for navasal requirement", "Linkedin Connections_num": 25.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-04-23", "Recruiter Name": "Komal", "Focused Technology": "data Engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for navasal requirement ", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 35.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 3.0}, {"Date_dt": "2026-04-20", "Recruiter Name": "Sam", "Focused Technology": "Java Fullstack,Data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 2 profiles for w2 requirements", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 38.0, "Sourced Data Count_num": 2.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-04-21", "Recruiter Name": "Sam", "Focused Technology": "Aem engineer Worked on some requirements", "Profiles Onboarding\\Reason For Not Onboarding": "Got one profile for Marketing", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 36.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-04-22", "Recruiter Name": "Sam", "Focused Technology": "Data engineer,Java developer", "Profiles Onboarding\\Reason For Not Onboarding": "Got few resumes and submitted one resume for navasal requirement", "Linkedin Connections_num": 30.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 1.0}, {"Date_dt": "2026-04-23", "Recruiter Name": "Sam", "Focused Technology": "Data engineer,Fullstack Developer", "Profiles Onboarding\\Reason For Not Onboarding": "Gave two profiles for submission", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 35.0, "Sourced Data Count_num": 0.0, "Marketing/Submissions Count_num": 2.0}, {"Date_dt": "2026-04-24", "Recruiter Name": "Sam", "Focused Technology": "Oracle ,Java", "Profiles Onboarding\\Reason For Not Onboarding": "Got few resumes for w2 requirements", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-04-24", "Recruiter Name": "Komal", "Focused Technology": "Data Scientist", "Profiles Onboarding\\Reason For Not Onboarding": "Got 4 profiles for w2 requirement ", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 32.0, "Sourced Data Count_num": 4.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-06-25", "Recruiter Name": "Nan", "Focused Technology": "Weekend", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-06-26", "Recruiter Name": "Nan", "Focused Technology": "Weekend", "Profiles Onboarding\\Reason For Not Onboarding": null, "Linkedin Connections_num": null, "Daily calls Count_num": null, "Sourced Data Count_num": null, "Marketing/Submissions Count_num": null}, {"Date_dt": "2026-04-27", "Recruiter Name": "Komal", "Focused Technology": "Junior Data engineer", "Profiles Onboarding\\Reason For Not Onboarding": "Got 3 profiles for navasal requirement ", "Linkedin Connections_num": 25.0, "Daily calls Count_num": 36.0, "Sourced Data Count_num": 3.0, "Marketing/Submissions Count_num": 0.0}, {"Date_dt": "2026-04-27", "Recruiter Name": "Sam", "Focused Technology": "Fullstack developeer", "Profiles Onboarding\\Reason For Not Onboarding": "Got some resumes on c2c and w2", "Linkedin Connections_num": 20.0, "Daily calls Count_num": 30.0, "Sourced Data Count_num": 1.0, "Marketing/Submissions Count_num": 0.0}], "min_date": "2026-01-13", "max_date": "2027-02-20", "start_default": "2027-01-21", "end_default": "2027-02-20"};
+const recruiters = ["Chandrika", "Komal", "Nan", "Parasuram", "Sam"];
+
+function fmtInt(x){
+  if(x === null || x === undefined || isNaN(x)) return '-';
+  return Math.round(x).toLocaleString();
+}
+
+function parseISO(s){
+  const d = new Date(s);
+  if(String(d) === 'Invalid Date') return null;
+  return d;
+}
+
+const rows = payload.data_rows.map(r => ({
+  date: r.Date_dt,
+  recruiter: r['Recruiter Name'],
+  tech: r['Focused Technology'],
+  notes: r['Profiles Onboarding\\Reason For Not Onboarding'],
+  li: r['Linkedin Connections_num'],
+  calls: r['Daily calls Count_num'],
+  sourced: r['Sourced Data Count_num'],
+  mkt: r['Marketing/Submissions Count_num']
+}));
+
+function applyFilters(){
+  const startVal = document.getElementById('startDate').value;
+  const endVal = document.getElementById('endDate').value;
+  const recVal = document.getElementById('recruiterSel').value;
+
+  const sdt = parseISO(startVal);
+  const edt = parseISO(endVal);
+
+  const filtered = rows.filter(r => {
+    const rd = parseISO(r.date);
+    if(!rd) return false;
+    if(sdt && rd < sdt) return false;
+    if(edt && rd > edt) return false;
+    if(recVal && recVal !== '__all__' && r.recruiter !== recVal) return false;
+    return true;
+  });
+
+  document.getElementById('rangeTxt').textContent = (startVal || payload.min_date) + ' to ' + (endVal || payload.max_date);
+
+  const k1 = filtered.reduce((a,b)=>a + (Number(b.li)||0), 0);
+  const k2 = filtered.reduce((a,b)=>a + (Number(b.calls)||0), 0);
+  const k3 = filtered.reduce((a,b)=>a + (Number(b.sourced)||0), 0);
+  const k4 = filtered.reduce((a,b)=>a + (Number(b.mkt)||0), 0);
+
+  document.getElementById('kpi1v').textContent = fmtInt(k1);
+  document.getElementById('kpi2v').textContent = fmtInt(k2);
+  document.getElementById('kpi3v').textContent = fmtInt(k3);
+  document.getElementById('kpi4v').textContent = fmtInt(k4);
+
+  // Aggregate by day
+  const byDay = {};
+  filtered.forEach(r => {
+    const d = r.date;
+    if(!byDay[d]) byDay[d] = {date:d, li:0, calls:0, sourced:0, mkt:0};
+    byDay[d].li += Number(r.li)||0;
+    byDay[d].calls += Number(r.calls)||0;
+    byDay[d].sourced += Number(r.sourced)||0;
+    byDay[d].mkt += Number(r.mkt)||0;
+  });
+  const dayArr = Object.values(byDay).sort((a,b)=> (a.date < b.date ? -1 : 1));
+
+  const x = dayArr.map(d=>d.date);
+  const traceSourced = {x:x, y:dayArr.map(d=>d.sourced), type:'scatter', mode:'lines+markers', name:'Sourced Data', line:{color:'#2dd4bf', width:3}};
+  const traceCalls = {x:x, y:dayArr.map(d=>d.calls), type:'scatter', mode:'lines+markers', name:'Daily Calls', line:{color:'#ff7a18', width:3}};
+  const traceLI = {x:x, y:dayArr.map(d=>d.li), type:'scatter', mode:'lines', name:'Linkedin Connections', line:{color:'#8b5cf6', width:2, dash:'dot'}};
+  const traceMkt = {x:x, y:dayArr.map(d=>d.mkt), type:'scatter', mode:'lines', name:'Marketing/Submissions', line:{color:'#60a5fa', width:2, dash:'dash'}};
+
+  Plotly.newPlot('trendChart', [traceSourced, traceCalls, traceLI, traceMkt], {
+    margin:{l:45,r:15,t:10,b:35},
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+    xaxis:{gridcolor:'rgba(42,53,99,.6)', tickfont:{color:'#a9b2d6'}},
+    yaxis:{gridcolor:'rgba(42,53,99,.6)', tickfont:{color:'#a9b2d6'}},
+    legend:{orientation:'h', y:1.15, x:0, font:{color:'#e8ecff'}},
+    hovermode:'x unified'
+  }, {displayModeBar:false, responsive:true});
+
+  // Mix chart (stacked bars)
+  const mixTraces = [
+    {x:x, y:dayArr.map(d=>d.sourced), type:'bar', name:'Sourced Data', marker:{color:'#2dd4bf'}},
+    {x:x, y:dayArr.map(d=>d.calls), type:'bar', name:'Daily Calls', marker:{color:'#ff7a18'}},
+    {x:x, y:dayArr.map(d=>d.li), type:'bar', name:'Linkedin', marker:{color:'#8b5cf6'}},
+    {x:x, y:dayArr.map(d=>d.mkt), type:'bar', name:'Marketing', marker:{color:'#60a5fa'}}
+  ];
+  Plotly.newPlot('mixChart', mixTraces, {
+    barmode:'stack',
+    margin:{l:45,r:15,t:10,b:35},
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+    xaxis:{gridcolor:'rgba(42,53,99,.6)', tickfont:{color:'#a9b2d6'}},
+    yaxis:{gridcolor:'rgba(42,53,99,.6)', tickfont:{color:'#a9b2d6'}},
+    legend:{orientation:'h', y:1.15, x:0, font:{color:'#e8ecff'}}
+  }, {displayModeBar:false, responsive:true});
+
+  // Recruiter totals (by sourced)
+  const byRec = {};
+  filtered.forEach(r => {
+    const k = r.recruiter || 'Unknown';
+    if(!byRec[k]) byRec[k] = {rec:k, sourced:0};
+    byRec[k].sourced += Number(r.sourced)||0;
+  });
+  const recArr = Object.values(byRec).sort((a,b)=> b.sourced - a.sourced);
+  Plotly.newPlot('recruiterChart', [{
+    x: recArr.map(d=>d.sourced),
+    y: recArr.map(d=>d.rec),
+    type:'bar',
+    orientation:'h',
+    marker:{color:'#2dd4bf'}
+  }], {
+    margin:{l:90,r:15,t:10,b:30},
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+    xaxis:{gridcolor:'rgba(42,53,99,.6)', tickfont:{color:'#a9b2d6'}},
+    yaxis:{tickfont:{color:'#a9b2d6'}}
+  }, {displayModeBar:false, responsive:true});
+
+  // Tech chart
+  const byTech = {};
+  filtered.forEach(r => {
+    const k = (r.tech && String(r.tech).trim().length>0) ? String(r.tech).trim() : 'Unknown';
+    byTech[k] = (byTech[k]||0) + 1;
+  });
+  const techArr = Object.entries(byTech).map(([k,v])=>({tech:k, n:v})).sort((a,b)=>b.n-a.n).slice(0,10);
+  Plotly.newPlot('techChart', [{
+    x: techArr.map(d=>d.n),
+    y: techArr.map(d=>d.tech),
+    type:'bar',
+    orientation:'h',
+    marker:{color:'#ff7a18'}
+  }], {
+    margin:{l:140,r:15,t:10,b:30},
+    paper_bgcolor:'rgba(0,0,0,0)', plot_bgcolor:'rgba(0,0,0,0)',
+    xaxis:{gridcolor:'rgba(42,53,99,.6)', tickfont:{color:'#a9b2d6'}},
+    yaxis:{tickfont:{color:'#a9b2d6'}}
+  }, {displayModeBar:false, responsive:true});
+
+  // Recent table
+  const recent = filtered.slice().sort((a,b)=> (a.date > b.date ? -1 : 1)).slice(0,25);
+  const tableData = [{
+    type: 'table',
+    header: {
+      values: ['Date','Recruiter','Technology','Linkedin','Calls','Sourced','Marketing','Notes?'],
+      fill: {color: 'rgba(42,53,99,.9)'},
+      align: 'left',
+      font: {color: '#e8ecff', size: 12}
+    },
+    cells: {
+      values: [
+        recent.map(r=>r.date),
+        recent.map(r=>r.recruiter),
+        recent.map(r=>r.tech),
+        recent.map(r=>fmtInt(r.li)),
+        recent.map(r=>fmtInt(r.calls)),
+        recent.map(r=>fmtInt(r.sourced)),
+        recent.map(r=>fmtInt(r.mkt)),
+        recent.map(r=> (r.notes && String(r.notes).trim().length>0) ? 'Yes' : '')
+      ],
+      fill: {color: ['rgba(17,26,51,.65)']},
+      align: 'left',
+      font: {color: '#e8ecff', size: 11},
+      height: 22
+    }
+  }];
+
+  Plotly.newPlot('tableDiv', tableData, {
+    margin:{l:10,r:10,t:0,b:0},
+    paper_bgcolor:'rgba(0,0,0,0)'
+  }, {displayModeBar:false, responsive:true});
+}
+
+function setup(){
+  const sel = document.getElementById('recruiterSel');
+  recruiters.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r;
+    opt.textContent = r;
+    sel.appendChild(opt);
+  });
+
+  document.getElementById('startDate').min = payload.min_date;
+  document.getElementById('startDate').max = payload.max_date;
+  document.getElementById('endDate').min = payload.min_date;
+  document.getElementById('endDate').max = payload.max_date;
+  document.getElementById('startDate').value = payload.start_default;
+  document.getElementById('endDate').value = payload.end_default;
+
+  document.getElementById('applyBtn').addEventListener('click', applyFilters);
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    document.getElementById('startDate').value = payload.start_default;
+    document.getElementById('endDate').value = payload.end_default;
+    document.getElementById('recruiterSel').value = '__all__';
+    applyFilters();
+  });
+
+  applyFilters();
+}
+
+setup();
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+{
+  "campaign_contacts": [
+    {"name": "Ava Harrison", "email": "ava@orbitaltalent.com", "company": "Orbital Talent", "status": "Opened", "list": "Priority Accounts"},
+    {"name": "Mason Reed", "email": "mason@futureworks.io", "company": "FutureWorks", "status": "Queued", "list": "C2C Buyers"},
+    {"name": "Nina Patel", "email": "nina@talentbridge.co", "company": "TalentBridge", "status": "Sent", "list": "Priority Accounts"},
+    {"name": "Lucas Kim", "email": "lucas@northpeakstaffing.com", "company": "NorthPeak Staffing", "status": "Bounced", "list": "Bench Sales"},
+    {"name": "Sofia Turner", "email": "sofia@atlasplacements.com", "company": "Atlas Placements", "status": "Opened", "list": "AI/ML Buyers"},
+    {"name": "Ethan Ross", "email": "ethan@bridgehive.com", "company": "BridgeHive", "status": "Queued", "list": "Java Buyer Deck"}
+  ],
+  "campaign_templates": [
+    {
+      "name": "Java Hotlist Blast",
+      "category": "Hotlist",
+      "description": "Standard hotlist email for bench consultants",
+      "subject": "Available Java Developer | {{candidate_name}} | {{location}}",
+      "body": "Hi {{company_name}},<br/><br/>I am sharing {{candidate_name}}, a senior Java engineer with {{skills}} and immediate {{availability}}. The candidate is open for {{rate}} and can start quickly. Let me know if you want the profile and submission packet today.<br/><br/>Regards,<br/>{{recruiter_name}}"
+    },
+    {
+      "name": "Bench Sales Reintroduction",
+      "category": "Bench",
+      "description": "Reintroduce bench consultants to vendor partners",
+      "subject": "Fresh C2C consultant update | {{candidate_name}}",
+      "body": "Hello {{company_name}},<br/><br/>Reintroducing {{candidate_name}} for active C2C opportunities. Core stack: {{skills}}. Current location: {{location}}. Visa: {{visa_status}}. Happy to share resume, RTR, and references on request.<br/><br/>Thanks,<br/>{{recruiter_name}}"
+    },
+    {
+      "name": "Follow-up Sequence",
+      "category": "Follow-up",
+      "description": "3-day follow-up reminder for prior outreach",
+      "subject": "Following up on {{candidate_name}}",
+      "body": "Hi {{company_name}},<br/><br/>Checking whether you had a chance to review {{candidate_name}}. The profile remains available and interested in relevant openings around {{location}}. I can send an updated hotlist and interview slots if helpful.<br/><br/>Best,<br/>{{recruiter_name}}"
+    },
+    {
+      "name": "Urgent Placement",
+      "category": "Urgent",
+      "description": "Time-sensitive candidate marketing",
+      "subject": "URGENT: {{skills}} Available — Immediate Start | {{location}}",
+      "body": "Hi {{recruiter_name}},<br/><br/><strong>URGENT REQUIREMENT MATCH!</strong><br/><br/>We have a {{skills}} consultant available for <strong>immediate start</strong> who is an excellent match for contract roles in {{location}}.<br/><ul><li>Availability: {{availability}}</li><li>Rate: {{rate}}</li><li>Visa: {{visa_status}}</li></ul><p>Please respond ASAP as this consultant has multiple interviews scheduled.</p><p>{{recruiter_name}} | {{company_name}}</p>"
+    }
+  ],
+  "campaign_lists": [
+    {"name": "Priority Accounts", "contacts": 42, "openRate": 44, "replyRate": 17},
+    {"name": "C2C Buyers", "contacts": 31, "openRate": 36, "replyRate": 11},
+    {"name": "AI/ML Buyers", "contacts": 18, "openRate": 51, "replyRate": 20},
+    {"name": "Bench Sales", "contacts": 25, "openRate": 29, "replyRate": 8}
+  ],
+  "campaign_items": [
+    {"name": "Java Hotlist - Southwest", "sent": 420, "opened": 188, "replied": 42, "status": "Sent", "scheduledFor": "2026-05-12 09:15"},
+    {"name": "Data/AI Bench Update", "sent": 280, "opened": 132, "replied": 31, "status": "Scheduled", "scheduledFor": "2026-05-28 08:45"},
+    {"name": "Oracle + Snowflake Blend", "sent": 196, "opened": 74, "replied": 19, "status": "Draft", "scheduledFor": "2026-05-29 11:30"}
+  ],
+  "campaign_settings": {
+    "smtpHost": "smtp.office365.com",
+    "smtpPort": 587,
+    "smtpUsername": "sarah@marketingmind.ai",
+    "smtpPassword": "",
+    "senderLimit": 600,
+    "emailDelaySeconds": 3,
+    "smartWarmup": true,
+    "unsubscribeFooter": true,
+    "honorUnsubscribes": true,
+    "bounceManagement": true,
+    "spamGuard": true,
+    "gmailSync": true,
+    "outlookSync": false,
+    "sendgridSync": false,
+    "openTracking": true,
+    "aiSubjectAssist": true,
+    "aiProvider": "ollama",
+    "aiDefaultTone": "professional",
+    "aiPersonalization": true
+  },
+  "job_profile": {
+    "name": "John Smith",
+    "email": "john.smith@email.com",
+    "phone": "+1 (555) 555-0128",
+    "location": "Dallas, TX",
+    "linkedin": "https://linkedin.com/in/johnsmith",
+    "experience": "5-8 Years",
+    "employmentType": "Both Contract & Full Time",
+    "rate": "$85/hr",
+    "visa": "H1B",
+    "workMode": "Hybrid"
+  },
+  "job_automation": {
+    "autoApply": true,
+    "matchThreshold": 75,
+    "maxApplications": 20,
+    "alerts": true,
+    "tailorCv": true,
+    "scheduleEnabled": true,
+    "scheduleLabel": "Every 2 hours between 08:00 and 18:00"
+  },
+  "search_config": {
+    "titles": ["Java Developer", "Spring Boot Engineer", "Backend Developer"],
+    "requiredSkills": ["Java", "Spring Boot", "Microservices"],
+    "optionalSkills": ["AWS", "Kubernetes", "Kafka"],
+    "location": "Texas + Remote",
+    "radius": "50 miles",
+    "filters": ["Easy Apply", "Posted in 24h", "Exclude staffing duplicates"]
+  },
+  "portal_items": [
+    {"name": "Dice", "url": "https://www.dice.com", "status": "Active"},
+    {"name": "Monster", "url": "https://www.monster.com", "status": "Active"},
+    {"name": "CareerBuilder", "url": "https://www.careerbuilder.com", "status": "Active"}
+  ],
+  "carrier_items": [
+    {"name": "Northwind Careers", "url": "https://northwind.example.com/careers"},
+    {"name": "Signal Forge Jobs", "url": "https://signalforge.example.com/jobs"}
+  ],
+  "day_report_rows": [
+    {"date": "2026-05-12", "recruiter": "Komal", "technology": "AI Engineer, DevOps", "linkedin": 26, "calls": 29, "sourced": 4, "marketing": 1, "notes": "Shortlisted three profiles for AI roles."},
+    {"date": "2026-05-12", "recruiter": "Sam", "technology": "Java Fullstack, Data Engineer", "linkedin": 22, "calls": 31, "sourced": 5, "marketing": 0, "notes": "Collected W2 resumes for two clients."},
+    {"date": "2026-05-13", "recruiter": "Komal", "technology": "Data Scientist", "linkedin": 30, "calls": 34, "sourced": 5, "marketing": 1, "notes": "One profile moved to final submission."},
+    {"date": "2026-05-13", "recruiter": "Parasuram", "technology": "Snowflake, Python", "linkedin": 18, "calls": 21, "sourced": 3, "marketing": 1, "notes": "Sourced strong C2C profile."},
+    {"date": "2026-05-14", "recruiter": "Sam", "technology": "Frontend, Salesforce", "linkedin": 24, "calls": 28, "sourced": 4, "marketing": 2, "notes": "Two profiles submitted to client carrier."},
+    {"date": "2026-05-14", "recruiter": "Chandrika", "technology": "SAP, AEM", "linkedin": 20, "calls": 19, "sourced": 2, "marketing": 1, "notes": "Focused on SAP EWM openings."},
+    {"date": "2026-05-15", "recruiter": "Komal", "technology": "GenAI, Data Engineer", "linkedin": 28, "calls": 33, "sourced": 6, "marketing": 1, "notes": "Bench list prepared for mass email."},
+    {"date": "2026-05-15", "recruiter": "Sam", "technology": "Java, Oracle", "linkedin": 21, "calls": 27, "sourced": 3, "marketing": 2, "notes": "Followed up on previous submissions."},
+    {"date": "2026-05-16", "recruiter": "Nan", "technology": "Weekend", "linkedin": null, "calls": null, "sourced": null, "marketing": null, "notes": "Weekend — no activity recorded."},
+    {"date": "2026-05-16", "recruiter": "Parasuram", "technology": "Network, Cyber Security", "linkedin": 17, "calls": 18, "sourced": 2, "marketing": 0, "notes": "Weekend prep for Monday run."},
+    {"date": "2026-05-16", "recruiter": "Komal", "technology": "Data Scientist, UI/UX", "linkedin": 32, "calls": 35, "sourced": 4, "marketing": 2, "notes": "UI/UX shortlist pushed to account managers."}
+  ],
+  "job_results": [
+    {"id": 1, "role": "Senior Java Developer", "company": "Northwind Systems", "location": "Dallas, TX", "type": "C2C", "posted": "2h ago", "match": 92, "hot": true, "skills": ["Java", "Spring Boot", "AWS"]},
+    {"id": 2, "role": "Data Engineer", "company": "Atlas Analytics", "location": "Austin, TX", "type": "W2", "posted": "5h ago", "match": 88, "hot": false, "skills": ["Python", "Snowflake", "Airflow"]},
+    {"id": 3, "role": "AI/ML Engineer", "company": "Signal Forge", "location": "Remote", "type": "C2H", "posted": "1d ago", "match": 90, "hot": true, "skills": ["Python", "LLM", "Azure"]},
+    {"id": 4, "role": "Frontend Developer", "company": "Lattice Digital", "location": "Irving, TX", "type": "Full Time", "posted": "3h ago", "match": 81, "hot": false, "skills": ["React", "TypeScript", "Design Systems"]}
+  ],
+  "linkedin_jobs": [
+    {"role": "Principal Data Engineer", "company": "BlueWave Tech", "location": "Remote", "easyApply": true, "applicants": 24, "insight": "3 shared connections"},
+    {"role": "Senior UI Engineer", "company": "Craft Pixel", "location": "Plano, TX", "easyApply": true, "applicants": 11, "insight": "Hiring manager active today"},
+    {"role": "MLOps Engineer", "company": "Vector Ridge", "location": "Hybrid - Houston", "easyApply": false, "applicants": 19, "insight": "Matched 7 core skills"}
+  ],
+  "applications": [
+    {"role": "Senior Java Developer", "company": "Northwind Systems", "status": "Interview", "stage": "Technical round", "updated": "2026-05-27", "action": "Share availability slots"},
+    {"role": "Data Engineer", "company": "Atlas Analytics", "status": "Applied", "stage": "Awaiting recruiter review", "updated": "2026-05-26", "action": "No action"},
+    {"role": "AI/ML Engineer", "company": "Signal Forge", "status": "Action Needed", "stage": "Resume tailoring requested", "updated": "2026-05-28", "action": "Upload revised CV"},
+    {"role": "Senior UI Engineer", "company": "Craft Pixel", "status": "Interview", "stage": "Manager discussion", "updated": "2026-05-25", "action": "Research panel members"}
+  ],
+  "submission_months": [
+    {"month": "2025-11", "submissions": 24},
+    {"month": "2025-12", "submissions": 28},
+    {"month": "2026-01", "submissions": 31},
+    {"month": "2026-02", "submissions": 34},
+    {"month": "2026-03", "submissions": 39},
+    {"month": "2026-04", "submissions": 42},
+    {"month": "2026-05", "submissions": 47}
+  ]
+}

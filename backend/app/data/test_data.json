@@ -1,0 +1,858 @@
+{
+  "campaign_contacts": [
+    {
+      "name": "Ava Harrison",
+      "email": "ava@orbitaltalent.com",
+      "company": "Orbital Talent",
+      "status": "Opened",
+      "list": "Priority Accounts"
+    },
+    {
+      "name": "Mason Reed",
+      "email": "mason@futureworks.io",
+      "company": "FutureWorks",
+      "status": "Queued",
+      "list": "C2C Buyers"
+    },
+    {
+      "name": "Nina Patel",
+      "email": "nina@talentbridge.co",
+      "company": "TalentBridge",
+      "status": "Sent",
+      "list": "Priority Accounts"
+    },
+    {
+      "name": "Lucas Kim",
+      "email": "lucas@northpeakstaffing.com",
+      "company": "NorthPeak Staffing",
+      "status": "Bounced",
+      "list": "Bench Sales"
+    },
+    {
+      "name": "Sofia Turner",
+      "email": "sofia@atlasplacements.com",
+      "company": "Atlas Placements",
+      "status": "Opened",
+      "list": "AI/ML Buyers"
+    },
+    {
+      "name": "Ethan Ross",
+      "email": "ethan@bridgehive.com",
+      "company": "BridgeHive",
+      "status": "Queued",
+      "list": "Java Buyer Deck"
+    }
+  ],
+  "campaign_templates": [
+    {
+      "name": "Java Hotlist Blast",
+      "category": "Hotlist",
+      "subject": "Available Java Developer | {{candidate_name}} | {{location}}",
+      "body": "Hi {{company_name}},<br/><br/>I am sharing {{candidate_name}}, a senior Java engineer with {{skills}} and immediate {{availability}}. The candidate is open for {{rate}} and can start quickly. Let me know if you want the profile and submission packet today.<br/><br/>Regards,<br/>{{recruiter_name}}"
+    },
+    {
+      "name": "Bench Sales Reintroduction",
+      "category": "Bench",
+      "subject": "Fresh C2C consultant update | {{candidate_name}}",
+      "body": "Hello {{company_name}},<br/><br/>Reintroducing {{candidate_name}} for active C2C opportunities. Core stack: {{skills}}. Current location: {{location}}. Visa: {{visa_status}}. Happy to share resume, RTR, and references on request.<br/><br/>Thanks,<br/>{{recruiter_name}}"
+    },
+    {
+      "name": "Follow-up Sequence",
+      "category": "Follow-up",
+      "subject": "Following up on {{candidate_name}}",
+      "body": "Hi {{company_name}},<br/><br/>Checking whether you had a chance to review {{candidate_name}}. The profile remains available and interested in relevant openings around {{location}}. I can send an updated hotlist and interview slots if helpful.<br/><br/>Best,<br/>{{recruiter_name}}"
+    }
+  ],
+  "campaign_lists": [
+    {
+      "name": "VIP Recruiters Q3",
+      "contacts": 0,
+      "openRate": 0,
+      "replyRate": 0
+    },
+    {
+      "name": "Priority Accounts",
+      "contacts": 42,
+      "openRate": 44,
+      "replyRate": 17
+    },
+    {
+      "name": "C2C Buyers",
+      "contacts": 31,
+      "openRate": 36,
+      "replyRate": 11
+    },
+    {
+      "name": "AI/ML Buyers",
+      "contacts": 18,
+      "openRate": 51,
+      "replyRate": 20
+    },
+    {
+      "name": "Bench Sales",
+      "contacts": 25,
+      "openRate": 29,
+      "replyRate": 8
+    }
+  ],
+  "campaign_items": [
+    {
+      "name": "May Talent Pulse - Southwest",
+      "sent": 2,
+      "opened": 1,
+      "replied": 0,
+      "status": "Sent",
+      "scheduledFor": "2026-06-15 09:00"
+    },
+    {
+      "name": "Q2 Senior Java Roles",
+      "sent": 3,
+      "opened": 1,
+      "replied": 0,
+      "status": "Scheduled",
+      "scheduledFor": "2026-06-15 09:00"
+    },
+    {
+      "name": "Q2 Tech Outreach",
+      "sent": 2,
+      "opened": 1,
+      "replied": 0,
+      "status": "Scheduled",
+      "scheduledFor": "2026-06-15 09:00"
+    },
+    {
+      "name": "Java Hotlist - Southwest",
+      "sent": 420,
+      "opened": 188,
+      "replied": 42,
+      "status": "Sent",
+      "scheduledFor": "2026-05-12 09:15"
+    },
+    {
+      "name": "Data/AI Bench Update",
+      "sent": 280,
+      "opened": 132,
+      "replied": 31,
+      "status": "Scheduled",
+      "scheduledFor": "2026-05-28 08:45"
+    },
+    {
+      "name": "Oracle + Snowflake Blend",
+      "sent": 196,
+      "opened": 74,
+      "replied": 19,
+      "status": "Draft",
+      "scheduledFor": "2026-05-29 11:30"
+    }
+  ],
+  "campaign_settings": {
+    "smtpHost": "smtp.gmail.com",
+    "smtpPort": 587,
+    "senderLimit": 100,
+    "smartWarmup": true,
+    "unsubscribeFooter": true,
+    "spamGuard": true,
+    "gmailSync": false,
+    "outlookSync": false,
+    "openTracking": true,
+    "aiSubjectAssist": true
+  },
+  "job_profile": {
+    "name": "John Smith",
+    "email": "john.smith@email.com",
+    "phone": "+1 (555) 555-0128",
+    "location": "Dallas, TX",
+    "linkedin": "https://linkedin.com/in/johnsmith",
+    "experience": "5-8 Years",
+    "employmentType": "Both Contract & Full Time",
+    "rate": "$85/hr",
+    "visa": "H1B",
+    "workMode": "Hybrid",
+    "jobTitles": [
+      "Senior Java Developer",
+      "Backend Engineer"
+    ],
+    "resumeFileName": "",
+    "resumeSummary": "",
+    "resumeSkills": [
+      "Java",
+      "Spring Boot",
+      "AWS",
+      "Python"
+    ]
+  },
+  "job_automation": {
+    "autoApply": false,
+    "matchThreshold": 70,
+    "maxApplications": 20,
+    "alerts": true,
+    "tailorCv": true,
+    "scheduleEnabled": true,
+    "scheduleLabel": "Every 2 hours between 08:00 and 18:00",
+    "scheduleTimezone": "America/New_York",
+    "scheduleTime": "09:00"
+  },
+  "search_config": {
+    "titles": [
+      "Java Developer",
+      "Spring Boot Engineer",
+      "Backend Developer",
+      "Python Developer",
+      "Data Engineer",
+      "Full Stack Developer",
+      "Ai Architect",
+      "Cloud Angels, Ai Architect | 02/2026 \u2013 Present",
+      "\u00b7 Client: Centrica \u2013 Ai Architect",
+      "Architectures, And Best Practices Across Enterprise Transformation Programs.",
+      "Envision Enterprise Solution, Enterprise Ai Architect 01/2023 \u2013 02/2026",
+      "Client: Otsi - Enterprise Ai Architect"
+    ],
+    "requiredSkills": [
+      "Java",
+      "Spring Boot",
+      "Microservices",
+      "Aws",
+      "Azure",
+      "Docker",
+      "Kubernetes",
+      "Langchain",
+      "Llm",
+      "Machine learning",
+      "Mlops",
+      "Python",
+      "Rest",
+      "Spring"
+    ],
+    "optionalSkills": [
+      "AWS",
+      "Kubernetes",
+      "Kafka"
+    ],
+    "location": "Texas + Remote",
+    "radius": "50 miles",
+    "filters": [
+      "Easy Apply",
+      "Posted in 24h",
+      "Exclude staffing duplicates"
+    ],
+    "excludeKeywords": [],
+    "employmentType": "Both",
+    "minMatchScore": 70,
+    "postedWithin": "7",
+    "experienceLevel": "Any",
+    "rateMin": "",
+    "rateMax": "",
+    "repeatEvery": "Once daily"
+  },
+  "saved_jobs": [
+    1
+  ],
+  "portal_items": [
+    {
+      "name": "Dice",
+      "url": "https://www.dice.com",
+      "status": "Active"
+    },
+    {
+      "name": "Monster",
+      "url": "https://www.monster.com",
+      "status": "Active"
+    },
+    {
+      "name": "CareerBuilder",
+      "url": "https://www.careerbuilder.com",
+      "status": "Active"
+    }
+  ],
+  "carrier_items": [
+    {
+      "name": "Northwind Careers",
+      "url": "https://northwind.example.com/careers",
+      "status": "Monitoring"
+    },
+    {
+      "name": "Signal Forge Jobs",
+      "url": "https://signalforge.example.com/jobs",
+      "status": "Monitoring"
+    }
+  ],
+  "day_report_rows": [
+    {
+      "date": "2026-05-12",
+      "recruiter": "Komal",
+      "technology": "AI Engineer, DevOps",
+      "linkedin": 26,
+      "calls": 29,
+      "sourced": 4,
+      "marketing": 1,
+      "notes": "Shortlisted three profiles for AI roles."
+    },
+    {
+      "date": "2026-05-12",
+      "recruiter": "Sam",
+      "technology": "Java Fullstack, Data Engineer",
+      "linkedin": 22,
+      "calls": 31,
+      "sourced": 5,
+      "marketing": 0,
+      "notes": "Collected W2 resumes for two clients."
+    },
+    {
+      "date": "2026-05-13",
+      "recruiter": "Komal",
+      "technology": "Data Scientist",
+      "linkedin": 30,
+      "calls": 34,
+      "sourced": 5,
+      "marketing": 1,
+      "notes": "One profile moved to final submission."
+    },
+    {
+      "date": "2026-05-13",
+      "recruiter": "Parasuram",
+      "technology": "Snowflake, Python",
+      "linkedin": 18,
+      "calls": 21,
+      "sourced": 3,
+      "marketing": 1,
+      "notes": "Sourced strong C2C profile."
+    },
+    {
+      "date": "2026-05-14",
+      "recruiter": "Sam",
+      "technology": "Frontend, Salesforce",
+      "linkedin": 24,
+      "calls": 28,
+      "sourced": 4,
+      "marketing": 2,
+      "notes": "Two profiles submitted to client carrier."
+    },
+    {
+      "date": "2026-05-14",
+      "recruiter": "Chandrika",
+      "technology": "SAP, AEM",
+      "linkedin": 20,
+      "calls": 19,
+      "sourced": 2,
+      "marketing": 1,
+      "notes": "Focused on SAP EWM openings."
+    },
+    {
+      "date": "2026-05-15",
+      "recruiter": "Komal",
+      "technology": "GenAI, Data Engineer",
+      "linkedin": 28,
+      "calls": 33,
+      "sourced": 6,
+      "marketing": 1,
+      "notes": "Bench list prepared for mass email."
+    },
+    {
+      "date": "2026-05-15",
+      "recruiter": "Sam",
+      "technology": "Java, Oracle",
+      "linkedin": 21,
+      "calls": 27,
+      "sourced": 3,
+      "marketing": 2,
+      "notes": "Followed up on previous submissions."
+    },
+    {
+      "date": "2026-05-16",
+      "recruiter": "Nan",
+      "technology": "Weekend",
+      "linkedin": null,
+      "calls": null,
+      "sourced": null,
+      "marketing": null,
+      "notes": "Weekend — no activity recorded."
+    },
+    {
+      "date": "2026-05-16",
+      "recruiter": "Parasuram",
+      "technology": "Network, Cyber Security",
+      "linkedin": 17,
+      "calls": 18,
+      "sourced": 2,
+      "marketing": 0,
+      "notes": "Weekend prep for Monday run."
+    },
+    {
+      "date": "2026-05-16",
+      "recruiter": "Komal",
+      "technology": "Data Scientist, UI/UX",
+      "linkedin": 32,
+      "calls": 35,
+      "sourced": 4,
+      "marketing": 2,
+      "notes": "UI/UX shortlist pushed to account managers."
+    },
+    {
+      "date": "2026-05-19",
+      "recruiter": "Komal",
+      "technology": "Java Developer, Spring Boot",
+      "linkedin": 29,
+      "calls": 36,
+      "sourced": 6,
+      "marketing": 2,
+      "notes": "Strong Java bench: 3 submitted to Infosys."
+    },
+    {
+      "date": "2026-05-19",
+      "recruiter": "Sam",
+      "technology": "Data Engineer, Snowflake",
+      "linkedin": 23,
+      "calls": 30,
+      "sourced": 4,
+      "marketing": 1,
+      "notes": "Sourced 4 Snowflake profiles for Atlas Analytics."
+    },
+    {
+      "date": "2026-05-20",
+      "recruiter": "Parasuram",
+      "technology": "AI/ML, LLM",
+      "linkedin": 21,
+      "calls": 26,
+      "sourced": 5,
+      "marketing": 3,
+      "notes": "GenAI demand spiking \u2014 ran targeted search."
+    },
+    {
+      "date": "2026-05-20",
+      "recruiter": "Chandrika",
+      "technology": "SAP, ABAP",
+      "linkedin": 18,
+      "calls": 22,
+      "sourced": 3,
+      "marketing": 1,
+      "notes": "SAP ABAP shortage \u2014 collected 3 fresh resumes."
+    },
+    {
+      "date": "2026-05-21",
+      "recruiter": "Komal",
+      "technology": "DevOps, Kubernetes",
+      "linkedin": 31,
+      "calls": 38,
+      "sourced": 7,
+      "marketing": 2,
+      "notes": "DevOps profiles mass emailed to Cognizant contacts."
+    },
+    {
+      "date": "2026-05-21",
+      "recruiter": "Sam",
+      "technology": "React, TypeScript",
+      "linkedin": 25,
+      "calls": 29,
+      "sourced": 4,
+      "marketing": 2,
+      "notes": "Frontend profiles submitted to Lattice Digital."
+    },
+    {
+      "date": "2026-05-22",
+      "recruiter": "Parasuram",
+      "technology": "Azure, Cloud Architect",
+      "linkedin": 20,
+      "calls": 24,
+      "sourced": 4,
+      "marketing": 1,
+      "notes": "Azure cloud architect search completed."
+    },
+    {
+      "date": "2026-05-22",
+      "recruiter": "Komal",
+      "technology": "Python, FastAPI",
+      "linkedin": 27,
+      "calls": 33,
+      "sourced": 5,
+      "marketing": 2,
+      "notes": "Python backend bench refreshed \u2014 top 5 profiled."
+    },
+    {
+      "date": "2026-05-23",
+      "recruiter": "Chandrika",
+      "technology": "Salesforce, CRM",
+      "linkedin": 19,
+      "calls": 23,
+      "sourced": 3,
+      "marketing": 1,
+      "notes": "Salesforce demand from mid-size clients."
+    },
+    {
+      "date": "2026-05-23",
+      "recruiter": "Sam",
+      "technology": "Full Stack, Node.js",
+      "linkedin": 24,
+      "calls": 31,
+      "sourced": 5,
+      "marketing": 3,
+      "notes": "Node.js full stack profiles submitted to TCS."
+    }
+  ],
+  "job_results": [
+    {
+      "id": 1,
+      "role": "Senior Java Developer",
+      "company": "Northwind Systems",
+      "location": "Dallas, TX",
+      "type": "C2C",
+      "posted": "2",
+      "rate": "$85\u201395/hr",
+      "match": 92,
+      "hot": true,
+      "skills": [
+        "Java",
+        "Spring Boot",
+        "AWS"
+      ],
+      "portalName": "Dice",
+      "portalUrl": "https://www.dice.com",
+      "sourceUrl": "https://www.dice.com/jobs/1",
+      "description": "Senior Java Developer at Northwind Systems in Dallas, TX. Skills: Java, Spring Boot, AWS. Type: C2C."
+    },
+    {
+      "id": 2,
+      "role": "Data Engineer",
+      "company": "Atlas Analytics",
+      "location": "Austin, TX",
+      "type": "W2",
+      "posted": "5",
+      "rate": "$80\u201390/hr",
+      "match": 88,
+      "hot": false,
+      "skills": [
+        "Python",
+        "Snowflake",
+        "Airflow"
+      ],
+      "portalName": "Monster",
+      "portalUrl": "https://www.monster.com",
+      "sourceUrl": "https://www.monster.com/jobs/2",
+      "description": "Data Engineer at Atlas Analytics in Austin, TX. Skills: Python, Snowflake, Airflow. Type: W2."
+    },
+    {
+      "id": 3,
+      "role": "AI/ML Engineer",
+      "company": "Signal Forge",
+      "location": "Remote",
+      "type": "C2H",
+      "posted": "24",
+      "rate": "$90\u2013105/hr",
+      "match": 90,
+      "hot": true,
+      "skills": [
+        "Python",
+        "LLM",
+        "Azure"
+      ],
+      "portalName": "CareerBuilder",
+      "portalUrl": "https://www.careerbuilder.com",
+      "sourceUrl": "https://www.careerbuilder.com/jobs/3",
+      "description": "AI/ML Engineer at Signal Forge in Remote. Skills: Python, LLM, Azure. Type: C2H."
+    },
+    {
+      "id": 4,
+      "role": "Frontend Developer",
+      "company": "Lattice Digital",
+      "location": "Irving, TX",
+      "type": "Full Time",
+      "posted": "3",
+      "rate": "$115,000/yr",
+      "match": 81,
+      "hot": false,
+      "skills": [
+        "React",
+        "TypeScript",
+        "Design Systems"
+      ],
+      "portalName": "Dice",
+      "portalUrl": "https://www.dice.com",
+      "sourceUrl": "https://www.dice.com/jobs/4",
+      "description": "Frontend Developer at Lattice Digital in Irving, TX. Skills: React, TypeScript, Design Systems. Type: Full Time."
+    },
+    {
+      "id": 5,
+      "role": "Java Microservices Architect",
+      "company": "Innovate Tech",
+      "location": "New York, NY",
+      "type": "C2C",
+      "posted": "3",
+      "rate": "$100\u2013115/hr",
+      "match": 79,
+      "hot": true,
+      "skills": [
+        "Java",
+        "Microservices",
+        "Kafka",
+        "Docker"
+      ],
+      "portalName": "Monster",
+      "portalUrl": "https://www.monster.com",
+      "sourceUrl": "https://www.monster.com/jobs/5",
+      "description": "Java Microservices Architect at Innovate Tech in New York, NY. Skills: Java, Microservices, Kafka, Docker. Type: C2C."
+    },
+    {
+      "id": 6,
+      "role": "Full Stack Java Developer",
+      "company": "Digital Labs",
+      "location": "Chicago, IL",
+      "type": "Full Time",
+      "posted": "6",
+      "rate": "$120,000/yr",
+      "match": 74,
+      "hot": false,
+      "skills": [
+        "Java",
+        "React",
+        "Spring",
+        "MongoDB"
+      ],
+      "portalName": "CareerBuilder",
+      "portalUrl": "https://www.careerbuilder.com",
+      "sourceUrl": "https://www.careerbuilder.com/jobs/6",
+      "description": "Full Stack Java Developer at Digital Labs in Chicago, IL. Skills: Java, React, Spring, MongoDB. Type: Full Time."
+    }
+  ],
+  "linkedin_jobs": [
+    {
+      "role": "Principal Data Engineer",
+      "company": "BlueWave Tech",
+      "location": "Remote",
+      "type": "Contract",
+      "posted": "3h ago",
+      "match": 89,
+      "easyApply": true,
+      "applicants": 24,
+      "insight": "3 shared connections",
+      "linkedinUrl": "https://www.linkedin.com/jobs/view/824218209",
+      "experienceLevel": "senior",
+      "datePosted": "3h ago"
+    },
+    {
+      "role": "Senior UI Engineer",
+      "company": "Craft Pixel",
+      "location": "Plano, TX",
+      "type": "Full Time",
+      "posted": "1d ago",
+      "match": 84,
+      "easyApply": true,
+      "applicants": 11,
+      "insight": "Hiring manager active today",
+      "linkedinUrl": "https://www.linkedin.com/jobs/view/354919019",
+      "experienceLevel": "senior",
+      "datePosted": "1d ago"
+    },
+    {
+      "role": "MLOps Engineer",
+      "company": "Vector Ridge",
+      "location": "Hybrid \u2013 Houston",
+      "type": "Contract",
+      "posted": "5h ago",
+      "match": 76,
+      "easyApply": false,
+      "applicants": 19,
+      "insight": "Matched 7 core skills",
+      "linkedinUrl": "https://www.linkedin.com/jobs/view/836174526",
+      "experienceLevel": "mid",
+      "datePosted": "5h ago"
+    },
+    {
+      "role": "Senior Java Developer",
+      "company": "Infosys",
+      "location": "Dallas, TX",
+      "type": "Contract",
+      "posted": "3h ago",
+      "match": 91,
+      "easyApply": true,
+      "applicants": 47,
+      "insight": "Your profile is a strong match",
+      "linkedinUrl": "https://www.linkedin.com/jobs/view/567922602",
+      "experienceLevel": "senior",
+      "datePosted": "3h ago"
+    },
+    {
+      "role": "Java Spring Boot Engineer",
+      "company": "Cognizant",
+      "location": "Austin, TX",
+      "type": "Contract",
+      "posted": "1d ago",
+      "match": 86,
+      "easyApply": false,
+      "applicants": 123,
+      "insight": "3 connections work here",
+      "linkedinUrl": "https://www.linkedin.com/jobs/view/576120162",
+      "experienceLevel": "mid",
+      "datePosted": "1d ago"
+    },
+    {
+      "role": "Backend Java Architect",
+      "company": "Capgemini",
+      "location": "New York, NY",
+      "type": "Contract",
+      "posted": "5h ago",
+      "match": 78,
+      "easyApply": true,
+      "applicants": 28,
+      "insight": "New job \u2014 be an early applicant!",
+      "linkedinUrl": "https://www.linkedin.com/jobs/view/863768532",
+      "experienceLevel": "mid",
+      "datePosted": "5h ago"
+    }
+  ],
+  "applications": [
+    {
+      "role": "Data Engineer",
+      "company": "Atlas Analytics",
+      "status": "Applied",
+      "stage": "Application submitted from test endpoint",
+      "updated": "2026-06-03",
+      "action": "Await recruiter response",
+      "portal": "Dice",
+      "date": "2026-06-03",
+      "match": 88,
+      "postingUrl": "https://www.monster.com/jobs/2"
+    },
+    {
+      "role": "Senior Java Developer",
+      "company": "Northwind Systems",
+      "status": "Applied",
+      "stage": "Application submitted from test endpoint",
+      "updated": "2026-06-03",
+      "action": "Await recruiter response",
+      "portal": "Monster",
+      "date": "2026-06-03",
+      "match": 92,
+      "postingUrl": "https://www.dice.com/jobs/1"
+    },
+    {
+      "role": "Senior Java Developer",
+      "company": "Northwind Systems",
+      "status": "Interview",
+      "stage": "Technical round",
+      "updated": "2026-05-27",
+      "action": "Share availability slots",
+      "portal": "Monster",
+      "date": "2026-05-27",
+      "match": 92,
+      "postingUrl": "https://www.dice.com/jobs/1"
+    },
+    {
+      "role": "Data Engineer",
+      "company": "Atlas Analytics",
+      "status": "Applied",
+      "stage": "Awaiting recruiter review",
+      "updated": "2026-05-26",
+      "action": "No action",
+      "portal": "Dice",
+      "date": "2026-05-26",
+      "match": 88,
+      "postingUrl": "https://www.monster.com/jobs/2"
+    },
+    {
+      "role": "AI/ML Engineer",
+      "company": "Signal Forge",
+      "status": "Action Needed",
+      "stage": "Resume tailoring requested",
+      "updated": "2026-05-28",
+      "action": "Upload revised CV",
+      "portal": "CareerBuilder",
+      "date": "2026-05-28",
+      "match": 90,
+      "postingUrl": "https://www.careerbuilder.com/jobs/3"
+    },
+    {
+      "role": "Senior UI Engineer",
+      "company": "Craft Pixel",
+      "status": "Interview",
+      "stage": "Manager discussion",
+      "updated": "2026-05-25",
+      "action": "Research panel members",
+      "portal": "LinkedIn",
+      "date": "2026-05-25",
+      "match": null,
+      "postingUrl": ""
+    },
+    {
+      "role": "Cloud Architect",
+      "company": "Blue Ridge Cloud",
+      "status": "Rejected",
+      "stage": "Position filled",
+      "updated": "2026-05-20",
+      "date": "2026-05-18",
+      "action": "Archive and move on",
+      "portal": "Dice",
+      "match": 68,
+      "postingUrl": "https://www.dice.com/jobs/cloud-architect"
+    }
+  ],
+  "submission_months": [
+    {
+      "month": "2025-01",
+      "submissions": 18
+    },
+    {
+      "month": "2025-02",
+      "submissions": 21
+    },
+    {
+      "month": "2025-03",
+      "submissions": 25
+    },
+    {
+      "month": "2025-04",
+      "submissions": 22
+    },
+    {
+      "month": "2025-05",
+      "submissions": 27
+    },
+    {
+      "month": "2025-06",
+      "submissions": 30
+    },
+    {
+      "month": "2025-07",
+      "submissions": 28
+    },
+    {
+      "month": "2025-08",
+      "submissions": 26
+    },
+    {
+      "month": "2025-09",
+      "submissions": 32
+    },
+    {
+      "month": "2025-10",
+      "submissions": 29
+    },
+    {
+      "month": "2025-11",
+      "submissions": 24
+    },
+    {
+      "month": "2025-12",
+      "submissions": 28
+    },
+    {
+      "month": "2026-01",
+      "submissions": 31
+    },
+    {
+      "month": "2026-02",
+      "submissions": 34
+    },
+    {
+      "month": "2026-03",
+      "submissions": 39
+    },
+    {
+      "month": "2026-04",
+      "submissions": 42
+    },
+    {
+      "month": "2026-05",
+      "submissions": 47
+    }
+  ],
+  "tailored_resumes": {}
+}

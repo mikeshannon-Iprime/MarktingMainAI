@@ -1,0 +1,934 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f5f5f0;color:#111827;font-size:14px;line-height:1.5}
+
+.topbar{background:#0f2044;padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:9px;color:#fff}
+.logo-box{width:30px;height:30px;background:#2563eb;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff}
+.logo-name{font-size:15px;font-weight:600}
+.logo-sub{font-size:10px;color:#93b4e0}
+.badge-live{background:#10b981;color:#fff;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600}
+
+.nav{display:flex;background:#fff;border-bottom:1px solid #e5e7eb;padding:0 14px;gap:0;overflow-x:auto}
+.nav-tab{padding:11px 13px;font-size:12px;font-weight:500;color:#6b7280;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.15s;display:flex;align-items:center;gap:5px}
+.nav-tab:hover{color:#1d4ed8;background:#f0f5ff}
+.nav-tab.active{color:#1d4ed8;border-bottom-color:#1d4ed8;background:#f0f5ff}
+.nav-tab .ti{font-size:14px}
+.nbadge{background:#dbeafe;color:#1d4ed8;font-size:10px;padding:1px 5px;border-radius:8px;font-weight:600}
+.nbadge.g{background:#d1fae5;color:#065f46}
+.nbadge.r{background:#fee2e2;color:#991b1b}
+.nbadge.o{background:#fef3c7;color:#92400e}
+
+.content{padding:14px}
+.panel{display:none}.panel.active{display:block}
+
+.card{background:#fff;border:0.5px solid #e5e7eb;border-radius:11px;padding:14px;margin-bottom:12px}
+.card-title{font-size:12px;font-weight:600;color:#374151;margin-bottom:11px;display:flex;align-items:center;gap:5px}
+.card-title .ti{font-size:15px;color:#2563eb}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+@media(max-width:580px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+
+label{font-size:11px;font-weight:500;color:#6b7280;display:block;margin-bottom:3px}
+input,select,textarea{width:100%;padding:7px 9px;border:1px solid #d1d5db;border-radius:6px;font-size:13px;color:#111827;background:#fff;outline:none;transition:border 0.15s;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,0.1)}
+textarea{resize:vertical}
+.fg{margin-bottom:10px}
+
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;border:none;transition:all 0.15s}
+.btn-primary{background:#1d4ed8;color:#fff}.btn-primary:hover{background:#1e40af}
+.btn-secondary{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}.btn-secondary:hover{background:#e5e7eb}
+.btn-success{background:#059669;color:#fff}.btn-success:hover{background:#047857}
+.btn-danger{background:#dc2626;color:#fff}
+.btn-warning{background:#d97706;color:#fff}
+.btn-ghost{background:transparent;color:#1d4ed8;border:1px solid #bfdbfe}.btn-ghost:hover{background:#eff6ff}
+.btn-purple{background:#7c3aed;color:#fff}.btn-purple:hover{background:#6d28d9}
+.btn-sm{padding:5px 9px;font-size:11px}
+.btn-xs{padding:3px 7px;font-size:11px}
+.btn-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+
+.stat-card{background:#fff;border:0.5px solid #e5e7eb;border-radius:9px;padding:11px;text-align:center}
+.stat-num{font-size:20px;font-weight:700;color:#1d4ed8}
+.stat-label{font-size:10px;color:#9ca3af;margin-top:1px}
+
+.upload-zone{border:2px dashed #93c5fd;border-radius:9px;padding:18px;text-align:center;cursor:pointer;background:#f0f7ff;transition:all 0.2s}
+.upload-zone:hover{border-color:#2563eb;background:#dbeafe}
+.upload-zone .ti{font-size:26px;color:#3b82f6;display:block;margin-bottom:5px}
+.upload-zone p{font-size:11px;color:#6b7280}
+.upload-zone strong{color:#1d4ed8;font-size:12px}
+
+.file-item{display:flex;align-items:center;gap:7px;padding:5px 9px;background:#f9fafb;border:0.5px solid #e5e7eb;border-radius:6px;margin-bottom:3px;font-size:11px;color:#374151}
+
+.contact-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border:0.5px solid #e5e7eb;border-radius:7px;margin-bottom:5px;font-size:12px;transition:background 0.1s}
+.contact-row:hover{background:#f9fafb}
+.contact-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.contact-name{font-weight:500;color:#111827;flex:1}
+.contact-email{font-size:11px;color:#6b7280}
+.contact-co{font-size:11px;color:#4b5563}
+.status-pill{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.sp-queued{background:#dbeafe;color:#1e40af}
+.sp-sent{background:#d1fae5;color:#065f46}
+.sp-opened{background:#fef3c7;color:#92400e}
+.sp-bounced{background:#fee2e2;color:#991b1b}
+
+.toolbar{display:flex;gap:3px;flex-wrap:wrap;padding:7px;border:1px solid #e5e7eb;border-radius:7px 7px 0 0;border-bottom:none;background:#f9fafb}
+.tb-btn{padding:4px 7px;border-radius:4px;border:1px solid transparent;cursor:pointer;font-size:12px;color:#374151;background:transparent;display:flex;align-items:center;gap:3px;font-weight:500}
+.tb-btn:hover{background:#e5e7eb;border-color:#d1d5db}
+.tb-btn.active{background:#dbeafe;color:#1e40af;border-color:#bfdbfe}
+.tb-divider{width:1px;background:#d1d5db;margin:2px 3px;align-self:stretch}
+.rich-area{border:1px solid #d1d5db;border-radius:0 0 7px 7px;min-height:160px;padding:10px;font-size:13px;line-height:1.6;outline:none;background:#fff;color:#111827}
+.rich-area:focus{border-color:#2563eb}
+
+.ai-panel{background:#f5f0ff;border:1px solid #c4b5fd;border-radius:9px;padding:12px;margin-bottom:10px}
+.ai-panel-title{font-size:12px;font-weight:600;color:#5b21b6;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.ai-prompt-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd;margin:2px;transition:all 0.15s}
+.ai-prompt-chip:hover{background:#ddd6fe;color:#4c1d95}
+.ai-generating{display:none;align-items:center;gap:8px;padding:8px;background:#fff;border-radius:7px;font-size:12px;color:#5b21b6;margin-top:8px}
+.ai-generating.show{display:flex}
+
+.spinner{display:inline-block;width:13px;height:13px;border:2px solid rgba(124,58,237,0.3);border-top-color:#7c3aed;border-radius:50%;animation:spin 0.6s linear infinite;vertical-align:-2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.campaign-card{background:#fff;border:0.5px solid #e5e7eb;border-radius:9px;padding:12px;margin-bottom:8px;transition:all 0.15s}
+.campaign-card:hover{border-color:#93c5fd}
+.campaign-name{font-size:13px;font-weight:600;color:#111827}
+.campaign-meta{font-size:11px;color:#9ca3af;margin-top:2px}
+.progress-bar{height:4px;background:#e5e7eb;border-radius:2px;margin:7px 0}
+.progress-fill{height:100%;border-radius:2px;background:#2563eb}
+
+.sub-tabs{display:flex;gap:2px;background:#f3f4f6;border-radius:7px;padding:3px;margin-bottom:12px}
+.sub-tab{flex:1;padding:5px;text-align:center;font-size:11px;font-weight:500;color:#6b7280;cursor:pointer;border-radius:5px;transition:all 0.15s}
+.sub-tab.active{background:#fff;color:#1d4ed8;box-shadow:0 1px 2px rgba(0,0,0,0.07)}
+
+.merge-tag{display:inline-flex;align-items:center;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;cursor:pointer;background:#fef3c7;color:#92400e;border:1px solid #fde68a;margin:2px}
+.merge-tag:hover{background:#fde68a}
+
+.toggle{width:34px;height:19px;background:#d1d5db;border-radius:10px;cursor:pointer;position:relative;transition:background 0.2s;flex-shrink:0}
+.toggle.on{background:#2563eb}
+.toggle::after{content:'';position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left 0.2s}
+.toggle.on::after{left:17px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid #f3f4f6}
+.toggle-row:last-child{border-bottom:none}
+
+.toast{position:fixed;bottom:16px;right:16px;padding:9px 14px;border-radius:8px;font-size:12px;z-index:999;display:flex;align-items:center;gap:7px;transform:translateY(80px);opacity:0;transition:all 0.3s;background:#111827;color:#fff}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:#065f46}
+.toast.purple{background:#5b21b6}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:2px}
+</style>
+
+<div style="background:#0f2044;padding:10px 18px;display:flex;align-items:center;justify-content:space-between">
+  <div style="display:flex;align-items:center;gap:9px;color:#fff">
+    <div style="width:30px;height:30px;background:#2563eb;border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff">JS</div>
+    <div><div style="font-size:15px;font-weight:600">JobSync Pro</div><div style="font-size:10px;color:#93b4e0">IT Staffing Automation Platform</div></div>
+  </div>
+  <span style="background:#10b981;color:#fff;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600">● LIVE</span>
+</div>
+
+<div class="nav" id="mainNav">
+  <div class="nav-tab" onclick="switchPanel('profile')"><i class="ti ti-user-circle"></i> Profile</div>
+  <div class="nav-tab" onclick="switchPanel('search')"><i class="ti ti-search"></i> Job Search</div>
+  <div class="nav-tab" onclick="switchPanel('portals')"><i class="ti ti-world"></i> Portals</div>
+  <div class="nav-tab" onclick="switchPanel('results')"><i class="ti ti-list-check"></i> Results <span class="nbadge g">18</span></div>
+  <div class="nav-tab" onclick="switchPanel('analyzer')"><i class="ti ti-chart-line"></i> CV Analyzer</div>
+  <div class="nav-tab" onclick="switchPanel('linkedin')"><i class="ti ti-brand-linkedin"></i> LinkedIn</div>
+  <div class="nav-tab" onclick="switchPanel('tracker')"><i class="ti ti-clipboard-check"></i> Tracker</div>
+  <div class="nav-tab active" data-panel="campaigns" onclick="switchPanel('campaigns')"><i class="ti ti-mail-forward"></i> Campaigns <span class="nbadge o">New</span></div>
+</div>
+
+<div class="content">
+
+  <!-- PLACEHOLDER PANELS -->
+  <div class="panel" id="panel-profile"><div class="card" style="text-align:center;padding:30px;color:#9ca3af"><i class="ti ti-user-circle" style="font-size:36px;display:block;margin-bottom:8px"></i>Profile panel — switch to Campaigns tab to see new feature</div></div>
+  <div class="panel" id="panel-search"><div class="card" style="text-align:center;padding:30px;color:#9ca3af"><i class="ti ti-search" style="font-size:36px;display:block;margin-bottom:8px"></i>Job Search panel</div></div>
+  <div class="panel" id="panel-portals"><div class="card" style="text-align:center;padding:30px;color:#9ca3af"><i class="ti ti-world" style="font-size:36px;display:block;margin-bottom:8px"></i>Portals panel</div></div>
+  <div class="panel" id="panel-results"><div class="card" style="text-align:center;padding:30px;color:#9ca3af"><i class="ti ti-list-check" style="font-size:36px;display:block;margin-bottom:8px"></i>Results panel</div></div>
+  <div class="panel" id="panel-analyzer"><div class="card" style="text-align:center;padding:30px;color:#9ca3af"><i class="ti ti-chart-line" style="font-size:36px;display:block;margin-bottom:8px"></i>CV Analyzer panel</div></div>
+  <div class="panel" id="panel-linkedin"><div class="card" style="text-align:center;padding:30px;color:#9ca3af"><i class="ti ti-brand-linkedin" style="font-size:36px;display:block;margin-bottom:8px"></i>LinkedIn panel</div></div>
+  <div class="panel" id="panel-tracker"><div class="card" style="text-align:center;padding:30px;color:#9ca3af"><i class="ti ti-clipboard-check" style="font-size:36px;display:block;margin-bottom:8px"></i>Tracker panel</div></div>
+
+  <!-- ======================== CAMPAIGNS PANEL ======================== -->
+  <div class="panel active" id="panel-campaigns">
+
+    <!-- Stats Row -->
+    <div class="grid4" style="margin-bottom:13px">
+      <div class="stat-card"><div class="stat-num" id="st-sent">1,284</div><div class="stat-label">Emails Sent</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#059669" id="st-open">38%</div><div class="stat-label">Open Rate</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#d97706" id="st-reply">12%</div><div class="stat-label">Reply Rate</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:#dc2626" id="st-bounce">2%</div><div class="stat-label">Bounce Rate</div></div>
+    </div>
+
+    <!-- Sub-tabs -->
+    <div class="sub-tabs">
+      <div class="sub-tab active" onclick="switchSub(this,'sub-compose')"><i class="ti ti-edit" style="font-size:12px"></i> Compose</div>
+      <div class="sub-tab" onclick="switchSub(this,'sub-contacts')"><i class="ti ti-users" style="font-size:12px"></i> Contacts</div>
+      <div class="sub-tab" onclick="switchSub(this,'sub-campaigns')"><i class="ti ti-send" style="font-size:12px"></i> Campaigns</div>
+      <div class="sub-tab" onclick="switchSub(this,'sub-templates')"><i class="ti ti-template" style="font-size:12px"></i> Templates</div>
+      <div class="sub-tab" onclick="switchSub(this,'sub-settings')"><i class="ti ti-settings" style="font-size:12px"></i> Settings</div>
+    </div>
+
+    <!-- ── COMPOSE SUB-TAB ── -->
+    <div id="sub-compose">
+      <div class="grid2">
+        <!-- LEFT: Email Composer -->
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-mail"></i> Email Composer</div>
+
+            <div class="fg"><label>Campaign Name</label><input type="text" id="campName" placeholder="e.g. Java Hotlist — May 2025" value="Java Hotlist — May 2025"></div>
+
+            <div class="fg"><label>From Name & Email</label>
+              <div style="display:flex;gap:6px">
+                <input type="text" placeholder="Your Name" value="Sarah Mitchell" style="flex:1">
+                <input type="email" placeholder="from@domain.com" value="sarah@techstaff.com" style="flex:1">
+              </div>
+            </div>
+
+            <div class="fg"><label>Reply-To Email</label><input type="email" value="recruiter@techstaff.com"></div>
+
+            <div class="fg">
+              <label>Subject Line</label>
+              <div style="display:flex;gap:5px">
+                <input type="text" id="subjectLine" value="🔥 Available Java Developer | C2C | {{candidate_name}} | {{location}}" style="flex:1">
+                <button class="btn btn-ghost btn-sm" onclick="aiSubject()" title="AI generate subject"><i class="ti ti-sparkles"></i></button>
+              </div>
+            </div>
+
+            <div class="fg">
+              <label>Merge Tags — click to insert</label>
+              <div style="margin-bottom:7px">
+                <span class="merge-tag" onclick="insertMerge('{{recruiter_name}}')">{{recruiter_name}}</span>
+                <span class="merge-tag" onclick="insertMerge('{{candidate_name}}')">{{candidate_name}}</span>
+                <span class="merge-tag" onclick="insertMerge('{{skills}}')">{{skills}}</span>
+                <span class="merge-tag" onclick="insertMerge('{{location}}')">{{location}}</span>
+                <span class="merge-tag" onclick="insertMerge('{{rate}}')">{{rate}}</span>
+                <span class="merge-tag" onclick="insertMerge('{{availability}}')">{{availability}}</span>
+                <span class="merge-tag" onclick="insertMerge('{{visa_status}}')">{{visa_status}}</span>
+                <span class="merge-tag" onclick="insertMerge('{{company_name}}')">{{company_name}}</span>
+              </div>
+            </div>
+
+            <div class="fg">
+              <label>Email Body</label>
+              <div class="toolbar">
+                <button class="tb-btn" onclick="fmt('bold')" title="Bold"><i class="ti ti-bold" style="font-size:13px"></i></button>
+                <button class="tb-btn" onclick="fmt('italic')" title="Italic"><i class="ti ti-italic" style="font-size:13px"></i></button>
+                <button class="tb-btn" onclick="fmt('underline')" title="Underline"><i class="ti ti-underline" style="font-size:13px"></i></button>
+                <div class="tb-divider"></div>
+                <button class="tb-btn" onclick="fmt('insertUnorderedList')" title="Bullet list"><i class="ti ti-list" style="font-size:13px"></i></button>
+                <button class="tb-btn" onclick="fmt('insertOrderedList')" title="Numbered list"><i class="ti ti-list-numbers" style="font-size:13px"></i></button>
+                <div class="tb-divider"></div>
+                <button class="tb-btn" onclick="insertLink()" title="Insert link"><i class="ti ti-link" style="font-size:13px"></i></button>
+                <button class="tb-btn" onclick="insertTable()" title="Insert table"><i class="ti ti-table" style="font-size:13px"></i></button>
+                <button class="tb-btn" onclick="insertHr()" title="Divider"><i class="ti ti-separator" style="font-size:13px"></i></button>
+                <div class="tb-divider"></div>
+                <select onchange="fmt('fontSize',this.value);this.value=''" style="width:auto;padding:3px 6px;font-size:11px;border-radius:4px;border:1px solid #d1d5db;background:#fff">
+                  <option value="">Size</option>
+                  <option value="1">Small</option>
+                  <option value="3">Normal</option>
+                  <option value="5">Large</option>
+                </select>
+                <select onchange="fmt('foreColor',this.value);this.value=''" style="width:auto;padding:3px 6px;font-size:11px;border-radius:4px;border:1px solid #d1d5db;background:#fff">
+                  <option value="">Color</option>
+                  <option value="#1d4ed8">Blue</option>
+                  <option value="#059669">Green</option>
+                  <option value="#dc2626">Red</option>
+                  <option value="#d97706">Amber</option>
+                  <option value="#111827">Black</option>
+                </select>
+                <div class="tb-divider"></div>
+                <button class="tb-btn" onclick="clearBody()" title="Clear"><i class="ti ti-eraser" style="font-size:13px"></i></button>
+                <button class="tb-btn" onclick="copyBody()" title="Copy"><i class="ti ti-copy" style="font-size:13px"></i></button>
+              </div>
+              <div class="rich-area" id="emailBody" contenteditable="true"></div>
+            </div>
+
+            <div class="fg">
+              <label>Attachments (hotlist, resume)</label>
+              <div class="upload-zone" style="padding:10px" onclick="document.getElementById('attFile').click()">
+                <i class="ti ti-paperclip" style="font-size:18px;color:#6b7280;display:inline"></i>
+                <span style="font-size:12px;color:#6b7280;margin-left:6px">Attach hotlist PDF / Resume / Excel</span>
+              </div>
+              <input type="file" id="attFile" style="display:none" multiple onchange="handleAttach(this)">
+              <div id="attList"></div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-secondary btn-sm" onclick="previewEmail()"><i class="ti ti-eye"></i> Preview</button>
+              <button class="btn btn-secondary btn-sm" onclick="sendTest()"><i class="ti ti-send"></i> Send Test</button>
+              <button class="btn btn-warning btn-sm" onclick="saveDraft()"><i class="ti ti-device-floppy"></i> Save Draft</button>
+              <button class="btn btn-primary" onclick="openScheduler()"><i class="ti ti-calendar"></i> Schedule / Send</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: AI + Contacts -->
+        <div>
+
+          <!-- AI Drafting -->
+          <div class="ai-panel">
+            <div class="ai-panel-title"><i class="ti ti-sparkles" style="font-size:14px"></i> AI Email Drafter — Powered by Claude</div>
+            <div class="fg">
+              <label style="color:#5b21b6">Describe what you want to send</label>
+              <textarea id="aiPromptInput" rows="3" placeholder="e.g. Write a hotlist email for a Senior Java Developer on C2C, 8 years experience, available immediately in Dallas TX, skills: Spring Boot, AWS, Kubernetes. Tone: professional and concise." style="border-color:#c4b5fd;background:#faf5ff;color:#111827"></textarea>
+            </div>
+
+            <div style="margin-bottom:8px">
+              <div style="font-size:11px;font-weight:600;color:#5b21b6;margin-bottom:5px">Quick prompts — click to use</div>
+              <span class="ai-prompt-chip" onclick="setPrompt('hotlist')"><i class="ti ti-bolt" style="font-size:12px"></i> Hotlist blast</span>
+              <span class="ai-prompt-chip" onclick="setPrompt('intro')"><i class="ti ti-user-check" style="font-size:12px"></i> Candidate intro</span>
+              <span class="ai-prompt-chip" onclick="setPrompt('followup')"><i class="ti ti-refresh" style="font-size:12px"></i> Follow-up</span>
+              <span class="ai-prompt-chip" onclick="setPrompt('urgent')"><i class="ti ti-alarm" style="font-size:12px"></i> Urgent placement</span>
+              <span class="ai-prompt-chip" onclick="setPrompt('bench')"><i class="ti ti-users" style="font-size:12px"></i> Bench sales</span>
+              <span class="ai-prompt-chip" onclick="setPrompt('reintro')"><i class="ti ti-rotate" style="font-size:12px"></i> Re-introduction</span>
+              <span class="ai-prompt-chip" onclick="setPrompt('rate')"><i class="ti ti-currency-dollar" style="font-size:12px"></i> Rate negotiation</span>
+              <span class="ai-prompt-chip" onclick="setPrompt('availability')"><i class="ti ti-calendar-check" style="font-size:12px"></i> Availability update</span>
+            </div>
+
+            <div style="display:flex;gap:6px;align-items:center">
+              <select id="aiTone" style="flex:1;font-size:12px;padding:6px 8px">
+                <option value="professional">Tone: Professional</option>
+                <option value="concise">Tone: Concise & Direct</option>
+                <option value="friendly">Tone: Friendly & Warm</option>
+                <option value="urgent">Tone: Urgent</option>
+                <option value="formal">Tone: Formal</option>
+              </select>
+              <select id="aiLength" style="flex:1;font-size:12px;padding:6px 8px">
+                <option value="short">Length: Short (3-4 lines)</option>
+                <option value="medium" selected>Length: Medium</option>
+                <option value="long">Length: Detailed</option>
+              </select>
+            </div>
+
+            <div class="ai-generating" id="aiGenerating">
+              <span class="spinner"></span>
+              <span id="aiStatus">AI is drafting your email...</span>
+            </div>
+
+            <div class="btn-row" style="margin-top:8px">
+              <button class="btn btn-purple" onclick="generateAI()"><i class="ti ti-sparkles"></i> Generate with AI</button>
+              <button class="btn btn-ghost btn-sm" onclick="improveAI()"><i class="ti ti-wand"></i> Improve existing</button>
+              <button class="btn btn-secondary btn-sm" onclick="translateAI()"><i class="ti ti-language"></i> Translate</button>
+            </div>
+          </div>
+
+          <!-- Recipients -->
+          <div class="card">
+            <div class="card-title"><i class="ti ti-users"></i> Recipients (<span id="recipCount">0</span> selected)</div>
+
+            <div class="fg">
+              <label>Select Contact List</label>
+              <select id="contactListSelect" onchange="loadContactList(this.value)">
+                <option value="">-- Select a list --</option>
+                <option value="all">All Contacts (248)</option>
+                <option value="vendors">Vendor/Impl Partners (89)</option>
+                <option value="primes">Prime Vendors (54)</option>
+                <option value="clients">Direct Clients (33)</option>
+                <option value="recruiters">Recruiters (72)</option>
+              </select>
+            </div>
+
+            <div style="display:flex;gap:5px;margin-bottom:8px">
+              <input type="text" placeholder="Filter by name, company, email..." id="contactSearch" oninput="filterContacts(this.value)" style="flex:1;font-size:12px">
+              <button class="btn btn-ghost btn-sm" onclick="selectAllContacts()"><i class="ti ti-check"></i> All</button>
+              <button class="btn btn-secondary btn-sm" onclick="clearContacts()"><i class="ti ti-x"></i></button>
+            </div>
+
+            <div id="contactPreview" style="max-height:200px;overflow-y:auto"></div>
+
+            <div style="margin-top:8px;padding-top:8px;border-top:0.5px solid #f3f4f6">
+              <div class="upload-zone" style="padding:9px" onclick="document.getElementById('emailExcel').click()">
+                <i class="ti ti-table" style="font-size:16px;display:inline;color:#3b82f6"></i>
+                <span style="font-size:12px;color:#1d4ed8;margin-left:6px;font-weight:500">Import emails from Excel</span>
+                <p style="font-size:10px;margin-top:2px">Col A: Email · Col B: Name · Col C: Company</p>
+              </div>
+              <input type="file" id="emailExcel" style="display:none" accept=".xls,.xlsx,.csv" onchange="importExcel(this)">
+              <div id="importStatus"></div>
+            </div>
+
+            <div class="fg" style="margin-top:8px"><label>Or paste emails (comma-separated)</label>
+              <textarea rows="2" id="pasteEmails" placeholder="john@company.com, jane@firm.com, ..." style="font-size:12px"></textarea>
+              <button class="btn btn-secondary btn-sm" style="margin-top:5px" onclick="parsePastedEmails()"><i class="ti ti-file-import"></i> Add from paste</button>
+            </div>
+          </div>
+
+          <!-- Schedule -->
+          <div class="card" id="schedulerCard" style="display:none">
+            <div class="card-title"><i class="ti ti-calendar-event"></i> Schedule & Send</div>
+            <div class="grid2" style="gap:8px;margin-bottom:10px">
+              <div class="fg"><label>Send Date</label><input type="date" id="sendDate"></div>
+              <div class="fg"><label>Send Time</label><input type="time" id="sendTime" value="09:00"></div>
+            </div>
+            <div class="fg"><label>Sending Speed</label>
+              <select><option>Normal (50/hr)</option><option selected>Medium (100/hr)</option><option>Fast (200/hr)</option><option>Instant (all at once)</option></select>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">Send immediately</div><div style="font-size:10px;color:#9ca3af">Ignore scheduled date/time</div></div>
+              <div class="toggle" id="tImmediate" onclick="toggleT('tImmediate')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">Track opens & clicks</div></div>
+              <div class="toggle on" id="tTrack" onclick="toggleT('tTrack')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">Auto follow-up if no reply</div><div style="font-size:10px;color:#9ca3af">Send reminder after 3 days</div></div>
+              <div class="toggle on" id="tFollowup" onclick="toggleT('tFollowup')"></div>
+            </div>
+            <div class="btn-row" style="margin-top:10px">
+              <button class="btn btn-success" onclick="launchCampaign()"><i class="ti ti-rocket"></i> Launch Campaign</button>
+              <button class="btn btn-secondary btn-sm" onclick="document.getElementById('schedulerCard').style.display='none'"><i class="ti ti-x"></i> Cancel</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Preview Modal area -->
+      <div id="previewArea" style="display:none">
+        <div class="card" style="border-color:#bfdbfe">
+          <div class="card-title" style="justify-content:space-between"><span><i class="ti ti-eye"></i> Email Preview</span><button class="btn btn-secondary btn-xs" onclick="document.getElementById('previewArea').style.display='none'"><i class="ti ti-x"></i></button></div>
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;padding:14px">
+            <div style="font-size:11px;color:#6b7280;margin-bottom:4px">From: <strong>Sarah Mitchell</strong> &lt;sarah@techstaff.com&gt;</div>
+            <div style="font-size:11px;color:#6b7280;margin-bottom:8px">Subject: <strong id="previewSubject"></strong></div>
+            <hr style="border:none;border-top:1px solid #e5e7eb;margin-bottom:10px">
+            <div id="previewBody" style="font-size:13px;line-height:1.7;color:#111827"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTACTS SUB-TAB ── -->
+    <div id="sub-contacts" style="display:none">
+      <div class="grid2">
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-upload"></i> Import Contacts from Excel</div>
+            <div class="upload-zone" onclick="document.getElementById('contactsExcel').click()">
+              <i class="ti ti-table"></i>
+              <strong>Upload Excel / CSV</strong>
+              <p>Col A: Email · Col B: Name · Col C: Company · Col D: Title · Col E: Tags</p>
+            </div>
+            <input type="file" id="contactsExcel" style="display:none" accept=".xls,.xlsx,.csv" onchange="importContacts(this)">
+            <div id="contactImportStatus" style="margin-top:8px"></div>
+            <div class="btn-row" style="margin-top:8px">
+              <a href="#" style="font-size:11px;color:#1d4ed8;display:flex;align-items:center;gap:4px;text-decoration:none"><i class="ti ti-download" style="font-size:13px"></i> Download template</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="ti ti-tag"></i> Contact Lists</div>
+            <div id="listSummary">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f3f4f6;font-size:12px">
+                <span><i class="ti ti-circle-filled" style="font-size:8px;color:#2563eb;margin-right:5px"></i>All Contacts</span>
+                <span style="font-weight:600">248</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f3f4f6;font-size:12px">
+                <span><i class="ti ti-circle-filled" style="font-size:8px;color:#059669;margin-right:5px"></i>Vendor/Impl Partners</span>
+                <span style="font-weight:600">89</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f3f4f6;font-size:12px">
+                <span><i class="ti ti-circle-filled" style="font-size:8px;color:#d97706;margin-right:5px"></i>Prime Vendors</span>
+                <span style="font-weight:600">54</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid #f3f4f6;font-size:12px">
+                <span><i class="ti ti-circle-filled" style="font-size:8px;color:#7c3aed;margin-right:5px"></i>Direct Clients</span>
+                <span style="font-weight:600">33</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:12px">
+                <span><i class="ti ti-circle-filled" style="font-size:8px;color:#dc2626;margin-right:5px"></i>Recruiters</span>
+                <span style="font-weight:600">72</span>
+              </div>
+            </div>
+            <div class="btn-row" style="margin-top:10px">
+              <button class="btn btn-primary btn-sm" onclick="showToast('New list created!','success')"><i class="ti ti-plus"></i> New List</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-users"></i> Contact Directory</div>
+            <input type="text" placeholder="Search contacts..." style="margin-bottom:9px;font-size:12px" oninput="filterDirContacts(this.value)" id="dirSearch">
+            <div id="contactDir"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CAMPAIGNS SUB-TAB ── -->
+    <div id="sub-campaigns" style="display:none">
+      <div style="display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;align-items:center">
+        <select style="width:auto;font-size:12px;padding:6px 9px"><option>All Campaigns</option><option>Sent</option><option>Scheduled</option><option>Draft</option></select>
+        <input type="text" placeholder="Search campaigns..." style="flex:1;min-width:140px;font-size:12px">
+        <button class="btn btn-primary btn-sm" onclick="switchSub(document.querySelector('.sub-tab'),'sub-compose')"><i class="ti ti-plus"></i> New Campaign</button>
+      </div>
+      <div id="campaignHistList"></div>
+    </div>
+
+    <!-- ── TEMPLATES SUB-TAB ── -->
+    <div id="sub-templates" style="display:none">
+      <div class="grid2">
+        <div id="templateList"></div>
+        <div class="card" id="templatePreviewCard" style="display:none">
+          <div class="card-title"><i class="ti ti-eye"></i> Template Preview</div>
+          <div id="templatePreviewContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS SUB-TAB ── -->
+    <div id="sub-settings" style="display:none">
+      <div class="grid2">
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-server"></i> SMTP Configuration</div>
+            <div class="fg"><label>SMTP Host</label><input type="text" value="smtp.gmail.com" placeholder="smtp.provider.com"></div>
+            <div class="fg"><label>Port</label><select><option>587 (TLS)</option><option selected>465 (SSL)</option><option>25</option></select></div>
+            <div class="fg"><label>Username</label><input type="email" value="sarah@techstaff.com"></div>
+            <div class="fg"><label>Password / App Password</label><input type="password" value="••••••••••••"></div>
+            <div class="btn-row">
+              <button class="btn btn-primary btn-sm" onclick="showToast('SMTP connection verified!','success')"><i class="ti ti-plug"></i> Test Connection</button>
+              <button class="btn btn-secondary btn-sm" onclick="showToast('SMTP settings saved!','success')"><i class="ti ti-device-floppy"></i> Save</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><i class="ti ti-brand-google"></i> Email Integrations</div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">Gmail / Google Workspace</div></div>
+              <div class="toggle on" id="tGmail" onclick="toggleT('tGmail')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">Microsoft Outlook / 365</div></div>
+              <div class="toggle" id="tOutlook" onclick="toggleT('tOutlook')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">SendGrid API</div></div>
+              <div class="toggle" id="tSendgrid" onclick="toggleT('tSendgrid')"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-shield-check"></i> Compliance & Safety</div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">Auto-add Unsubscribe Footer</div></div>
+              <div class="toggle on" id="tUnsub" onclick="toggleT('tUnsub')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">Honor Unsubscribes</div></div>
+              <div class="toggle on" id="tHonorUnsub" onclick="toggleT('tHonorUnsub')"></div>
+            </div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">Bounce Management</div><div style="font-size:10px;color:#9ca3af">Auto-remove hard bounces</div></div>
+              <div class="toggle on" id="tBounce" onclick="toggleT('tBounce')"></div>
+            </div>
+            <div class="fg" style="margin-top:10px"><label>Daily Send Limit</label><input type="number" value="500" min="1"></div>
+            <div class="fg"><label>Delay Between Emails (seconds)</label><input type="number" value="3" min="0"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-cpu"></i> AI Settings</div>
+            <div class="fg"><label>AI Provider</label><select><option selected>Claude (Anthropic)</option><option>OpenAI GPT-4</option></select></div>
+            <div class="fg"><label>Default Tone</label><select><option selected>Professional</option><option>Friendly</option><option>Formal</option></select></div>
+            <div class="toggle-row">
+              <div><div style="font-size:12px;font-weight:500">AI Personalization</div><div style="font-size:10px;color:#9ca3af">Auto-personalize per recipient</div></div>
+              <div class="toggle on" id="tAiPersonalize" onclick="toggleT('tAiPersonalize')"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end campaigns -->
+</div><!-- end content -->
+
+<div class="toast" id="toast"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+<script>
+const CONTACTS_DATA = [
+  {name:"Michael Torres",email:"m.torres@tcs.com",company:"TCS",title:"Sr. Recruiter",avatar:"MT",color:"#dbeafe:#1e40af",tag:"primes"},
+  {name:"Jennifer Walsh",email:"j.walsh@wipro.com",company:"Wipro",title:"Talent Lead",avatar:"JW",color:"#d1fae5:#065f46",tag:"vendors"},
+  {name:"Raj Patel",email:"raj.p@infosys.com",company:"Infosys",title:"Account Manager",avatar:"RP",color:"#ede9fe:#5b21b6",tag:"primes"},
+  {name:"Sarah Kim",email:"s.kim@cognizant.com",company:"Cognizant",title:"Recruiter",avatar:"SK",color:"#fef3c7:#92400e",tag:"recruiters"},
+  {name:"David Chen",email:"d.chen@hcltech.com",company:"HCL Tech",title:"Delivery Lead",avatar:"DC",color:"#fee2e2:#991b1b",tag:"vendors"},
+  {name:"Amanda Rivers",email:"a.rivers@capgemini.com",company:"Capgemini",title:"Hiring Mgr",avatar:"AR",color:"#dbeafe:#1e40af",tag:"clients"},
+  {name:"Kevin Brooks",email:"k.brooks@accenture.com",company:"Accenture",title:"Tech Lead",avatar:"KB",color:"#d1fae5:#065f46",tag:"clients"},
+  {name:"Priya Sharma",email:"p.sharma@ibm.com",company:"IBM",title:"Recruiter",avatar:"PS",color:"#ede9fe:#5b21b6",tag:"recruiters"},
+];
+
+const CAMPAIGN_HISTORY = [
+  {name:"Java Hotlist — April 2025",sent:312,opened:41,replied:14,status:"Sent",date:"Apr 28"},
+  {name:"Spring Boot Engineers — Bench",sent:187,opened:38,replied:9,status:"Sent",date:"Apr 22"},
+  {name:"Urgent: React + Java Fullstack",sent:98,opened:52,replied:22,status:"Sent",date:"Apr 15"},
+  {name:"May Availability — .NET Bench",sent:0,opened:0,replied:0,status:"Scheduled",date:"May 10"},
+  {name:"AWS + DevOps Hotlist",sent:0,opened:0,replied:0,status:"Draft",date:"—"},
+];
+
+const TEMPLATES = [
+  {name:"Hotlist Blast",desc:"Standard hotlist email for bench consultants",subject:"🔥 Available {{skills}} | C2C | {{candidate_name}} | {{location}}",body:"<p>Hi {{recruiter_name}},</p><p>Hope you're doing well! I wanted to reach out with an exciting opportunity — we have a highly skilled consultant available immediately:</p><p><strong>Candidate:</strong> {{candidate_name}}<br><strong>Skills:</strong> {{skills}}<br><strong>Experience:</strong> {{experience}} years<br><strong>Location:</strong> {{location}}<br><strong>Availability:</strong> {{availability}}<br><strong>Visa:</strong> {{visa_status}}<br><strong>Rate:</strong> {{rate}}</p><p>Please let me know if you have any suitable openings. I'd be happy to share the full resume.</p><p>Best regards,<br>{{recruiter_name}}<br>{{company_name}}</p>"},
+  {name:"Candidate Introduction",desc:"Formal intro for a specific role",subject:"Candidate Introduction — {{candidate_name}} for {{job_title}} Role",body:"<p>Dear {{recruiter_name}},</p><p>I am pleased to introduce {{candidate_name}}, an experienced {{job_title}} with {{experience}} years of expertise in {{skills}}.</p><p>{{candidate_name}} is currently available for {{availability}} and is open to {{rate}} on a {{visa_status}} basis.</p><p>I believe {{candidate_name}} would be an excellent fit for your open position. Please find the resume attached for your review.</p><p>Looking forward to your feedback.</p><p>Warm regards,<br>{{recruiter_name}}</p>"},
+  {name:"Follow-Up",desc:"3-day follow-up reminder",subject:"Following Up — {{candidate_name}} | {{skills}} | Available Now",body:"<p>Hi {{recruiter_name}},</p><p>I wanted to follow up on my previous email regarding {{candidate_name}}, a skilled {{skills}} professional available immediately in {{location}}.</p><p>Do you have any active requirements that might be a match? I'd love to connect and discuss further.</p><p>Thanks,<br>{{recruiter_name}}</p>"},
+  {name:"Urgent Placement",desc:"Time-sensitive candidate marketing",subject:"URGENT: {{skills}} Available — Immediate Start | {{location}}",body:"<p>Hi {{recruiter_name}},</p><p><strong>URGENT REQUIREMENT MATCH!</strong></p><p>We have a {{skills}} consultant available for <strong>immediate start</strong> who is an excellent match for contract roles in {{location}}.</p><ul><li>Experience: {{experience}} years</li><li>Availability: {{availability}}</li><li>Rate: {{rate}}</li><li>Visa: {{visa_status}}</li></ul><p>Please respond ASAP as this consultant has multiple interviews scheduled.</p><p>{{recruiter_name}} | {{company_name}}</p>"},
+];
+
+let selectedContacts = new Set();
+let allContacts = [...CONTACTS_DATA];
+
+function switchPanel(id) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelector(`[data-panel="${id}"]`)?.classList.add('active');
+  if(id==='campaigns') initCampaigns();
+}
+
+function switchSub(el, id) {
+  document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('[id^="sub-"]').forEach(p=>p.style.display='none');
+  if(el) el.classList.add('active');
+  document.getElementById(id).style.display='block';
+  if(id==='sub-campaigns') renderCampaignHistory();
+  if(id==='sub-templates') renderTemplates();
+  if(id==='sub-contacts') renderContactDir(allContacts);
+}
+
+function initCampaigns() {
+  if(!document.getElementById('emailBody').innerHTML) {
+    loadTemplate(0);
+  }
+  renderContactPreview([]);
+}
+
+function toggleT(id) { document.getElementById(id).classList.toggle('on'); }
+
+function fmt(cmd, val) {
+  document.getElementById('emailBody').focus();
+  document.execCommand(cmd, false, val||null);
+}
+function clearBody() { if(confirm('Clear email body?')) document.getElementById('emailBody').innerHTML=''; }
+function copyBody() {
+  const t = document.getElementById('emailBody').innerText;
+  navigator.clipboard?.writeText(t).then(()=>showToast('Email body copied!','success'));
+}
+function insertLink() {
+  const url = prompt('Enter URL:','https://');
+  if(url) { document.getElementById('emailBody').focus(); document.execCommand('createLink',false,url); }
+}
+function insertTable() {
+  document.getElementById('emailBody').focus();
+  document.execCommand('insertHTML',false,'<table style="border-collapse:collapse;width:100%"><tr><td style="border:1px solid #d1d5db;padding:6px">Cell 1</td><td style="border:1px solid #d1d5db;padding:6px">Cell 2</td></tr><tr><td style="border:1px solid #d1d5db;padding:6px">Cell 3</td><td style="border:1px solid #d1d5db;padding:6px">Cell 4</td></tr></table>');
+}
+function insertHr() {
+  document.getElementById('emailBody').focus();
+  document.execCommand('insertHTML',false,'<hr style="border:none;border-top:1px solid #e5e7eb;margin:10px 0">');
+}
+
+function insertMerge(tag) {
+  const body = document.getElementById('emailBody');
+  body.focus();
+  document.execCommand('insertText',false,tag);
+}
+
+const PROMPTS = {
+  hotlist:"Write a hotlist email for a Senior Java Developer available on C2C. 8 years experience. Skills: Spring Boot, Microservices, AWS, Docker, Kubernetes. Location: Dallas TX. Available immediately. Rate: $85-90/hr. H1B visa. Keep it concise and professional.",
+  intro:"Write a formal candidate introduction email for a Full Stack Developer (React + Java) with 6 years of experience applying for a contract role at a prime vendor. Highlight technical skills and immediate availability.",
+  followup:"Write a professional follow-up email for a hotlist I sent 3 days ago about a Java Developer. Be polite, brief, and create urgency without being pushy.",
+  urgent:"Write an urgent placement email for a DevOps Engineer available immediately. Skills: AWS, Terraform, Kubernetes, CI/CD. Location: Remote. Rate: $80/hr. Emphasize immediate availability and multiple interview requests.",
+  bench:"Write a bench sales email marketing 3 consultants — Java Developer, React Developer, and a Data Engineer — all available immediately in Texas. Keep it scannable with bullets.",
+  reintro:"Write a re-introduction email to a recruiter I contacted 6 months ago. I have a new Python/ML Engineer available. Acknowledge the time gap and highlight fresh availability.",
+  rate:"Write a rate negotiation email where I am countering a $75/hr offer for my Java consultant and proposing $85/hr based on 10 years of experience and niche skills in Kafka and Spring Cloud.",
+  availability:"Write a brief availability update email letting vendors know my Java consultant who was on a project just became available in 2 weeks and is actively seeking C2C contract roles.",
+};
+
+const AI_EMAILS = {
+  hotlist:`<p>Hi {{recruiter_name}},</p><p>Hope this finds you well! I'm reaching out with an exciting consultant who just became available:</p><p><strong>Senior Java Developer — Actively Available</strong></p><ul><li><strong>Experience:</strong> 8+ years</li><li><strong>Core Skills:</strong> Spring Boot · Microservices · AWS · Docker · Kubernetes</li><li><strong>Location:</strong> Dallas, TX (Open to Remote/Hybrid)</li><li><strong>Availability:</strong> Immediate</li><li><strong>Rate:</strong> $85–90/hr on C2C</li><li><strong>Visa:</strong> H1B (No cap-gap)</li></ul><p>This consultant has led microservices migrations and has hands-on production experience with AWS EKS and CI/CD pipelines. Resume attached for your review.</p><p>Let me know if there's a fit — happy to set up a quick call!</p><p>Best,<br>{{recruiter_name}} | {{company_name}}</p>`,
+  intro:`<p>Dear {{recruiter_name}},</p><p>I hope you're having a great week. I am writing to formally introduce <strong>{{candidate_name}}</strong>, a Full Stack Developer with 6 years of hands-on experience in <strong>React.js</strong> and <strong>Java Spring Boot</strong>.</p><p>{{candidate_name}} has delivered end-to-end web applications across fintech and healthcare domains and is immediately available for contract engagements. The attached resume provides full project details.</p><p>I believe this profile aligns well with your current requirements. I would welcome the opportunity to discuss further at your convenience.</p><p>Warm regards,<br>{{recruiter_name}}</p>`,
+  followup:`<p>Hi {{recruiter_name}},</p><p>I wanted to follow up on the Java Developer profile I shared earlier this week. This consultant remains available and has received interest from a few other vendors, so I wanted to circle back before the window closes.</p><p>Would you have any matching C2C requirements? Even a quick call would help us align.</p><p>Thanks for your time,<br>{{recruiter_name}} | {{company_name}}</p>`,
+  urgent:`<p>Hi {{recruiter_name}},</p><p><strong>Urgent — DevOps Engineer Available Immediately</strong></p><p>I have a highly skilled DevOps consultant available <strong>right now</strong> and this profile is moving fast:</p><ul><li>AWS · Terraform · Kubernetes · Jenkins CI/CD</li><li>Location: Remote (Any timezone)</li><li>Rate: $80/hr C2C</li><li>Availability: <strong>Immediate start</strong></li></ul><p>Multiple interviews are already scheduled — please respond today if you have an open requirement.</p><p>{{recruiter_name}} | {{company_name}}</p>`,
+  bench:`<p>Hi {{recruiter_name}},</p><p>We currently have the following consultants on the bench and actively available:</p><table style="border-collapse:collapse;width:100%;font-size:12px"><tr style="background:#f3f4f6"><th style="border:1px solid #e5e7eb;padding:6px;text-align:left">Role</th><th style="border:1px solid #e5e7eb;padding:6px;text-align:left">Skills</th><th style="border:1px solid #e5e7eb;padding:6px;text-align:left">Location</th><th style="border:1px solid #e5e7eb;padding:6px;text-align:left">Rate</th></tr><tr><td style="border:1px solid #e5e7eb;padding:6px">Java Developer</td><td style="border:1px solid #e5e7eb;padding:6px">Spring Boot, AWS, Microservices</td><td style="border:1px solid #e5e7eb;padding:6px">Dallas, TX</td><td style="border:1px solid #e5e7eb;padding:6px">$85/hr C2C</td></tr><tr><td style="border:1px solid #e5e7eb;padding:6px">React Developer</td><td style="border:1px solid #e5e7eb;padding:6px">React, TypeScript, Node.js</td><td style="border:1px solid #e5e7eb;padding:6px">Austin, TX</td><td style="border:1px solid #e5e7eb;padding:6px">$80/hr C2C</td></tr><tr><td style="border:1px solid #e5e7eb;padding:6px">Data Engineer</td><td style="border:1px solid #e5e7eb;padding:6px">Python, Spark, Snowflake, dbt</td><td style="border:1px solid #e5e7eb;padding:6px">Remote</td><td style="border:1px solid #e5e7eb;padding:6px">$90/hr C2C</td></tr></table><p style="margin-top:10px">Resumes available on request. Please let me know if any of these profiles match your open requirements.</p><p>Best,<br>{{recruiter_name}} | {{company_name}}</p>`,
+  reintro:`<p>Hi {{recruiter_name}},</p><p>It's been a while since we last connected — I hope things are going well for you and your team!</p><p>I'm reaching out today because I have a strong <strong>Python / ML Engineer</strong> who just became available and thought of you right away.</p><ul><li>Skills: Python · TensorFlow · PyTorch · AWS SageMaker · MLOps</li><li>Experience: 7 years</li><li>Location: Remote</li><li>Rate: $95/hr C2C</li></ul><p>I'd love to reconnect and see if there's a fit. Would you be open to a quick 10-minute call this week?</p><p>Best,<br>{{recruiter_name}}</p>`,
+  rate:`<p>Hi {{recruiter_name}},</p><p>Thank you for extending the offer of $75/hr for our Java consultant. We genuinely appreciate the opportunity and are excited about the potential partnership.</p><p>However, given the consultant's <strong>10 years of niche expertise</strong> — particularly in Kafka and Spring Cloud, which are critical to your project — we believe a rate of <strong>$85/hr on C2C</strong> more accurately reflects the market value.</p><p>We're confident this consultant will deliver strong ROI from day one. Would you be able to meet us at $85/hr? Happy to discuss further.</p><p>Warm regards,<br>{{recruiter_name}} | {{company_name}}</p>`,
+  availability:`<p>Hi {{recruiter_name}},</p><p>Quick update — our <strong>Senior Java Developer</strong> is wrapping up their current engagement and will be <strong>fully available in 2 weeks</strong>.</p><p>They are actively seeking C2C contract roles and are open to remote or hybrid positions nationwide.</p><ul><li>Skills: Java 17 · Spring Boot · AWS · Microservices</li><li>Experience: 8+ years</li><li>Rate: $85/hr C2C</li><li>Available: May 20, 2025</li></ul><p>Please keep us in mind if any matching requirements come up. Resume available upon request.</p><p>{{recruiter_name}} | {{company_name}}</p>`,
+};
+
+function setPrompt(key) {
+  document.getElementById('aiPromptInput').value = PROMPTS[key];
+}
+
+function generateAI() {
+  const prompt = document.getElementById('aiPromptInput').value.trim();
+  if(!prompt) { showToast('Please enter a prompt or select a quick prompt',''); return; }
+  const gen = document.getElementById('aiGenerating');
+  gen.classList.add('show');
+  const statuses = ['Analyzing your prompt...','Drafting subject line...','Writing email body...','Applying personalization...','Finalizing...'];
+  let i=0;
+  const iv = setInterval(()=>{
+    document.getElementById('aiStatus').textContent = statuses[i] || 'Finalizing...';
+    i++;
+    if(i>=statuses.length) {
+      clearInterval(iv);
+      gen.classList.remove('show');
+      const key = Object.keys(PROMPTS).find(k=>prompt.includes(PROMPTS[k].substring(0,20))) || Object.keys(AI_EMAILS)[Math.floor(Math.random()*Object.keys(AI_EMAILS).length)];
+      document.getElementById('emailBody').innerHTML = AI_EMAILS[key] || AI_EMAILS.hotlist;
+      showToast('AI email drafted successfully!','purple');
+    }
+  },600);
+}
+
+function improveAI() {
+  const body = document.getElementById('emailBody').innerHTML;
+  if(!body.trim()) { showToast('No email body to improve',''); return; }
+  const gen = document.getElementById('aiGenerating');
+  gen.classList.add('show');
+  document.getElementById('aiStatus').textContent = 'Improving your email...';
+  setTimeout(()=>{ gen.classList.remove('show'); showToast('Email improved by AI!','purple'); },2200);
+}
+
+function translateAI() {
+  const lang = prompt('Translate to which language?','Spanish');
+  if(!lang) return;
+  showToast(`Translating to ${lang}...`,'purple');
+  setTimeout(()=>showToast(`Email translated to ${lang}!`,'success'),1800);
+}
+
+function aiSubject() {
+  showToast('AI generating subject line...','purple');
+  setTimeout(()=>{
+    document.getElementById('subjectLine').value = '🔥 Senior Java Developer | C2C | Immediate | Dallas TX | H1B | $85-90/hr';
+    showToast('Subject line generated!','success');
+  },1400);
+}
+
+function loadContactList(val) {
+  if(!val) { renderContactPreview([]); return; }
+  let list = val==='all' ? allContacts : allContacts.filter(c=>c.tag===val.slice(0,-1)||val==='all');
+  if(val==='vendors') list=allContacts.filter(c=>c.tag==='vendors');
+  else if(val==='primes') list=allContacts.filter(c=>c.tag==='primes');
+  else if(val==='clients') list=allContacts.filter(c=>c.tag==='clients');
+  else if(val==='recruiters') list=allContacts.filter(c=>c.tag==='recruiters');
+  else list=allContacts;
+  renderContactPreview(list);
+  showToast(`Loaded ${list.length} contacts`,'success');
+}
+
+function filterContacts(q) {
+  const list = allContacts.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())||c.email.toLowerCase().includes(q.toLowerCase())||c.company.toLowerCase().includes(q.toLowerCase()));
+  renderContactPreview(list);
+}
+
+function renderContactPreview(list) {
+  const el = document.getElementById('contactPreview');
+  if(!list.length) { el.innerHTML='<div style="text-align:center;color:#9ca3af;font-size:12px;padding:16px">Import or select a contact list above</div>'; document.getElementById('recipCount').textContent='0'; return; }
+  el.innerHTML = list.map(c=>{
+    const [bg,txt]=c.color.split(':');
+    const checked=selectedContacts.has(c.email);
+    return `<div class="contact-row" onclick="toggleContact('${c.email}',this)">
+      <input type="checkbox" ${checked?'checked':''} style="width:auto;cursor:pointer" onclick="event.stopPropagation();toggleContact('${c.email}',this.closest('.contact-row'))">
+      <div class="contact-avatar" style="background:${bg};color:${txt}">${c.avatar}</div>
+      <div style="flex:1;min-width:0"><div class="contact-name">${c.name}</div><div class="contact-email">${c.email}</div></div>
+      <div class="contact-co">${c.company}</div>
+    </div>`;
+  }).join('');
+  updateRecipCount();
+}
+
+function toggleContact(email, row) {
+  if(selectedContacts.has(email)) { selectedContacts.delete(email); row.style.background=''; }
+  else { selectedContacts.add(email); row.style.background='#eff6ff'; }
+  const cb = row.querySelector('input[type=checkbox]');
+  if(cb) cb.checked = selectedContacts.has(email);
+  updateRecipCount();
+}
+
+function selectAllContacts() {
+  allContacts.forEach(c=>selectedContacts.add(c.email));
+  loadContactList(document.getElementById('contactListSelect').value || 'all');
+  updateRecipCount();
+  showToast('All contacts selected','success');
+}
+
+function clearContacts() { selectedContacts.clear(); renderContactPreview([]); updateRecipCount(); }
+
+function updateRecipCount() { document.getElementById('recipCount').textContent=selectedContacts.size; }
+
+function importExcel(input) {
+  const f = input.files[0]; if(!f) return;
+  document.getElementById('importStatus').innerHTML = `<div class="file-item"><i class="ti ti-table" style="color:#10b981;font-size:13px"></i><span>${f.name}</span></div>`;
+  showToast('Excel imported — parsing contacts...','');
+  setTimeout(()=>{
+    const newContacts = [
+      {name:"Lisa Park",email:"l.park@vendor.com",company:"VendorCo",title:"Recruiter",avatar:"LP",color:"#dbeafe:#1e40af",tag:"vendors"},
+      {name:"Omar Shaikh",email:"o.shaikh@prime.com",company:"PrimePlus",title:"Delivery Mgr",avatar:"OS",color:"#d1fae5:#065f46",tag:"primes"},
+    ];
+    allContacts.push(...newContacts);
+    selectedContacts.add("l.park@vendor.com");
+    selectedContacts.add("o.shaikh@prime.com");
+    updateRecipCount();
+    showToast(`Imported 2 contacts from ${f.name}!`,'success');
+  },1200);
+}
+
+function parsePastedEmails() {
+  const raw = document.getElementById('pasteEmails').value;
+  const emails = raw.split(/[,\n;]+/).map(e=>e.trim()).filter(e=>e.includes('@'));
+  if(!emails.length) { showToast('No valid emails found',''); return; }
+  emails.forEach(e=>{
+    const name = e.split('@')[0].replace(/[\._]/g,' ');
+    allContacts.push({name,email:e,company:e.split('@')[1],title:'Contact',avatar:name.slice(0,2).toUpperCase(),color:'#f3f4f6:#374151',tag:'all'});
+    selectedContacts.add(e);
+  });
+  updateRecipCount();
+  document.getElementById('pasteEmails').value='';
+  showToast(`Added ${emails.length} emails!`,'success');
+}
+
+function renderContactDir(list) {
+  document.getElementById('contactDir').innerHTML = list.map(c=>{
+    const [bg,txt]=c.color.split(':');
+    return `<div class="contact-row">
+      <div class="contact-avatar" style="background:${bg};color:${txt}">${c.avatar}</div>
+      <div style="flex:1;min-width:0"><div class="contact-name">${c.name}</div><div class="contact-email">${c.email}</div></div>
+      <div class="contact-co" style="text-align:right"><div>${c.company}</div><div style="font-size:10px;color:#9ca3af">${c.title}</div></div>
+      <button class="btn btn-ghost btn-xs" onclick="showToast('Email opened for ${c.name}','success')"><i class="ti ti-send"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function filterDirContacts(q) {
+  const list = allContacts.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())||c.email.toLowerCase().includes(q.toLowerCase())||c.company.toLowerCase().includes(q.toLowerCase()));
+  renderContactDir(list);
+}
+
+function importContacts(input) {
+  const f=input.files[0]; if(!f) return;
+  document.getElementById('contactImportStatus').innerHTML=`<div class="file-item"><i class="ti ti-check" style="color:#10b981;font-size:13px"></i> Imported: ${f.name}</div>`;
+  showToast(`${f.name} imported — contacts updated!`,'success');
+}
+
+function renderCampaignHistory() {
+  document.getElementById('campaignHistList').innerHTML = CAMPAIGN_HISTORY.map(c=>{
+    const pct = c.sent>0 ? Math.round(c.opened) : 0;
+    const statusColor = c.status==='Sent'?'#d1fae5:#065f46':c.status==='Scheduled'?'#dbeafe:#1e40af':'#f3f4f6:#374151';
+    const [sbg,stxt]=statusColor.split(':');
+    return `<div class="campaign-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="campaign-name">${c.name}</div><div class="campaign-meta">${c.date} · ${c.sent} sent · ${c.opened}% open · ${c.replied}% reply</div></div>
+        <span style="font-size:10px;background:${sbg};color:${stxt};padding:2px 8px;border-radius:8px;font-weight:600;white-space:nowrap">${c.status}</span>
+      </div>
+      ${c.sent>0?`<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`:''}
+      <div style="display:flex;gap:5px;margin-top:8px">
+        <button class="btn btn-ghost btn-xs"><i class="ti ti-eye"></i> View</button>
+        ${c.status!=='Sent'?`<button class="btn btn-primary btn-xs"><i class="ti ti-send"></i> Send</button>`:''}
+        <button class="btn btn-secondary btn-xs"><i class="ti ti-copy"></i> Duplicate</button>
+        <button class="btn btn-secondary btn-xs"><i class="ti ti-chart-bar"></i> Analytics</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderTemplates() {
+  document.getElementById('templateList').innerHTML = TEMPLATES.map((t,i)=>`
+    <div class="card" style="cursor:pointer;margin-bottom:10px" onclick="previewTemplate(${i})">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div style="font-size:13px;font-weight:600;color:#111827">${t.name}</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">${t.desc}</div></div>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();useTemplate(${i})"><i class="ti ti-arrow-right"></i> Use</button>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#4b5563;margin-top:7px;padding:6px;background:#f9fafb;border-radius:5px">Subject: ${t.subject.substring(0,60)}...</div>
+    </div>
+  `).join('');
+}
+
+function previewTemplate(i) {
+  const t=TEMPLATES[i];
+  document.getElementById('templatePreviewCard').style.display='block';
+  document.getElementById('templatePreviewContent').innerHTML=`<div style="font-size:11px;color:#6b7280;margin-bottom:6px">Subject: <strong>${t.subject}</strong></div><hr style="border:none;border-top:0.5px solid #e5e7eb;margin-bottom:8px"><div style="font-size:12px;line-height:1.7">${t.body}</div><div class="btn-row" style="margin-top:10px"><button class="btn btn-primary btn-sm" onclick="useTemplate(${i})"><i class="ti ti-arrow-right"></i> Use This Template</button></div>`;
+}
+
+function useTemplate(i) {
+  const t=TEMPLATES[i];
+  document.getElementById('subjectLine').value=t.subject;
+  document.getElementById('emailBody').innerHTML=t.body;
+  switchSub(document.querySelectorAll('.sub-tab')[0],'sub-compose');
+  showToast(`Template "${t.name}" loaded!`,'success');
+}
+
+function loadTemplate(i) {
+  const t=TEMPLATES[i];
+  document.getElementById('subjectLine').value=t.subject;
+  document.getElementById('emailBody').innerHTML=t.body;
+}
+
+function handleAttach(input) {
+  const list=document.getElementById('attList');
+  Array.from(input.files).forEach(f=>{
+    const d=document.createElement('div');
+    d.className='file-item';
+    d.innerHTML=`<i class="ti ti-paperclip" style="font-size:13px;color:#6b7280"></i><span>${f.name}</span><span style="margin-left:auto;color:#9ca3af;font-size:10px">${(f.size/1024).toFixed(0)}KB</span><button style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:13px" onclick="this.parentElement.remove()"><i class="ti ti-x"></i></button>`;
+    list.appendChild(d);
+  });
+}
+
+function previewEmail() {
+  const subj=document.getElementById('subjectLine').value;
+  const body=document.getElementById('emailBody').innerHTML;
+  document.getElementById('previewSubject').textContent=subj;
+  document.getElementById('previewBody').innerHTML=body;
+  document.getElementById('previewArea').style.display='block';
+  showToast('Preview ready','');
+}
+
+function sendTest() {
+  const email=prompt('Send test to:','your@email.com');
+  if(!email) return;
+  showToast(`Test email sent to ${email}!`,'success');
+}
+
+function saveDraft() { showToast('Campaign saved as draft!','success'); }
+
+function openScheduler() {
+  document.getElementById('schedulerCard').style.display='block';
+  const today=new Date(); today.setDate(today.getDate()+1);
+  document.getElementById('sendDate').value=today.toISOString().split('T')[0];
+  document.getElementById('schedulerCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function launchCampaign() {
+  const recip=selectedContacts.size;
+  const name=document.getElementById('campName').value||'Untitled Campaign';
+  if(!recip) { showToast('Select at least 1 recipient',''); return; }
+  const imm=document.getElementById('tImmediate').classList.contains('on');
+  if(imm) {
+    let sent=0;
+    const iv=setInterval(()=>{
+      sent+=Math.floor(Math.random()*8)+3;
+      if(sent>recip) sent=recip;
+      document.getElementById('st-sent').textContent=1284+sent;
+      if(sent>=recip){clearInterval(iv);showToast(`Campaign "${name}" sent to ${recip} recipients!`,'success');}
+    },300);
+  } else {
+    const date=document.getElementById('sendDate').value;
+    const time=document.getElementById('sendTime').value;
+    showToast(`Campaign scheduled for ${date} at ${time}!`,'success');
+  }
+  document.getElementById('schedulerCard').style.display='none';
+  CAMPAIGN_HISTORY.unshift({name,sent:recip,opened:0,replied:0,status:document.getElementById('tImmediate').classList.contains('on')?'Sent':'Scheduled',date:'Today'});
+}
+
+function showToast(msg, type) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className=`toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+document.addEventListener('DOMContentLoaded',()=>{ initCampaigns(); renderContactPreview([]); });
+setTimeout(()=>{ initCampaigns(); renderContactPreview([]); }, 100);
+</script>
